@@ -6,12 +6,15 @@ int main(void) {
 
 	// Creating the server adress
 	sockaddr_in serverAddress;
+
 	serverAddress.sin_family = AF_INET;
 	serverAddress.sin_port = htons(8080); // This function is used to convert the unsigned int from machine byte order to network byte order.
 	serverAddress.sin_addr.s_addr = INADDR_ANY; // INADDR_ANY stands for (0.0.0.0), means any address for socket binding.
 
 	// Binding the server socket 
 	bind(serverSocket, (struct sockaddr*)&serverAddress, sizeof(serverAddress));
+
+	// poll();
 
 	// Listen for the connection
 	listen(serverSocket, 5); // We then tell the application to listen to the socket refffered by the serverSocket.
@@ -21,10 +24,13 @@ int main(void) {
 	// (void)clientSocket;
 	// Receiving data from the client
 	char buffer[1024] = {0};
+	
 	println(CYAN << recv(clientSocket, buffer, sizeof(buffer), 0));
 	// println(GREEN << "Message from client: " << buffer);
 	std::cout << RED << "Message from client: " << buffer << std::endl;
 	// Closing server socket
 	close(serverSocket);
+	close(test);
+
 	return(0);
 }

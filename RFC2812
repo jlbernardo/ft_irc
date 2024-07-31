@@ -1,0 +1,9 @@
+// ***RFC 2812***
+
+// Each user is distinguished from other users by a unique nickname having a maximum length of nine (9) characters;
+// Operators SHOULD be able to perform basic network tasks such as disconnecting and reconnecting servers as needed;
+// A more controversial power of operators is the ability to remove a user from the connected network by 'force', i.e., operators are able to close the connection between any client and server;
+// Each service is distinguished from other services by a service name composed of a nickname and a server name;
+// Channels names are strings (beginning with a '&', '#', '+' or '!' character) of length up to fifty (50) characters..... (more ont this at RFC2812 documentation);
+// IRC messages are always lines of characters terminated with a CR-LF (Carriage Return - Line Feed) pair, and these messages SHALL NOT exceed 512 characters in length, counting all characters including the trailing CR-LF. Thus, there are 510 characters maximum allowed for the command and its parameters;
+// 
