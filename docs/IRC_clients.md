@@ -6,7 +6,7 @@ Clients can vary a lot, but most will have the same basic features: connect to a
 
 <br>
 <p align="center">
-  <img src="https://www.researchgate.net/profile/Daphne-Raban/publication/220878890/figure/fig1/AS:687362094936071@1540891302765/Typical-IRC-User-Interface-MIRC.png"/>
+  <img src="https://moodyncheeky.wordpress.com/wp-content/uploads/2011/10/mirc.gif?w=584"/>
 </p>
 
 There are many clients for the various operating systems. On Windows, for example, you may use [mIRC](https://en.wikipedia.org/wiki/MIRC), which scripting language can be used to make minor changes to the program, like creating custom commands (aliases), changing the program's appearance and customizing its behaviours.
