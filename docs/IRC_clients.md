@@ -27,4 +27,4 @@ For those who prefer to not install a program on their computer, it's possible t
   <img src="https://widgetmanager.mibbit.com/widget1.png"/>
 </p>
 
-At the end of the day, the clients are like any other software: you should choose the one that best fits your needs and preferences. Some may prefer a simple client with few features, while others may want a more complex one with many customization options. For our small IRC implementation, we will use **[choice]** as our reference client,duw to its **[characteristics]**.
+At the end of the day, the clients are like any other software: you should choose the one that best fits your needs and preferences. Some may prefer a simple client with few features, while others may want a more complex one with many customization options. For our small IRC implementation, we will use **[choice]** as our reference client, due to its **[characteristics]**.
