@@ -63,6 +63,3 @@ While ports are essential for network communication, they are abstract concepts.
 **Analogy:**
 
 Think of ports as apartment numbers and file descriptors as keys. You need the key (fd) to access the specific apartment (port) and interact with it.
-
-
-
