@@ -38,6 +38,31 @@ Ports enable multiplexing, allowing multiple applications to share the same netw
 
 An IRC server typically listens on port 6667. An IRC client connects to the server by sending a connection request to the server's IP address and port 6667. After establishing the connection, the server may assign the client a dynamic port for further communication.
 
-**Conclusion:**
+## Ports vs. File Descriptors
 
-Network ports are essential for organizing and managing network communication. They provide a mechanism for multiple applications to coexist and communicate effectively on a single host, enabling the complex and diverse landscape of internet services.
+While ports are essential for network communication, they are abstract concepts. To interact with them in your code, you use file descriptors (fds).
+
+**Ports:**
+
+* **Network-level identifiers:** Represent specific applications or services on a host.
+* **Abstract:** Not directly accessible as integers in your code.
+
+**File Descriptors:**
+
+* **Operating system handles:** Integers used by the OS to represent open files, sockets, pipes, etc.
+* **Concrete:** You work with them directly as integers in your code.
+
+**Relationship in IRC:**
+
+1. **Server:** The IRC server binds a socket to a specific port (e.g., 6667). This socket is associated with a file descriptor.
+
+2. **Client:** The IRC client creates a socket and connects to the server's IP address and port. The client's socket is also associated with a file descriptor.
+
+3. **Communication:** Once connected, the client and server use their respective file descriptors to send and receive data through the established connection, effectively communicating over the designated port.
+
+**Analogy:**
+
+Think of ports as apartment numbers and file descriptors as keys. You need the key (fd) to access the specific apartment (port) and interact with it.
+
+
+
