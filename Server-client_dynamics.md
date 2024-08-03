@@ -16,22 +16,6 @@
   - [poll()](#poll)
   - [epoll()](#epoll)
 
-## Overview
-
-### Screenshot
-
-![](./images/mobile-design.jpg)	
-
-### Links
-
-- Solution URL: [Github](https://github.com/allfigueiredodev/ip-adress-tracker.git)
-- Live Site URL: [Github Pages](https://allfigueiredodev.github.io/ip-adress-tracker/)
-
-### Useful resources
-
-- [LeafletJS](https://leafletjs.com/) - An open-source JavaScript library for mobile-friendly interactive maps.
-- [Ipify](https://geo.ipify.org/) - IP Geolocation API allows you to locate and identify website visitors by IP address. IP location helps prevent fraud, customize web experiences, and maintain regulatory compliance.
-
 ## Server-client dynamics
 
 ### Socket()
