@@ -7,10 +7,10 @@
   - [Bind()](#bind)
   - [Listen()](#listen)
   - [Accpet()](#accept)
-- [sockaddr_in](#sockaddr-in)
-	- [sin_family](#sin-family)
-	- [sin_addr.s_addr](#sin-addr.s-addr)
-	- [sin_port](#sin-port)
+- [sockaddr_in](#sockaddr_in)
+	- [sin_family](#sin_family)
+	- [sin_addr.s_addr](#sin_addr.s_addr)
+	- [sin_port](#sin_port)
 - [I/O Multiplexing](#I/O-Multiplexing)
   - [select()](#select)
   - [poll()](#poll)
@@ -126,11 +126,34 @@ The parameters to this call are the socket (fd) and the maximum number of queued
 	int accept(int fd, struct sockaddr *remote_host, socklen_t addr_length);
 ```
 
+Once a socket is listening for connections, the accept() function is used to accept incoming connection requests. Each time a client connects to the server, accept() waits until a client request arrives and then creates a new socket specifically for communicating with that client. This allows the server to handle multiple clients simultaneously, each with its own dedicated socket.
+
+The original listening socket remains open to accept further incoming connections, while the new socket returned by accept() is used for sending and receiving data to/from the connected client.
+
+- fd
+	The same socket created by the socket() call.
+
+- remote_host
+	This parameter can be nulled if we do want to store data about the client side, in our case we will need to do that, so we will have to declare another addr struct in order to save the clients info.
+
+- addr_length
+	 holds the size of the addr structure. On return, this variable holds the actual length (in bytes) of the address stored in addr, if the remote_host parameter is null, this also has to be.
 
 ```cpp
-	int clientSocket = accept(serverSocket, NULL, NULL);
+	struct sockaddr_in clientAddress;
+	socklen_t clientAddrLen = sizeof(clientAddress);
+
+	int clientSocket = accept(serverSocket, (struct sockaddr*)&clientAddress, &clientAddrLen);
+	if (clientSocket == -1) {
+		perror("accept failed");
+		exit(EXIT_FAILURE);
+}
 ```
+
 ## Struct sockaddr_in
+
+Describes an IPv4 Internet domain socket address. The sin_port and sin_addr
+members are stored in network byte order.
 
 ```cpp
 	struct sockaddr_in {
@@ -150,25 +173,46 @@ The parameters to this call are the socket (fd) and the maximum number of queued
 
 ### sin_family
 
+Describes a socket's protocol family. This is an unsigned integer type. We will
+be using AF_INET, which is the macro that holds the IPv4 prtocol family, [there are many other 
+protocols](https://man7.org/linux/man-pages/man7/address_families.7.html) that could be used, but as sockaddr_in is made to work with IPv4, AF_INET is the right choice.
+
 ```cpp
 	serverAddress.sin_family = AF_INET;
 ```
+
 ### sin_addr.s_addr
+
+sin_addr is the IP host address.  The s_addr member of struct
+in_addr contains the host interface address in network byte
+order. INADDR_ANY (0.0.0.0) means any address for socket binding;
 
 ```cpp
 	serverAddress.sin_addr.s_addr = INADDR_ANY;
 ```
 ### sin_port
 
+sin_port contains the port in network byte order.  The
+port numbers below 1024 are called privileged ports (or
+sometimes: reserved ports). 
+
 ```cpp
 	serverAddress.sin_port = htons(8080);
 ```
 
-
 ## I/O Multiplexing
 
+I/O multiplexing is a technique used in computer networking to allow a single process to monitor multiple input/output channels at once. It's particularly useful in server applications that need to handle many client connections concurrently without dedicating a separate thread or process for each one. This efficiency is achieved by having a single thread or process wait for activity on any of the monitored channels and then dispatching the appropriate handler for that channel.
+
+### How I/O Multiplexing Works
+
+I/O multiplexing works by polling multiple file descriptors (sockets, pipes, etc.) in a loop, checking if any of them have data ready to read or write. If a file descriptor indicates readiness, the corresponding handler is invoked to process the data. This mechanism allows a single thread to manage multiple connections, significantly reducing the overhead associated with creating and destroying threads or processes for each connection.
+
 ### select()
+	A system call available on Unix-like operating systems that monitors multiple file descriptors to see if they're ready for reading, writing, or have an exceptional condition pending.
 
 ### poll()
+	Similar to select(), but can handle a larger number of file descriptors and provides more information about each descriptor.
 
 ### epoll()
+	Linux-specific, offers more scalability and efficiency than select() and poll() by using edge-triggered notifications instead of level-triggered ones.
