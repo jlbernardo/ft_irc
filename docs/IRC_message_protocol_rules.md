@@ -15,6 +15,19 @@ To build a solid C++ IRC server, we must understand how the IRC clients will for
 
 **Key Commands:**
 
+**Essential Commands (for all users)**:
+
+* **NICK:** For setting and changing nicknames. This is crucial for user identification.
+* **USER:** For initial user registration and providing essential user information to the server.
+* **PASS:** (Optional, but recommended) For authentication, especially if you want to differentiate between operator and regular user privileges.
+* **JOIN:** Essential for users to join channels.
+* **PART:** For users to leave channels.
+* **PRIVMSG:** The core command for sending private messages to users and channels.
+* **QUIT:** For users to disconnect gracefully from the server.
+* **PING/PONG:** For maintaining a connection and checking server responsiveness.
+
+**Channel Operators:**
+
 * **MODE:** Used to change the settings (modes) of a channel or user. For channels, commonly used modes include:
     * `+i`: Invite-only mode, requiring an invitation to join.
     * `+t`: Topic-restricted mode, allowing only chanops to change the topic.
