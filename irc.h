@@ -14,6 +14,7 @@
 #include <netinet/in.h>
 #include <netinet/ip.h>
 #include <unistd.h>
+#include <poll.h>
 
 #define println(x) std::cout << x << DFT << std::endl;
 #define errorln(x) std::cerr << RED << x << DFT << std::endl;

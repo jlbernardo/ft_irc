@@ -1,8 +1,9 @@
 NAME = ircserv
 MAKE = make
 CC = c++
-FLAGS =  -Wall -Werror -Wextra -std=c++98 -g3
-SRC = studies/client.cpp studies/server.cpp
+# FLAGS =  -Wall -Werror -Wextra -std=c++98 -g3
+FLAGS =  -std=c++98 -g3
+SRC = studies/server.cpp
 
 OBJS = $(SRC:.cpp=.o)
 
