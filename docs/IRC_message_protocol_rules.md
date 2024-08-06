@@ -1,4 +1,4 @@
-## Understanding the IRC Specification
+## Understanding the IRC Specification for Messages and Commands
 
 To build a solid C++ IRC server, we must understand how the IRC clients will format and send messages. This is the key to handling messages correctly and building features that work as expected.
 
@@ -42,5 +42,4 @@ To build a solid C++ IRC server, we must understand how the IRC clients will for
 **Numeric Replies:**
 
 Servers often respond to commands with numeric replies, indicating success or failure. These replies are three-digit numbers and can be found in the IRC specification documentation.
-
-This information should help you get started with understanding the IRC protocol. If you have more specific questions, feel free to ask!
+For example, a 200 code usually means everything went smoothly, while a 403 code might indicate that the client tried to access a channel they weren't authorized to join.
