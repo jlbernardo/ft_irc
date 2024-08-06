@@ -10,7 +10,12 @@ Yes, it's a chat system, but it's also a protocol. The protocol is a set of rule
 </p>
 
 ## Tell me more?
-As this project is currently being developed, we will be updating this README with more information as we go along. However, you can contact any one of us to chat about the project and what we are learning!
+As this project is currently being developed, we will be updating this README with more information as we go along. For now, you can check our short explanations on what we've learned so far:
 
-Hit up [Allesson Figueiredo](https://github.com/allfigueiredodev) or [Vinnicius Cedraz](https://github.com/Vinni-Cedraz)!
+- [IRC clients](docs/IRC_clients.md)
+- [TCP/IP](docs/TCP_IP.md)
+
+<br>
+
+You can also contact any one of us to chat about the project and what we are learning! Hit up [Allesson Figueiredo](https://github.com/allfigueiredodev) or [Vinnicius Cedraz](https://github.com/Vinni-Cedraz).
 
