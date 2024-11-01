@@ -1,8 +1,7 @@
-
 #include "bircd.h"
+#include <stdio.h>
 #include <string.h>
 #include <sys/socket.h>
-#include <stdio.h>
 
 void	client_write(t_env *e, int cs)
 {

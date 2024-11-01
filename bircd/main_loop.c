@@ -1,4 +1,3 @@
-
 #include "bircd.h"
 
 void	main_loop(t_env *e)

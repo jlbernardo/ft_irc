@@ -1,4 +1,3 @@
-
 #include "bircd.h"
 #include <string.h>
 #include <sys/select.h>
