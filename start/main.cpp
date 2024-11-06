@@ -1,104 +1,44 @@
-#include <netinet/in.h>
-#include <sys/socket.h>
-#include <sys/select.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <cstring>
+#include <cstdlib>
 #include <iostream>
-#include <sstream>
-#include <vector>
-#include <algorithm>
 
-int main() {
-    int server_fd;
-    struct sockaddr_in server_addr, client_addr;
-    socklen_t client_addr_len = sizeof(client_addr);
-    char buffer[1024];
-    int port = 6668;
-    std::vector<int> clients;
+#include "Server.hpp"
 
-    server_fd = socket(AF_INET, SOCK_STREAM, 0);
-    if (server_fd < 0) {
-        perror("socket");
-        return 1;
+static void validate_port(int argc, const char* port_str);
+static void print_usage(const char* program_name);
+
+int main(int argc, char* argv[]) {
+  try {
+    validate_port(argc, argv[1]);
+    int port = std::atoi(argv[1]);
+
+    Server irc_server(port);
+    irc_server.start();
+  } catch (const std::invalid_argument& e) {
+    std::cerr << "Error: " << e.what() << std::endl;
+    print_usage(argv[0]);
+    return 1;
+  } catch (const std::exception& e) {
+    std::cerr << "Error: " << e.what() << std::endl;
+    return 1;
+  }
+}
+
+static void validate_port(int argc, const char* port_str) {
+  if (argc != 2) {
+    throw std::invalid_argument("Invalid number of arguments");
+  }
+  for (const char* c = port_str; *c != '\0'; ++c) {
+    if (!std::isdigit(*c)) {
+      throw std::invalid_argument("Port must be a number");
     }
+  }
+  int port = std::atoi(port_str);
+  if (port <= 1024 || port > 65535) {
+    throw std::invalid_argument("Port must be between 1024 and 65535");
+  }
+}
 
-    memset(&server_addr, 0, sizeof(server_addr));
-    server_addr.sin_family = AF_INET;
-    server_addr.sin_addr.s_addr = INADDR_ANY;
-    server_addr.sin_port = htons(port);
-
-    if (bind(server_fd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
-        perror("bind");
-        close(server_fd);
-        return 1;
-    }
-
-    if (listen(server_fd, SOMAXCONN) < 0) {
-        perror("listen");
-        close(server_fd);
-        return 1;
-    }
-
-    fd_set master_set, read_set;
-    FD_ZERO(&master_set);
-    FD_SET(server_fd, &master_set);
-    int max_fd = server_fd;
-
-    while (1) {
-        read_set = master_set;
-        if (select(max_fd + 1, &read_set, NULL, NULL, NULL) < 0) {
-            perror("select");
-            break;
-        }
-
-        for (int fd = 0; fd <= max_fd; fd++) {
-            if (!FD_ISSET(fd, &read_set))
-                continue;
-
-            if (fd == server_fd) {
-                // New connection
-                int client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &client_addr_len);
-                if (client_fd < 0) {
-                    perror("accept");
-                    continue;
-                }
-
-                FD_SET(client_fd, &master_set);
-                if (client_fd > max_fd)
-                    max_fd = client_fd;
-                clients.push_back(client_fd);
-            } else {
-                // Client activity
-                ssize_t bytes_read = read(fd, buffer, sizeof(buffer) - 1);
-                if (bytes_read <= 0) {
-                    // Client disconnected
-                    FD_CLR(fd, &master_set);
-                    close(fd);
-                    std::vector<int>::iterator it = std::find(clients.begin(), clients.end(), fd);
-                    if (it != clients.end())
-                        clients.erase(it);
-                    continue;
-                }
-
-                buffer[bytes_read] = '\0';
-                std::stringstream str;
-                str << "Client " << fd << " says: " << buffer;
-
-                // Broadcast to other clients
-                for (size_t i = 0; i < clients.size(); ++i) {
-                    if (clients[i] != fd) {
-                        send(clients[i], str.str().c_str(), str.str().length(), 0);
-                    }
-                }
-            }
-        }
-    }
-
-    // Cleanup
-    close(server_fd);
-    for (size_t i = 0; i < clients.size(); ++i) {
-        close(clients[i]);
-    }
+static void print_usage(const char* program_name) {
+  std::cerr << "Usage: " << program_name << " <port>" << std::endl;
+  std::cerr << "Port must be between 1024 and 65535" << std::endl;
 }

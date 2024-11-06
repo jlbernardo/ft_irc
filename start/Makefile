@@ -3,7 +3,7 @@ FLAGS = -Wall -Wextra -Werror -std=c++98 -g3 -MMD -MP
 CXX = c++
 PATH_OBJS = ./objects/
 
-SRCS = example
+SRCS = Client Message Server
 MAIN = main
 
 OBJS = $(SRCS:%=$(PATH_OBJS)%.o)
