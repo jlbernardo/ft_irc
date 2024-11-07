@@ -14,7 +14,7 @@ Server::Server(int port) : _port(port), _max_fd(0) {
 void Server::initialize_socket() {
   _server_fd = socket(AF_INET, SOCK_STREAM, 0);
   if (_server_fd < 0) {
-    throw std::runtime_error("Failed to create socket");
+    throw std::runtime_error("Failed to create socket\n");
   }
 
   memset(&_server_addr, 0, sizeof(_server_addr));
@@ -26,12 +26,12 @@ void Server::initialize_socket() {
 void Server::setup_server() {
   if (bind(_server_fd, (struct sockaddr *)&_server_addr, sizeof(_server_addr)) < 0) {
     close(_server_fd);
-    throw std::runtime_error("Failed to bind socket");
+    throw std::runtime_error("Failed to bind socket\n");
   }
 
   if (listen(_server_fd, SOMAXCONN) < 0) {
     close(_server_fd);
-    throw std::runtime_error("Failed to listen on socket");
+    throw std::runtime_error("Failed to listen on socket\n");
   }
 
   FD_ZERO(&_master_set);
@@ -43,7 +43,7 @@ void Server::start() {
   while (true) {
     fd_set read_set = _master_set;  // create copy because select modifies it
     if (select(_max_fd + 1, &read_set, NULL, NULL, NULL) < 0) {
-      throw std::runtime_error("Select failed");
+      throw std::runtime_error("Select failed\n");
     }
 
     for (int fd = 0; fd <= _max_fd; fd++) {
@@ -63,7 +63,7 @@ void Server::handle_new_connection() {
 
   int client_fd = accept(_server_fd, (struct sockaddr *)&client_addr, &client_addr_len);
   if (client_fd < 0) {
-    std::cerr << "Failed to accept connection" << std::endl;
+    std::cerr << "Failed to accept connection\n" << std::endl;
     return;
   }
 
