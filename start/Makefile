@@ -1,4 +1,4 @@
-NAME = irc
+NAME = ircserv
 FLAGS = -Wall -Wextra -Werror -std=c++98 -g3 -MMD -MP
 CXX = c++
 PATH_OBJS = ./objects/
