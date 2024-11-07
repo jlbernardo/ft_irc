@@ -4,8 +4,9 @@ FLAGS = -Wall -Wextra -Werror -std=c++98 -g3 -MMD -MP
 CXX = c++
 PATH_OBJS = ./objects/
 SRC_DIR = srcs/
+PASS = 89aX
 
-SRCS = Client Message Server
+SRCS = Client Message Server InputValidator
 MAIN = main
 
 OBJS = $(SRCS:%=$(PATH_OBJS)%.o)
@@ -16,7 +17,7 @@ DEPS = $(OBJS:.o=.d) $(MAIN_OBJ:.o=.d)
 all: $(NAME)
 
 run: all
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME) $(PORT)
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME) $(PORT) $(PASS)
 
 test_connections:
 	@make test1 PORT=$(PORT) -C integration_tests/
