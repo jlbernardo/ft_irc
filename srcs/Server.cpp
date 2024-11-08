@@ -49,7 +49,7 @@ void Server::broadcast_message(const Message &message, int sender_fd) {
 
 // Modify the start method in Server.cpp:
 void Server::start() {
-  while (!_terminate) {
+  while (true) {
     fd_set read_set;
     fd_set write_set;
     FD_ZERO(&read_set);
@@ -69,7 +69,7 @@ void Server::start() {
 
     if (select(_max_fd + 1, &read_set, &write_set, NULL, NULL) < 0) {
       if (_terminate)
-        return;
+        throw std::runtime_error("Server Received Interrupt Signal\n");
       else
         throw std::runtime_error("Select failed\n");
     }

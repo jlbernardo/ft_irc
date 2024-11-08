@@ -54,6 +54,7 @@ $(PATH_OBJS)%.o: $(SRC_DIR)%.cpp
 $(MAIN_OBJ): $(SRC_DIR)$(MAIN).cpp
 	@mkdir -p $(PATH_OBJS)
 	$(CXX) $(MEMFLAGS) -c $< -o $@
+
 clean:
 	rm -rf $(PATH_OBJS)
 
