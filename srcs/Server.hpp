@@ -1,7 +1,9 @@
 #pragma once
+#include <csignal>
 #include <netinet/in.h>
 
 #include <map>
+#include <queue>
 
 #include "Client.hpp"
 #include "Message.hpp"
@@ -15,10 +17,13 @@ class Server {
   /* _max_fd is set according to the greatest fd number we have to handle, there is no fixed limit. */
   int _max_fd;
   std::map<int, Client*> _clients;
+  std::map<int, std::queue<std::string> > _message_queues;
+  static void signal_handler(int signum);
 
+  void register_signals();
   void initialize_socket();
   void setup_server();
-  void handle_new_connection();
+  void add_new_client_to_master_set();
   void handle_client_message(int client_fd);
   void broadcast_message(const Message& message, int sender_fd);
   void remove_client(int client_fd);
@@ -29,6 +34,7 @@ class Server {
  public:
   Server(int port);
   ~Server();
+  static volatile sig_atomic_t _terminate;
 
   void start();
   void stop();
