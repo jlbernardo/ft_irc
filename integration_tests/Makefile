@@ -11,13 +11,11 @@ BOLD := \033[1m
 
 test1: $(SERVER)
 	@echo "$(BOLD)Starting IRC server with valgrind on port $(PORT)...$(RESET)"
-	@make run -C ../ PORT=$(PORT) &
-	@sleep 2
-	@echo "$(BOLD)Running connection test...$(RESET)"
-	@./1024_connections.py $(PORT)
-	@TEST_STATUS=$$?; \
-	pkill valgrind; \
-	exit $$TEST_STATUS
+	@(make quickmemtest -C ../ PORT=$(PORT) & server_pid=$$!; \
+	echo "$(BOLD)Running connection test...$(RESET)"; \
+	./connections.py $(PORT); \
+	kill $$server_pid; \
+	exit $$?)
 
 $(SERVER):
 	@make -C ../
