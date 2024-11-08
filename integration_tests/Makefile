@@ -2,7 +2,7 @@
 PORT ?= 6667
 
 # Path to server executable
-SERVER = ../ircserv
+SERVER = ../ircserv_sanitize
 
 # Colors for output
 GREEN := \033[32m
