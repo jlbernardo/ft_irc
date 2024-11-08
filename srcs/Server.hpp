@@ -15,6 +15,7 @@ class Server {
   /* _max_fd is set according to the greatest fd number we have to handle, there is no fixed limit. */
   int _max_fd;
   std::map<int, Client*> _clients;
+  static void signal_handler(int signum);
 
   void initialize_socket();
   void setup_server();

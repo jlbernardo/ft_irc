@@ -1,5 +1,7 @@
-#include <unistd.h>
 #include <arpa/inet.h>
+#include <csignal>
+#include <unistd.h>
+
 #include <cstring>
 #include <iostream>
 #include <stdexcept>
@@ -7,8 +9,14 @@
 #include "Server.hpp"
 
 Server::Server(int port) : _port(port), _max_fd(0) {
+  signal(SIGINT, signal_handler);
   initialize_socket();
   setup_server();
+}
+
+void Server::signal_handler(int signum) {
+  (void)signum;
+  _exit(0);  // This will trigger the destructor automagically
 }
 
 void Server::initialize_socket() {
@@ -16,7 +24,6 @@ void Server::initialize_socket() {
   if (_server_fd < 0) {
     throw std::runtime_error("Failed to create socket\n");
   }
-
   memset(&_server_addr, 0, sizeof(_server_addr));
   _server_addr.sin_family = AF_INET;
   _server_addr.sin_addr.s_addr = INADDR_ANY;
@@ -27,13 +34,10 @@ void Server::setup_server() {
   if (bind(_server_fd, (struct sockaddr *)&_server_addr, sizeof(_server_addr)) < 0) {
     close(_server_fd);
     throw std::runtime_error("Failed to bind socket\n");
-  }
-
-  if (listen(_server_fd, SOMAXCONN) < 0) {
+  } else if (listen(_server_fd, SOMAXCONN) < 0) {
     close(_server_fd);
     throw std::runtime_error("Failed to listen on socket\n");
   }
-
   FD_ZERO(&_master_set);
   FD_SET(_server_fd, &_master_set);
   _max_fd = _server_fd;
