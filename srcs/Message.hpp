@@ -4,15 +4,15 @@
 
 class Message {
  private:
-  std::string _content;
-  int _sender_fd;
+  std::string content;
+  int sender_fd;
 
  public:
-  Message(int sender_fd, const std::string& content) : _content(content), _sender_fd(sender_fd) {}
+  Message(int sender_fd, const std::string& content) : content(content), sender_fd(sender_fd) {}
 
   std::string format_message() const {
     std::stringstream ss;
-    ss << "client" << _sender_fd << ": " << _content;
+    ss << "client" << sender_fd << ": " << content;
     return ss.str();
     // Example output: "client5: Hello everyone!"
 

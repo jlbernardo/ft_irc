@@ -1,7 +1,7 @@
 #pragma once
-#include <csignal>
 #include <netinet/in.h>
 
+#include <csignal>
 #include <map>
 #include <queue>
 
@@ -10,14 +10,13 @@
 
 class Server {
  private:
-  int _server_fd;
-  int _port;
-  struct sockaddr_in _server_addr;
-  fd_set _master_set;
-  /* _max_fd is set according to the greatest fd number we have to handle, there is no fixed limit. */
-  int _max_fd;
-  std::map<int, Client*> _clients;
-  std::map<int, std::queue<std::string> > _message_queues;
+  int fd;
+  int port;
+  fd_set master_set;
+  int max_fd;
+  std::map<int, Client*> clients;
+  std::map<int, std::queue<std::string> > message_queues;
+  struct sockaddr_in server_addr;
   static void signal_handler(int signum);
 
   void register_signals();
@@ -28,13 +27,11 @@ class Server {
   void broadcast_message(const Message& message, int sender_fd);
   void remove_client(int client_fd);
 
-  // predicate functions:
-  bool theres_data_in_this_fd(int fd, fd_set* read_set) const { return (true == FD_ISSET(fd, read_set)); }
-
  public:
   Server(int port);
   ~Server();
-  static volatile sig_atomic_t _terminate;
+  static volatile sig_atomic_t terminate;
+  friend class MessageHandler;
 
   void start();
   void stop();

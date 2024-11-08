@@ -8,7 +8,7 @@ PATH_OBJS = ./objects/
 SRC_DIR = srcs/
 PASS = 89aX
 
-SRCS = Client Message Server InputValidator
+SRCS = Client Message Server InputValidator MessageHandler
 MAIN = main
 
 OBJS = $(SRCS:%=$(PATH_OBJS)%.o)

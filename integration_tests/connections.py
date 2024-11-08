@@ -32,7 +32,7 @@ def print_result(passed: bool, message: str):
 
 def test_select_limit(port: int):
     print(f"\nTesting IRC server on port {port}")
-    print("select() should handle at least 1021 simultaneous connections (FD_SETSIZE)\n")
+    print("select() should handle at least 1021 simultaneous connections (FD_SETSIZE - 3)\n")
     
     clients: List[IRCClient] = []
     for i in range(1024):  # Try to go beyond the limit

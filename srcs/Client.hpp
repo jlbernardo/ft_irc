@@ -4,11 +4,11 @@
 
 class Client {
 private:
-    int _fd;
-    std::string _nick;
-    std::string _user;
-    std::string _name;
-    bool _is_authenticated;
+    int fd;
+    std::string nick;
+    std::string user;
+    std::string name;
+    bool authenticated;
 
 public:
     Client(int fd);

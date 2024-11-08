@@ -2,7 +2,7 @@
 
 // just the client fd constructor for now:
 Client::Client(int fd) {
-  _fd = fd;
+  this->fd = fd;
 }
 
 Client::~Client() {}
