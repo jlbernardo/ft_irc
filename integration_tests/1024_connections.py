@@ -19,7 +19,7 @@ class IRCClient:
         self.sock.close()
 
 def print_result(passed: bool, message: str):
-    status = f"{GREEN}PASS{RESET}" if passed else f"{RED}FAIL{RESET}"
+    status = f"\n{GREEN}PASS{RESET}" if passed else f"\n{RED}FAIL{RESET}"
     print(f"{BOLD}{status}{RESET} {message}")
 
 def test_select_limit(port: int):
@@ -32,8 +32,6 @@ def test_select_limit(port: int):
             try:
                 client = IRCClient('localhost', port)
                 clients.append(client)
-                if (i + 1) % 100 == 0:
-                    print(f"Connected {i + 1} clients...")
                 time.sleep(0.01)
             except socket.error as e:
                 connections = len(clients)

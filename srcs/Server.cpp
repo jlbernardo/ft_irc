@@ -1,5 +1,5 @@
 #include <unistd.h>
-
+#include <arpa/inet.h>
 #include <cstring>
 #include <iostream>
 #include <stdexcept>
@@ -69,8 +69,8 @@ void Server::handle_new_connection() {
 
   FD_SET(client_fd, &_master_set);
   if (client_fd > _max_fd) _max_fd = client_fd;
-
   _clients[client_fd] = new Client(client_fd);
+  std::cout << "\rNew connection on socket " << client_fd << "     " << std::flush;
 }
 
 void Server::handle_client_message(int client_fd) {

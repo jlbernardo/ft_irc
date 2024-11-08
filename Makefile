@@ -14,6 +14,8 @@ MAIN_OBJ = $(MAIN:%=$(PATH_OBJS)%.o)
 
 DEPS = $(OBJS:.o=.d) $(MAIN_OBJ:.o=.d)
 
+.PHONY: all clean fclean re run test_connections
+
 all: $(NAME)
 
 run: all
@@ -23,7 +25,9 @@ test_connections:
 	@make test1 PORT=$(PORT) -C integration_tests/
 
 $(NAME): $(OBJS) $(MAIN_OBJ)
-	$(CXX) $(FLAGS) $^ -o $(NAME)
+	@mkdir -p $(dir $@)
+	$(CXX) $(FLAGS) $^ -o $@
+	@touch $@
 
 $(PATH_OBJS)%.o: $(SRC_DIR)%.cpp
 	@mkdir -p $(PATH_OBJS)
