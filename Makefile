@@ -1,6 +1,7 @@
+
 PORT ?= 6667
 NAME = ircserv
-NAME2 = ircserv
+NAME2 = ircserv_sanitize
 FLAGS = -Wall -Wextra -Werror -std=c++98 -g3 -MMD -MP
 MEMFLAGS = -Wall -Wextra -Werror -std=c++98 -g3 -MMD -MP -fsanitize=address
 CXX = c++
@@ -20,11 +21,11 @@ DEPS = $(OBJS:.o=.d) $(MAIN_OBJ:.o=.d)
 
 all: $(NAME)
 
-run: all
+run: fclean all
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME) $(PORT) $(PASS)
 
 quickmemtest: fclean $(NAME2)
-	./$(NAME) $(PORT) $(PASS)
+	./$(NAME2) $(PORT) $(PASS)
 
 test_connections:
 	@make test1 PORT=$(PORT) -C integration_tests/
@@ -47,20 +48,15 @@ $(NAME2): $(OBJS) $(MAIN_OBJ)
 	$(CXX) $(MEMFLAGS) $^ -o $@
 	@touch $@
 
-$(PATH_OBJS)%.o: $(SRC_DIR)%.cpp
-	@mkdir -p $(PATH_OBJS)
-	$(CXX) $(MEMFLAGS) -c $< -o $@
-
-$(MAIN_OBJ): $(SRC_DIR)$(MAIN).cpp
-	@mkdir -p $(PATH_OBJS)
-	$(CXX) $(MEMFLAGS) -c $< -o $@
 clean:
 	rm -rf $(PATH_OBJS)
 
 fclean: clean
 	rm -f $(NAME)
+	rm -f $(NAME2)
 	rm -f compile_commands.json
 
 re: fclean all
 
 -include $(DEPS)
+
