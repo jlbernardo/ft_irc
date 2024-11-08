@@ -32,7 +32,7 @@ While ports are network-level identifiers, file descriptors are OS-level handles
 - **Ports:** Abstract identifiers for network services.
 - **File Descriptors:** Concrete integers used by the OS to represent open sockets.
 
-### Relationship in IRC:
+### Example in IRC:
 
 1. The server binds to port 6667, receiving a file descriptor.
 2. For each client connection, a new file descriptor is created.
