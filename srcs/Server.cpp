@@ -4,14 +4,22 @@
 #include <csignal>
 #include <cstring>
 #include <iostream>
+#include <sstream>
 #include <stdexcept>
 
 #include "Server.hpp"
 
 volatile sig_atomic_t Server::_terminate = 0;
 
+void Server::register_signals() {
+  int signals[6] = {SIGINT, SIGTERM, SIGQUIT, SIGHUP, SIGPIPE, SIGABRT};
+  for (size_t i = 0; i < 6; ++i) {
+    signal(signals[i], signal_handler);
+  }
+}
+
 Server::Server(int port) : _port(port), _max_fd(0) {
-  signal(SIGINT, signal_handler);
+  register_signals();
   initialize_socket();
   setup_server();
 }
@@ -49,10 +57,12 @@ void Server::start() {
 
     // Populate read_set and write_set
     for (int fd = 0; fd <= _max_fd; fd++) {
-      if (FD_ISSET(fd, &_master_set)) {
-        FD_SET(fd, &read_set);
-        if (!_message_queues[fd].empty()) {
-          FD_SET(fd, &write_set);
+      if (_max_fd < FD_SETSIZE) {
+        if (FD_ISSET(fd, &_master_set)) {
+          FD_SET(fd, &read_set);
+          if (!_message_queues[fd].empty()) {
+            FD_SET(fd, &write_set);
+          }
         }
       }
     }
@@ -65,16 +75,18 @@ void Server::start() {
     }
 
     for (int fd = 0; fd <= _max_fd; fd++) {
-      if (theres_data_in_this_fd(fd, &read_set)) {
-        if (fd == _server_fd)
-          add_new_client_to_master_set();
-        else
-          handle_client_message(fd);
-      }
-      if (FD_ISSET(fd, &write_set) && !_message_queues[fd].empty()) {
-        while (_message_queues[fd].size() > 0) {
-          std::string &msg = _message_queues[fd].front();
-          if (send(fd, msg.c_str(), msg.length(), 0) > 0) _message_queues[fd].pop();
+      if (_max_fd < FD_SETSIZE) {
+        if (theres_data_in_this_fd(fd, &read_set)) {
+          if (fd == _server_fd)
+            add_new_client_to_master_set();
+          else
+            handle_client_message(fd);
+        }
+        if (FD_ISSET(fd, &write_set) && !_message_queues[fd].empty()) {
+          while (_message_queues[fd].size() > 0) {
+            std::string &msg = _message_queues[fd].front();
+            if (send(fd, msg.c_str(), msg.length(), 0) > 0) _message_queues[fd].pop();
+          }
         }
       }
     }
@@ -107,7 +119,9 @@ void Server::add_new_client_to_master_set() {
   FD_SET(client_fd, &_master_set);
   if (client_fd > _max_fd) _max_fd = client_fd;
   _clients[client_fd] = new Client(client_fd);
-  std::cout << "\rNew connection on socket " << client_fd << "     " << std::flush;
+  std::stringstream str;
+  str << "Connected to server on socket " << client_fd;
+  send(client_fd, str.str().c_str(), str.str().length(), 0);
 }
 
 void Server::handle_client_message(int client_fd) {

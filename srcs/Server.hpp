@@ -20,6 +20,7 @@ class Server {
   std::map<int, std::queue<std::string> > _message_queues;
   static void signal_handler(int signum);
 
+  void register_signals();
   void initialize_socket();
   void setup_server();
   void add_new_client_to_master_set();
