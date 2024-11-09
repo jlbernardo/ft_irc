@@ -38,16 +38,6 @@ void Server::initialize_socket() {
   server_addr.sin_port = htons(port);
 }
 
-void Server::broadcast_message(const Message &message, int sender_fd) {
-  std::string formatted = message.format_message();
-  for (std::map<int, Client *>::iterator it = clients.begin(); it != clients.end(); ++it) {
-    int client_fd = it->first;
-    if (client_fd != sender_fd) {
-      message_queues[client_fd].push(formatted);
-    }
-  }
-}
-
 void Server::start() {
   fd_set read_set;
   fd_set write_set;
@@ -93,22 +83,10 @@ void Server::add_new_client_to_master_set() {
   send(client_fd, str.str().c_str(), str.str().length(), 0);
 }
 
-void Server::handle_client_message(int client_fd) {
-  char buffer[1024] = {0};
-  ssize_t bytes_read = read(client_fd, buffer, sizeof(buffer) - 1);
-  if (bytes_read <= 0) {
-    remove_client(client_fd);
-    return;
-  }
-  Message message(client_fd, buffer);
-  broadcast_message(message, client_fd);
-}
-
 void Server::remove_client(int client_fd) {
   FD_CLR(client_fd, &master_set);
   close(client_fd);
   delete clients[client_fd];
-  message_queues.erase(client_fd);
   clients.erase(client_fd);
 }
 
@@ -116,9 +94,7 @@ Server::~Server() {
   std::cout << "\nShutting down server\n";
   for (std::map<int, Client *>::iterator it = clients.begin(); it != clients.end(); ++it) {
     delete it->second;
-    message_queues.erase(it->first);
     close(it->first);
   }
-  message_queues.clear();
   close(fd);
 }

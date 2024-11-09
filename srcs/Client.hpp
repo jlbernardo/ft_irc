@@ -11,8 +11,9 @@ private:
     bool authenticated;
 
 public:
-    Client(int fd);
-    ~Client();
+    Client(int fd) : fd(fd), buffer("") {};
+    ~Client() {};
+    std::string buffer;
     
     int get_fd() const;
     const std::string& get_nickname() const;

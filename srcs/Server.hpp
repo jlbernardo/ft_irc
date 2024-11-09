@@ -3,7 +3,6 @@
 
 #include <csignal>
 #include <map>
-#include <queue>
 
 #include "Client.hpp"
 #include "Message.hpp"
@@ -15,7 +14,6 @@ class Server {
   fd_set master_set;
   int max_fd;
   std::map<int, Client*> clients;
-  std::map<int, std::queue<std::string> > message_queues;
   struct sockaddr_in server_addr;
   static void signal_handler(int signum);
 
