@@ -74,8 +74,8 @@ void Server::add_new_client_to_master_set() {
   FD_SET(client_fd, &master_set);
   if (client_fd > max_fd) max_fd = client_fd;
   clients[client_fd] = new Client(client_fd);
-#ifdef TEST
   std::stringstream str;
+#ifdef TEST
   str << "Connected to server on socket " << client_fd << ": ";
   send(client_fd, str.str().c_str(), str.str().length(), 0);
 #endif

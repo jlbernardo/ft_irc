@@ -47,7 +47,7 @@ void SocketsManager::load_client_queue(int client_fd) {
     return;
   }
   if (client.buffer_has_linebreak()) {
-    Message message(client);
+    Message message(client, client.get_buffer());
     broadcast_message(message, client_fd);
     client.clean_buffer();
   }
