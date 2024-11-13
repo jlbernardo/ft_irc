@@ -7,8 +7,8 @@
 #include <sstream>
 #include <stdexcept>
 
-#include "MessageHandler.hpp"
 #include "Server.hpp"
+#include "SocketsManager.hpp"
 
 volatile sig_atomic_t Server::terminate = 0;
 
@@ -39,16 +39,16 @@ void Server::initialize_socket() {
 }
 
 void Server::start() {
-  fd_set read_set;
-  fd_set write_set;
-  MessageHandler handler(&read_set, &write_set, *this);
-
+  SocketsManager manager(&read_set, &write_set, *this);
   while (true) {
     if (max_fd < FD_SETSIZE) {
-      handler.populate_sets();
+      manager.add_new_sockets_from_masterset_to_read_write();
     }
-    handler.call_select();
-    handler.handle_messages();
+    manager.io_multiplexing();
+    for (int fd = 0; fd <= max_fd; fd++) {
+      manager.socket_read(fd);
+      manager.socket_write(fd);
+    }
   }
 }
 
@@ -68,13 +68,11 @@ void Server::setup_server() {
 void Server::add_new_client_to_master_set() {
   struct sockaddr_in client_addr;
   socklen_t client_addr_len = sizeof(client_addr);
-
   int client_fd = accept(fd, (struct sockaddr *)&client_addr, &client_addr_len);
   if (client_fd < 0) {
     std::cerr << "Failed to accept connection\n" << std::endl;
     return;
   }
-
   FD_SET(client_fd, &master_set);
   if (client_fd > max_fd) max_fd = client_fd;
   clients[client_fd] = new Client(client_fd);

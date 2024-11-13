@@ -1,26 +1,20 @@
 #pragma once
 #include "Client.hpp"
-#include <sstream>
 #include <string>
 
 class Message {
  private:
+  const std::string command;
+  const std::string target;
   const std::string content;
   const Client &sender;
   const int sender_fd;
 
  public:
   Message(const Client &sender);
-
-  std::string format_message() const {
-    std::stringstream ss;
-    ss << "client" << sender_fd << ": " << content;
-    return ss.str();
-    // Example output: "client5: Hello everyone!"
-
-    // Later this will return IRC protocol format:
+  std::string format_message() const;
     // ":nickname!username@host PRIVMSG #channel :message content"
-  }
+};
 
 
 
@@ -39,4 +33,3 @@ class Message {
   // - is_channel_message()-> Checks if message is for channel
   // - is_private_message()-> Checks if message is private
   // - get_sender_info()   -> Returns sender nickname/username
-};
