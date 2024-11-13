@@ -2,26 +2,27 @@
 
 #include "SocketsManager.hpp"
 
-SocketsManager::SocketsManager(fd_set* read, fd_set* write, Server& serv)
-    : read_set(read), write_set(write), server(serv) {}
+SocketsManager::SocketsManager(Server& serv) : server(serv) {}
 
 SocketsManager::~SocketsManager() { message_queues.clear(); }
 
 void SocketsManager::add_new_sockets_from_masterset_to_read_write() {
-  FD_ZERO(read_set);
-  FD_ZERO(write_set);
-  for (int fd = 0; fd <= server.max_fd; fd++) {
-    if (FD_ISSET(fd, &server.master_set)) {
-      FD_SET(fd, read_set);
-      if (!message_queues[fd].empty()) {
-        FD_SET(fd, write_set);
+  FD_ZERO(&read_set);
+  FD_ZERO(&write_set);
+  if (server.max_fd < FD_SETSIZE) {
+    for (int fd = 0; fd <= server.max_fd; fd++) {
+      if (FD_ISSET(fd, &server.master_set)) {
+        FD_SET(fd, &read_set);
+        if (!message_queues[fd].empty()) {
+          FD_SET(fd, &write_set);
+        }
       }
     }
   }
 }
 
 void SocketsManager::io_multiplexing() {
-  int result = select(server.max_fd + 1, read_set, write_set, NULL, NULL);
+  int result = select(server.max_fd + 1, &read_set, &write_set, NULL, NULL);
   if (result < 0) {
     if (server.terminate)
       throw std::runtime_error("Server received interrupt signal\n");
@@ -31,7 +32,7 @@ void SocketsManager::io_multiplexing() {
 }
 
 void SocketsManager::socket_read(int fd) {
-  if (FD_ISSET(fd, read_set)) {
+  if (FD_ISSET(fd, &read_set)) {
     if (fd == server.fd && server.max_fd < FD_SETSIZE)
       server.add_new_client_to_master_set();
     else
@@ -40,7 +41,7 @@ void SocketsManager::socket_read(int fd) {
 }
 
 void SocketsManager::load_client_queue(int client_fd) {
-  Client client = *server.clients[client_fd];
+  Client& client = *server.clients[client_fd];
   if (!client.read_into_buffer()) {
     server.remove_client(client_fd);
     return;
@@ -63,7 +64,7 @@ void SocketsManager::broadcast_message(const Message& message, int sender_fd) {
 }
 
 void SocketsManager::socket_write(int fd) {
-  if (FD_ISSET(fd, write_set) && !message_queues[fd].empty()) {
+  if (FD_ISSET(fd, &write_set) && !message_queues[fd].empty()) {
     while (!message_queues[fd].empty()) {
       std::string& msg = message_queues[fd].front();
       if (send(fd, msg.c_str(), msg.length(), 0) > 0)

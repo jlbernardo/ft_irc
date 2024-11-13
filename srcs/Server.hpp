@@ -12,8 +12,6 @@ class Server {
   int fd;
   int port;
   fd_set master_set;
-  fd_set read_set;
-  fd_set write_set;
   int max_fd;
   std::map<int, Client*> clients;
   struct sockaddr_in server_addr;

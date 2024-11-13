@@ -1,10 +1,10 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
+#include <sstream>
 #include <csignal>
 #include <cstring>
 #include <iostream>
-#include <sstream>
 #include <stdexcept>
 
 #include "Server.hpp"
@@ -39,11 +39,9 @@ void Server::initialize_socket() {
 }
 
 void Server::start() {
-  SocketsManager manager(&read_set, &write_set, *this);
+  SocketsManager manager(*this);
   while (true) {
-    if (max_fd < FD_SETSIZE) {
-      manager.add_new_sockets_from_masterset_to_read_write();
-    }
+    manager.add_new_sockets_from_masterset_to_read_write();
     manager.io_multiplexing();
     for (int fd = 0; fd <= max_fd; fd++) {
       manager.socket_read(fd);
@@ -76,9 +74,11 @@ void Server::add_new_client_to_master_set() {
   FD_SET(client_fd, &master_set);
   if (client_fd > max_fd) max_fd = client_fd;
   clients[client_fd] = new Client(client_fd);
+#ifdef TEST
   std::stringstream str;
-  str << "Connected to server on socket " << client_fd;
+  str << "Connected to server on socket " << client_fd << ": ";
   send(client_fd, str.str().c_str(), str.str().length(), 0);
+#endif
 }
 
 void Server::remove_client(int client_fd) {

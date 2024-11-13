@@ -9,7 +9,7 @@ class Server;
 
 class SocketsManager {
  public:
-  SocketsManager(fd_set* read_set, fd_set* write_set, Server& server);
+  SocketsManager(Server& server);
   ~SocketsManager();
   void add_new_sockets_from_masterset_to_read_write();
   void io_multiplexing();
@@ -19,8 +19,8 @@ class SocketsManager {
   void socket_write(int fd);
 
  private:
-  fd_set* read_set;
-  fd_set* write_set;
+  fd_set read_set;
+  fd_set write_set;
   std::map<int, std::queue<std::string> > message_queues;
   Server& server;
 };
