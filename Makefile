@@ -52,6 +52,7 @@ clean:
 
 fclean: clean
 	rm -f $(NAME)
+	rm -f $(NAME2)
 	rm -f compile_commands.json
 
 re: fclean all
