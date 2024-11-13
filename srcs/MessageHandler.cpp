@@ -1,5 +1,3 @@
-#include <unistd.h>
-
 #include <stdexcept>
 
 #include "MessageHandler.hpp"
@@ -35,7 +33,7 @@ void MessageHandler::call_select() {
 void MessageHandler::handle_messages() {
   for (int fd = 0; fd <= server.max_fd; fd++) {
     monitor_client_messages(fd);
-    send_client_messages(fd);
+    send_messages_to_client(fd);
   }
 }
 
@@ -49,20 +47,15 @@ void MessageHandler::monitor_client_messages(int fd) {
 }
 
 void MessageHandler::read_client_messages(int client_fd) {
-  static char buffer[1024];
-  ssize_t bytes_read = read(client_fd, buffer, sizeof(buffer) - 1);
-  if (bytes_read <= 0) {
+  Client client = *server.clients[client_fd];
+  if (!client.read_into_buffer()) {
     server.remove_client(client_fd);
     return;
   }
-  Client* client = server.clients[client_fd];
-  client->buffer.append(buffer, bytes_read);
-  size_t pos = client->buffer.find('\n');
-  if (pos != std::string::npos) {
-    std::string complete_command = client->buffer.substr(0, pos + 1);
-    Message message(client_fd, complete_command);
+  if (client.buffer_has_linebreak()) {
+    Message message(client);
     enqueue_message(message, client_fd);
-    client->buffer.erase(0, pos + 1);
+    client.clean_buffer();
   }
 }
 
@@ -76,7 +69,7 @@ void MessageHandler::enqueue_message(const Message& message, int sender_fd) {
   }
 }
 
-void MessageHandler::send_client_messages(int fd) {
+void MessageHandler::send_messages_to_client(int fd) {
   if (FD_ISSET(fd, write_set) && !message_queues[fd].empty()) {
     while (!message_queues[fd].empty()) {
       std::string& msg = message_queues[fd].front();

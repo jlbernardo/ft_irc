@@ -1,18 +1,19 @@
 #pragma once
+#include "Client.hpp"
 #include <sstream>
 #include <string>
 
 class Message {
  private:
-  std::string content;
-  int sender_fd;
+  const std::string content;
+  const Client &sender;
 
  public:
-  Message(int sender_fd, const std::string& content) : content(content), sender_fd(sender_fd) {}
+  Message(const Client &sender);
 
   std::string format_message() const {
     std::stringstream ss;
-    ss << "client" << sender_fd << ": " << content;
+    ss << "client" << sender.get_fd() << ": " << content;
     return ss.str();
     // Example output: "client5: Hello everyone!"
 
