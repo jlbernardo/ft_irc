@@ -47,13 +47,13 @@ void SocketsManager::load_client_queue(int client_fd) {
     return;
   }
   if (client.buffer_has_linebreak()) {
-    Message message(client, client.get_buffer());
+    Parser message(client, client.get_buffer());
     broadcast_message(message, client_fd);
     client.clean_buffer();
   }
 }
 
-void SocketsManager::broadcast_message(const Message& message, int sender_fd) {
+void SocketsManager::broadcast_message(const Parser& message, int sender_fd) {
   std::string formatted = message.format_message();
   for (std::map<int, Client*>::iterator it = server.clients.begin(); it != server.clients.end(); ++it) {
     int client_fd = it->first;

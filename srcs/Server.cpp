@@ -12,17 +12,17 @@
 
 volatile sig_atomic_t Server::terminate = 0;
 
+Server::Server(int port) : port(port), max_fd(0) {
+  register_signals();
+  initialize_socket();
+  setup_server();
+}
+
 void Server::register_signals() {
   int signals[6] = {SIGINT, SIGTERM, SIGQUIT, SIGHUP, SIGPIPE, SIGABRT};
   for (size_t i = 0; i < 6; ++i) {
     signal(signals[i], signal_handler);
   }
-}
-
-Server::Server(int port) : port(port), max_fd(0) {
-  register_signals();
-  initialize_socket();
-  setup_server();
 }
 
 void Server::signal_handler(int signum) { terminate = signum; }

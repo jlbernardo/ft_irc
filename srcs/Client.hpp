@@ -14,6 +14,7 @@ class Client {
   std::string hostname;
   bool authenticated;
   std::string buffer;
+  // std::vector joinedChannels; 
 
  public:
   Client(int fd);

@@ -1,4 +1,6 @@
 #include "Client.hpp"
+#include "ft_irc.h"
+#include <iostream>
 
 Client::Client(int fd) : fd(fd), nick("unknown"), user("unknown"), name("unknown"), authenticated(false), buffer("") {
   set_hostname(fd);
@@ -9,9 +11,13 @@ void Client::set_hostname(int client_socket) {
   socklen_t len = sizeof(addr);
   if (getsockname(client_socket, (struct sockaddr*)&addr, &len) == -1) {
     hostname = "unknown";
+    println("The hostname will be ");
+    printlnnl(hostname);
     return;
   }
   hostname = inet_ntoa(addr.sin_addr);
+  println("The hostname will be ");
+  printlnnl(hostname);
 }
 
 bool Client::read_into_buffer() {

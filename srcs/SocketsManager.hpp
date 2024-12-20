@@ -15,7 +15,7 @@ class SocketsManager {
   void io_multiplexing();
   void load_client_queue(int fd);
   void socket_read(int fd);
-  void broadcast_message(const Message& message, int sender_fd);
+  void broadcast_message(const Parser& message, int sender_fd);
   void socket_write(int fd);
 
  private:

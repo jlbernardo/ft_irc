@@ -7,7 +7,7 @@
 
 enum CommandType { PRIVMSG, JOIN, NICK, USER, QUIT, UNKNOWN };
 
-class Message {
+class Parser {
  private:
   std::string command;
   std::string target;
@@ -29,7 +29,7 @@ class Message {
   CommandType parse_command_type(const std::string &cmd);
 
  public:
-  Message(const Client &sender, const std::string &raw_message);
+  Parser(const Client &sender, const std::string &raw_message);
 
   // Formats message as ":nickname!username@host COMMAND target params :content"
   std::string format_message() const;
