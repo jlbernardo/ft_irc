@@ -21,6 +21,6 @@ class SocketsManager {
  private:
   fd_set read_set;
   fd_set write_set;
-  std::map<int, std::queue<std::string> > message_queues;
+  std::map<int, std::queue<std::string> > message_queues; //THIS IS GENERAL MESSAGE QUEUE, IT HOLD THE FORMATTED MESSAGE OF EVERY CLIENT
   Server& server;
 };

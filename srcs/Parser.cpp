@@ -1,23 +1,33 @@
-#include <ctime>
+#include <string>
+#include <vector>
+#include <map>
 #include <sstream>
-
+#include <ctime>
+#include "Client.hpp"
 #include "Parser.hpp"
 
-Parser::Parser(const Client &sender, const std::string &input) : sender(sender), sender_fd(sender.get_fd()) {
+Parser::Parser(const Client &sender, const std::string &raw_message)
+    : sender(sender), sender_fd(sender.get_fd()) {
   command_map["PRIVMSG"] = PRIVMSG;
   command_map["JOIN"] = JOIN;
   command_map["NICK"] = NICK;
   command_map["USER"] = USER;
   command_map["QUIT"] = QUIT;
-  parse_message_components(input);
-  parse_parameters(input);
-  set_content_from_params();
+  parse_message_components(raw_message);
 }
 
 void Parser::parse_message_components(const std::string &input) {
   std::istringstream iss(input);
   iss >> command >> target;
-  command_type = command_map[command];
+  command_type = parse_command_type(command);
+  parse_parameters(input);
+}
+
+CommandType Parser::parse_command_type(const std::string &cmd) {
+  if (command_map.find(cmd) != command_map.end()) {
+    return command_map[cmd];
+  }
+  return UNKNOWN;
 }
 
 void Parser::parse_parameters(const std::string &msg) {
@@ -51,12 +61,6 @@ void Parser::set_content_from_params() {
   }
 }
 
-std::string Parser::format_message() const {
-  std::string formatted = ":" + get_sender_info() + " " + command + " " + target;
-  formatted = add_parameters_to_message(formatted);
-  return add_content_to_message(formatted);
-}
-
 std::string Parser::add_parameters_to_message(const std::string &msg) const {
   std::string result = msg;
   for (std::vector<std::string>::const_iterator it = parameters.begin(); it != parameters.end(); ++it) {
@@ -72,11 +76,32 @@ std::string Parser::add_content_to_message(const std::string &msg) const {
   return msg + " :" + content + "\n";
 }
 
+std::string Parser::format_message() const {
+  std::string formatted = ":" + get_sender_info() + " " + command + " " + target;
+  formatted = add_parameters_to_message(formatted);
+  return add_content_to_message(formatted);
+}
+
+std::string Parser::get_sender_info() const {
+  return sender.get_nickname() + "!" + sender.get_username() + "@" + sender.get_hostname();
+}
+
+std::string Parser::add_timestamp() const {
+  char timestamp[32];
+  time_t now = time(0);
+  strftime(timestamp, sizeof(timestamp), "[%H:%M:%S] ", localtime(&now));
+  return std::string(timestamp) + format_message();
+}
+
 bool Parser::is_valid() const {
   if (command.empty() || target.empty()) {
     return false;
   }
   return validate_command_specific();
+}
+
+int Parser::get_sender() const {
+  return sender_fd;
 }
 
 bool Parser::validate_command_specific() const {
@@ -94,15 +119,4 @@ bool Parser::validate_command_specific() const {
     default:
       return false;
   }
-}
-
-std::string Parser::add_timestamp() const {
-  char timestamp[32];
-  time_t now = time(0);
-  strftime(timestamp, sizeof(timestamp), "[%H:%M:%S] ", localtime(&now));
-  return std::string(timestamp) + format_message();
-}
-
-std::string Parser::get_sender_info() const {
-  return sender.get_nickname() + "!" + sender.get_username() + "@" + sender.get_hostname();
 }

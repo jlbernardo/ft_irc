@@ -5,7 +5,7 @@
 #include <map>
 
 #include "Client.hpp"
-#include "Message.hpp"
+#include "Parser.hpp"
 #include "Channel.hpp"
 
 class Server {
