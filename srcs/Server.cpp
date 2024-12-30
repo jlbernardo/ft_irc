@@ -51,7 +51,6 @@ void Server::start() {
     manager.io_multiplexing();
     for (int fd = 0; fd <= max_fd; fd++) {
       manager.socket_read(fd);
-      //
       manager.socket_write(fd);
     }
   }
