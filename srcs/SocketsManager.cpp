@@ -1,6 +1,9 @@
 #include <stdexcept>
 
 #include "SocketsManager.hpp"
+#include "Client.hpp"
+#include "Server.hpp"
+#include "Parser.hpp"
 
 SocketsManager::SocketsManager(Server& serv) : server(serv) {}
 

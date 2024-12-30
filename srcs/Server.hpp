@@ -1,11 +1,8 @@
 #pragma once
-#include <netinet/in.h>
 
-#include <csignal>
 #include <map>
-
+#include <string>
 #include "Client.hpp"
-#include "Parser.hpp"
 #include "Channel.hpp"
 
 class Server {
@@ -24,21 +21,22 @@ class Server {
   void setup_server();
   void add_new_client_to_master_set();
   void handle_client_message(int client_fd);
-  void broadcast_message(const Parser& message, int sender_fd);
   void remove_client(int client_fd);
 
  public:
   Server(int port);
   ~Server();
-  static volatile sig_atomic_t terminate;
+  static volatile __sig_atomic_t terminate;
   friend class SocketsManager;
   Channel* createChannel(const std::string& name, Client* creator); //need implement
   void removeChannel(const std::string& name); //need implement
   Channel* findChannel(const std::string& name); //need implement
-    void handleJoin(Client* client, const std::string& command); //need implement
+  void handleJoin(Client* client, const std::string& command); //need implement
   void handlePart(Client* client, const std::string& command); //need implement
   void handlePrivmsg(Client* client, const std::string& command); //need implement
 
   void start();
   void stop();
+  void send_error(int client_fd, const std::string& error_code, const std::string& error_message);
+  void send_message(int client_fd, const std::string& message);
 };

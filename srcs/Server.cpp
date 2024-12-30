@@ -1,14 +1,20 @@
 #include <arpa/inet.h>
-#include <unistd.h>
-
-#include <sstream>
 #include <csignal>
 #include <cstring>
 #include <iostream>
+#include <sstream>
 #include <stdexcept>
+#include <string.h>
+#include <unistd.h>
 
 #include "Server.hpp"
 #include "SocketsManager.hpp"
+
+template <typename T> std::string to_string(T value) {
+  std::ostringstream oss;
+  oss << value;
+  return oss.str();
+}
 
 volatile sig_atomic_t Server::terminate = 0;
 
@@ -45,7 +51,7 @@ void Server::start() {
     manager.io_multiplexing();
     for (int fd = 0; fd <= max_fd; fd++) {
       manager.socket_read(fd);
-      // 
+      //
       manager.socket_write(fd);
     }
   }
@@ -73,7 +79,8 @@ void Server::add_new_client_to_master_set() {
     return;
   }
   FD_SET(client_fd, &master_set);
-  if (client_fd > max_fd) max_fd = client_fd;
+  if (client_fd > max_fd)
+    max_fd = client_fd;
   clients[client_fd] = new Client(client_fd);
   std::stringstream str;
 #ifdef TEST
@@ -91,9 +98,23 @@ void Server::remove_client(int client_fd) {
 
 Server::~Server() {
   std::cout << "\nShutting down server\n";
-  for (std::map<int, Client *>::iterator it = clients.begin(); it != clients.end(); ++it) {
+  for (std::map<int, Client *>::iterator it = clients.begin();
+       it != clients.end(); ++it) {
     delete it->second;
     close(it->first);
   }
   close(fd);
+}
+
+void Server::send_error(int client_fd, const std::string &error_code,
+                        const std::string &error_message) {
+  std::string message = ":" + to_string(client_fd) + " " + error_code +
+                        " " + error_message + "\r\n";
+  send_message(client_fd, message);
+}
+
+void Server::send_message(int client_fd, const std::string &message) {
+  if (send(client_fd, message.c_str(), message.length(), 0) == -1) {
+    std::cerr << "Error sending message to client " << client_fd << std::endl;
+  }
 }

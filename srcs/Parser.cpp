@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-Parser::Parser(const Client &sender, const std::string &raw_message)
+Parser::Parser(Client &sender, const std::string &raw_message)
     : sender(sender), sender_fd(sender.get_fd()) {
   command_map["PRIVMSG"] = PRIVMSG;
   command_map["JOIN"] = JOIN;
@@ -20,7 +20,7 @@ void Parser::parse_message_components(const std::string &input) {
   std::istringstream iss(input);
   iss >> command >> target;
   command_type = parse_command_type(command);
-  parse_parameters(input);
+  parse_parameters(iss);
 }
 
 CommandType Parser::parse_command_type(const std::string &cmd) {
@@ -30,9 +30,8 @@ CommandType Parser::parse_command_type(const std::string &cmd) {
   return UNKNOWN;
 }
 
-void Parser::parse_remaining_params(std::istringstream &iss) {
+void Parser::parse_parameters(std::istringstream &iss) {
   std::string param;
-  iss >> param >> param;
   while (iss >> param) {
     if (param[0] == ':') {
       parse_content_param(iss, param);
@@ -98,7 +97,7 @@ bool Parser::is_valid() const {
   return validate_command_specific();
 }
 
-const Client &Parser::get_sender() const { return sender; }
+Client &Parser::get_sender() const { return sender; }
 
 bool Parser::validate_command_specific() const {
   switch (command_type) {
