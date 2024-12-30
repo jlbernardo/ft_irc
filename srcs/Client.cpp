@@ -1,6 +1,5 @@
 #include "Client.hpp"
 #include "ft_irc.h"
-#include <iostream>
 
 Client::Client(int fd) : fd(fd), nick("unknown"), user("unknown"), name("unknown"), authenticated(false), buffer("") {
   set_hostname(fd);

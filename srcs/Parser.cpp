@@ -1,10 +1,10 @@
-#include <string>
-#include <vector>
+#include "Parser.hpp"
+#include "Client.hpp"
+#include <ctime>
 #include <map>
 #include <sstream>
-#include <ctime>
-#include "Client.hpp"
-#include "Parser.hpp"
+#include <string>
+#include <vector>
 
 Parser::Parser(const Client &sender, const std::string &raw_message)
     : sender(sender), sender_fd(sender.get_fd()) {
@@ -30,15 +30,9 @@ CommandType Parser::parse_command_type(const std::string &cmd) {
   return UNKNOWN;
 }
 
-void Parser::parse_parameters(const std::string &msg) {
-  std::istringstream iss(msg);
-  std::string param;
-  iss >> param >> param;  // Skip command and target
-  parse_remaining_params(iss);
-}
-
 void Parser::parse_remaining_params(std::istringstream &iss) {
   std::string param;
+  iss >> param >> param;
   while (iss >> param) {
     if (param[0] == ':') {
       parse_content_param(iss, param);
@@ -48,7 +42,8 @@ void Parser::parse_remaining_params(std::istringstream &iss) {
   }
 }
 
-void Parser::parse_content_param(std::istringstream &iss, const std::string &first_param) {
+void Parser::parse_content_param(std::istringstream &iss,
+                                 const std::string &first_param) {
   std::string remaining;
   getline(iss, remaining);
   parameters.push_back(first_param.substr(1) + remaining);
@@ -63,7 +58,8 @@ void Parser::set_content_from_params() {
 
 std::string Parser::add_parameters_to_message(const std::string &msg) const {
   std::string result = msg;
-  for (std::vector<std::string>::const_iterator it = parameters.begin(); it != parameters.end(); ++it) {
+  for (std::vector<std::string>::const_iterator it = parameters.begin();
+       it != parameters.end(); ++it) {
     result += " " + *it;
   }
   return result;
@@ -77,13 +73,15 @@ std::string Parser::add_content_to_message(const std::string &msg) const {
 }
 
 std::string Parser::format_message() const {
-  std::string formatted = ":" + get_sender_info() + " " + command + " " + target;
+  std::string formatted =
+      ":" + get_sender_info() + " " + command + " " + target;
   formatted = add_parameters_to_message(formatted);
   return add_content_to_message(formatted);
 }
 
 std::string Parser::get_sender_info() const {
-  return sender.get_nickname() + "!" + sender.get_username() + "@" + sender.get_hostname();
+  return sender.get_nickname() + "!" + sender.get_username() + "@" +
+         sender.get_hostname();
 }
 
 std::string Parser::add_timestamp() const {
@@ -100,23 +98,21 @@ bool Parser::is_valid() const {
   return validate_command_specific();
 }
 
-int Parser::get_sender() const {
-  return sender_fd;
-}
+const Client &Parser::get_sender() const { return sender; }
 
 bool Parser::validate_command_specific() const {
   switch (command_type) {
-    case PRIVMSG:
-      return !content.empty();
-    case JOIN:
-      return target[0] == '#';
-    case NICK:
-      return !target.empty();
-    case USER:
-      return parameters.size() >= 3;
-    case QUIT:
-      return true;
-    default:
-      return false;
+  case PRIVMSG:
+    return !content.empty();
+  case JOIN:
+    return target[0] == '#';
+  case NICK:
+    return !target.empty();
+  case USER:
+    return parameters.size() >= 3;
+  case QUIT:
+    return true;
+  default:
+    return false;
   }
 }

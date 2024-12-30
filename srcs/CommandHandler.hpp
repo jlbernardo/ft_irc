@@ -9,7 +9,7 @@ class CommandHandler {
  public:
   CommandHandler(std::map<int, Client*> &clients);
 
-  void handle_command(const Parser &parser);
-  void handle_nick(const Parser &parser);
-  void handle_user(const Parser &parser);
+  void execute_command(const Parser &parser);
+  void nick(const Parser &parser);
+  void user(const Parser &parser);
 };
