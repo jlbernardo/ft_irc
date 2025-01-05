@@ -5,6 +5,7 @@
 #include "Server.hpp"
 #include "Parser.hpp"
 #include "CommandHandler.hpp"
+#include "ft_irc.h"
 
 SocketsManager::SocketsManager(Server& serv) : server(serv) {}
 
@@ -51,9 +52,10 @@ void SocketsManager::load_client_queue(int client_fd) {
     return;
   }
   if (client.buffer_has_linebreak()) {
-    Parser parser(client, client.get_buffer());
+    Parser parsed_message(client, client.get_buffer());
+    println(GREEN << client.get_buffer());
     CommandHandler command_handler(server.clients, server);
-    command_handler.handle_command(parser);
+    command_handler.handle_command(parsed_message);
     client.clean_buffer();  
   }
 }

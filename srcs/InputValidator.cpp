@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include <stdexcept>
-
 #include "InputValidator.hpp"
+#include "ft_irc.h"
 
 namespace InputValidator {
   void validatePort(int argc, const char* port_str) {

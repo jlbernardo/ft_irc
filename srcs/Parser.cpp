@@ -5,6 +5,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include "ft_irc.h"
 
 Parser::Parser(Client &sender, const std::string &raw_message)
     : sender(sender), sender_fd(sender.get_fd()) {

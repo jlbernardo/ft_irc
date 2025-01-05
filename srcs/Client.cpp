@@ -11,7 +11,7 @@ void Client::set_hostname(int client_socket) {
   socklen_t len = sizeof(addr);
   if (getsockname(client_socket, (struct sockaddr*)&addr, &len) == -1) {
     hostname = "unknown";
-    println("The hostname will be ");
+    println("getsockname has failed, thus the name is: ");
     printlnnl(hostname);
     return;
   }

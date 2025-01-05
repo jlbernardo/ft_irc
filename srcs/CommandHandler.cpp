@@ -4,6 +4,7 @@
 #include "Parser.hpp"
 #include "CommandHandler.hpp"
 #include "Server.hpp"
+#include "ft_irc.h"
 
 CommandHandler::CommandHandler(std::map<int, Client*> &clients, Server &server) : clients(clients), server(server) {}
 
@@ -51,6 +52,8 @@ void CommandHandler::update_nickname(Client &client, const std::string &new_nick
 
 void CommandHandler::broadcast_nickname_change(Client &client, const std::string &old_nick, const std::string &new_nick) {
   std::string message = ":" + old_nick + " NICK " + new_nick + "\r\n";
+  // RPL_CONNECTED("127.0.0.1", new_nick, old_nick);
+  std::cout << ":" << "127.0.0.1" << " 001 " << new_nick << " :Welcome to the IRC server! " << new_nick << "!" << "127.0.0.1" << CRLF << std::endl;
   for (std::map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
     if (it->first != client.get_fd()) {
       server.send_message(it->first, message);

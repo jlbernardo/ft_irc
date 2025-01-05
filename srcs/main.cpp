@@ -3,6 +3,7 @@
 
 #include "InputValidator.hpp"
 #include "Server.hpp"
+#include "ft_irc.h"
 
 static void print_usage(const char* program_name);
 
