@@ -27,5 +27,6 @@ bool Client::read_into_buffer() {
     return false;
   }
   buffer.append(temp, bytes_read);
+  println(buffer);
   return true;
 }

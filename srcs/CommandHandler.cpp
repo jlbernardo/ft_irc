@@ -16,6 +16,9 @@ void CommandHandler::handle_command(const Parser &parser) {
     case USER:
       user(parser);
       break;
+    case CAP:
+      // nick(parser);
+      break;
     // Add other command handlers here
     default:
       // Handle unknown command
@@ -31,7 +34,6 @@ void CommandHandler::nick(const Parser &parser) {
     server.send_error(client.get_fd(), "433", "Nickname is already in use");
     return;
   }
-
   std::string old_nick = client.get_nickname();
   update_nickname(client, new_nick);
   broadcast_nickname_change(client, old_nick, new_nick);
@@ -52,8 +54,7 @@ void CommandHandler::update_nickname(Client &client, const std::string &new_nick
 
 void CommandHandler::broadcast_nickname_change(Client &client, const std::string &old_nick, const std::string &new_nick) {
   std::string message = ":" + old_nick + " NICK " + new_nick + "\r\n";
-  // RPL_CONNECTED("127.0.0.1", new_nick, old_nick);
-  std::cout << ":" << "127.0.0.1" << " 001 " << new_nick << " :Welcome to the IRC server! " << new_nick << "!" << "127.0.0.1" << CRLF << std::endl;
+  // message = std::string(":127.0.0.1") + " 001 " + new_nick + " :Welcome to the IRC server! " + new_nick + "!" + "127.0.0.1" + CRLF;
   for (std::map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
     if (it->first != client.get_fd()) {
       server.send_message(it->first, message);

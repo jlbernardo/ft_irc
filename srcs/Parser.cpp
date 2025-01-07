@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include "ft_irc.h"
+#include <iostream>
 
 Parser::Parser(Client &sender, const std::string &raw_message)
     : sender(sender), sender_fd(sender.get_fd()) {
@@ -17,11 +18,57 @@ Parser::Parser(Client &sender, const std::string &raw_message)
   parse_message_components(raw_message);
 }
 
-void Parser::parse_message_components(const std::string &input) {
+void Parser::parse_message_components(const std::string &input) { // here
+  
   std::istringstream iss(input);
+  commands_left = split_raw_message(input, CRLF);
+  // here we need to check also if the first thing that the string has is really a command, because if we dont, the isstream will be parsed wrong
+  // e.g: :user42 NICK user43
+
   iss >> command >> target;
+  to_uppercase(command);
   command_type = parse_command_type(command);
+  // the way that the param will be generated, has to acount the command_type structure of each one
+  // so the follwoing function should receive the command type as well
   parse_parameters(iss);
+}
+
+std::vector<std::string> Parser::split_raw_message(const std::string &input, const std::string &delimiter) {
+    std::vector<std::string> result;
+    
+    size_t start = 0;
+    while (start < input.length()) {
+        size_t end = input.find_first_of(delimiter, start);
+        
+        if (end == std::string::npos) {
+            result.push_back(input.substr(start));
+            break;
+        }
+        result.push_back(input.substr(start, end - start));
+        
+        start = end + 2;
+    }
+    
+    return result;
+}
+
+void Parser::to_uppercase(std::string& str) {
+    for (unsigned int i = 0; i < str.length(); i++) {
+        str[i] = std::toupper(str[i]);
+    }
+}
+
+int Parser::count_r_n(const std::string &input, std::string delimiter) {
+    size_t count = 0;
+    size_t pos = 0;
+
+    if (input.length() == 0)
+      return 0;
+    while ((pos = input.find(delimiter, pos)) != std::string::npos) {
+        count++;
+        pos += 1;
+    }    
+    return count;
 }
 
 CommandType Parser::parse_command_type(const std::string &cmd) {
@@ -96,6 +143,10 @@ bool Parser::is_valid() const {
     return false;
   }
   return validate_command_specific();
+}
+
+std::string Parser::get_current_command() {
+  return commands_left[0];
 }
 
 Client &Parser::get_sender() const { return sender; }

@@ -52,11 +52,13 @@ void SocketsManager::load_client_queue(int client_fd) {
     return;
   }
   if (client.buffer_has_linebreak()) {
-    Parser parsed_message(client, client.get_buffer());
-    println(GREEN << client.get_buffer());
+    Parser parsed_message(client, client.get_buffer()); //set an array of string inside the Parser object, if the parsed message has more than one \r\n, save each one of then into a index of the array
+    println(client.get_buffer());
     CommandHandler command_handler(server.clients, server);
+    // insert a while  right here to iterate over the array of strings, an run one by one through the handle_command function.
+    // this ensures that each command will be handled, even though not implemented e.g. a CAP command, will be take straight up to the default case, which is doesn't do anything
     command_handler.handle_command(parsed_message);
-    client.clean_buffer();  
+    client.clean_buffer();
   }
 }
 

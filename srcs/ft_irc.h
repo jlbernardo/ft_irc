@@ -22,7 +22,8 @@
 // RPL_
 
 #define RPL_CONNECTED(serverhostname, nickname, targethostname) \
-	(":" + serverhostname + " 001 " + nickname + " :Welcome to the IRC server! " + nickname + "!" + targethostname + CRLF)
+	(":" + serverhostname + " 001 " + nickname +                \
+	 " :Welcome to the IRC server! " + nickname + "!" + targethostname + CRLF)
 
 #define RPL_YOURHOST(serverhostname, nickname, targethostname) \
 	(":" + serverhostname + " 002 " + nickname + " :Welcome to the IRC server! " + nickname + "!" + targethostname + CRLF)

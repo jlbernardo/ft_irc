@@ -5,7 +5,7 @@
 
 #include "Client.hpp"
 
-enum CommandType { PRIVMSG, JOIN, NICK, USER, QUIT, UNKNOWN };
+enum CommandType { PRIVMSG, JOIN, NICK, USER, QUIT, UNKNOWN, CAP};
 
 class Parser {
 private:
@@ -15,6 +15,7 @@ private:
   Client &sender;
   const int sender_fd;
   std::vector<std::string> parameters;
+  std::vector<std::string> commands_left;
   std::map<const std::string, CommandType> command_map;
   CommandType command_type;
 
@@ -27,6 +28,10 @@ private:
   std::string add_content_to_message(const std::string &msg) const;
   bool validate_command_specific() const;
   CommandType parse_command_type(const std::string &cmd);
+  int count_r_n(const std::string &input, std::string delimiter);
+  std::vector<std::string> split_raw_message(const std::string &input, const std::string &delimiter);
+  void to_uppercase(std::string& str);
+
 
 public:
   Parser(Client &sender, const std::string &raw_message);
@@ -35,6 +40,7 @@ public:
   std::string get_target() const { return target; }
   Client &get_sender() const;
   std::vector<std::string> get_parameters() const { return parameters; }
+  std::string get_current_command();
   bool is_valid() const;
   std::string add_timestamp() const;
   std::string get_sender_info() const;
