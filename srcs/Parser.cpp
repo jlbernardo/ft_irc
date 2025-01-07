@@ -94,6 +94,9 @@ void Parser::parse_content_param(std::istringstream &iss,
   std::string remaining;
   getline(iss, remaining);
   parameters.push_back(first_param.substr(1) + remaining);
+  // this is reconnecting the string with the part that was taken off by the iss when the function parse_parameters were doing its thing
+  // e.g. ":example rest of the command" would got here as iss = rest of the command, and first_param as :example
+  // thus the final string is the concatenation of first_param with the iss without the ":", which is "example rest of the command" 
 }
 
 void Parser::set_content_from_params() {
