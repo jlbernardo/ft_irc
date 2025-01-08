@@ -7,34 +7,34 @@
 
 class Client {
  private:
-  int fd;
-  std::string nick;
-  std::string user;
-  std::string name;
-  std::string hostname;
-  bool authenticated;
-  std::string buffer;
-  // std::vector joinedChannels; 
+  int _fd;
+  std::string _nick;
+  std::string _user;
+  std::string _name;
+  std::string _hostname;
+  bool _authenticated;
+  std::string _buffer;
+  // std::vector _joinedChannels; 
 
  public:
   Client(int fd);
-  ~Client() {}
+  ~Client();
 
-  void clean_buffer() { buffer.clear(); }
-  bool buffer_has_linebreak() { return buffer.find("\n") != std::string::npos; }
+  void clean_buffer();
+  bool buffer_has_linebreak();
   bool read_into_buffer();
 
   // accessors:
-  int get_fd() const { return fd; }
-  const std::string& get_nickname() const { return nick; }
-  const std::string& get_username() const { return user; }
-  const std::string& get_realname() const { return name; }
-  const std::string& get_hostname() const { return hostname; }
+  int get_fd() const;
+  const std::string& get_nickname() const;
+  const std::string& get_username() const;
+  const std::string& get_realname() const;
+  const std::string& get_hostname() const;
   void set_hostname(int client_socket);
-  bool is_authenticated() const { return authenticated; }
-  std::string get_buffer() const { return buffer; }
-  void set_nickname(const std::string& nickname) { nick = nickname; }
-  void set_username(const std::string& username) { user = username; }
-  void set_realname(const std::string& realname) { name = realname; }
-  void set_authenticated(bool status) { authenticated = status; }
+  bool is_authenticated() const;
+  std::string get_buffer() const;
+  void set_nickname(const std::string& nickname);
+  void set_username(const std::string& username);
+  void set_realname(const std::string& realname);
+  void set_authenticated(bool status);
 };

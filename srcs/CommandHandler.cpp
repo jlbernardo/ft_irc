@@ -77,3 +77,5 @@ void CommandHandler::update_user_info(Client &client, const std::string &usernam
   client.set_hostname(client.get_fd()); // Pass the sender_fd as the socket descriptor
   client.set_realname(realname);
 }
+
+// void CommandHandler::execute_command(const Parser &parser) {}

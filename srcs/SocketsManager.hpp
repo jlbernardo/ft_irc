@@ -20,10 +20,10 @@ public:
   void socket_write(int fd);
 
 private:
-  fd_set read_set;
-  fd_set write_set;
+  fd_set _read_set;
+  fd_set _write_set;
   std::map<int, std::queue<std::string> >
-      message_queues; // THIS IS GENERAL MESSAGE QUEUE, IT HOLD THE FORMATTED
+      _message_queues; // THIS IS GENERAL MESSAGE QUEUE, IT HOLD THE FORMATTED
                       // MESSAGE OF EVERY CLIENT
-  Server &server;
+  Server &_server;
 };

@@ -9,15 +9,15 @@ enum CommandType { PRIVMSG, JOIN, NICK, USER, QUIT, UNKNOWN, CAP};
 
 class Parser {
 private:
-  std::string command;
-  std::string target;
-  std::string content;
-  Client &sender;
-  const int sender_fd;
-  std::vector<std::string> parameters;
-  std::vector<std::string> commands_left;
-  std::map<const std::string, CommandType> command_map;
-  CommandType command_type;
+  std::string _command;
+  std::string _target;
+  std::string _content;
+  Client &_sender;
+  const int _sender_fd;
+  std::vector<std::string> _parameters;
+  std::vector<std::string> _commands_left;
+  std::map<const std::string, CommandType> _command_map;
+  CommandType _command_type;
 
   void parse_parameters(std::istringstream &iss);
   void parse_content_param(std::istringstream &iss,
@@ -36,18 +36,14 @@ private:
 public:
   Parser(Client &sender, const std::string &raw_message);
   std::string format_message() const;
-  CommandType get_command_type() const { return command_type; }
-  std::string get_target() const { return target; }
+  CommandType get_command_type() const;
+  std::string get_target() const;
   Client &get_sender() const;
-  std::vector<std::string> get_parameters() const { return parameters; }
+  std::vector<std::string> get_parameters() const;
   std::string get_current_command();
   bool is_valid() const;
   std::string add_timestamp() const;
   std::string get_sender_info() const;
-  bool is_channel_message() const {
-    return !target.empty() && target[0] == '#';
-  }
-  bool is_private_message() const {
-    return command_type == PRIVMSG && !is_channel_message();
-  }
+  bool is_channel_message() const;
+  bool is_private_message() const;
 };

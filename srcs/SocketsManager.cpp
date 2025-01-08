@@ -7,19 +7,19 @@
 #include "CommandHandler.hpp"
 #include "ft_irc.h"
 
-SocketsManager::SocketsManager(Server& serv) : server(serv) {}
+SocketsManager::SocketsManager(Server& serv) : _server(serv) {}
 
-SocketsManager::~SocketsManager() { message_queues.clear(); }
+SocketsManager::~SocketsManager() { _message_queues.clear(); }
 
 void SocketsManager::add_new_sockets_from_masterset_to_read_write() {
-  FD_ZERO(&read_set);
-  FD_ZERO(&write_set);
-  if (server.max_fd < FD_SETSIZE) {
-    for (int fd = 0; fd <= server.max_fd; fd++) {
-      if (FD_ISSET(fd, &server.master_set)) {
-        FD_SET(fd, &read_set);
-        if (!message_queues[fd].empty()) {
-          FD_SET(fd, &write_set);
+  FD_ZERO(&_read_set);
+  FD_ZERO(&_write_set);
+  if (_server._max_fd < FD_SETSIZE) {
+    for (int fd = 0; fd <= _server._max_fd; fd++) {
+      if (FD_ISSET(fd, &_server._master_set)) {
+        FD_SET(fd, &_read_set);
+        if (!_message_queues[fd].empty()) {
+          FD_SET(fd, &_write_set);
         }
       }
     }
@@ -27,9 +27,9 @@ void SocketsManager::add_new_sockets_from_masterset_to_read_write() {
 }
 
 void SocketsManager::io_multiplexing() {
-  int result = select(server.max_fd + 1, &read_set, &write_set, NULL, NULL);
+  int result = select(_server._max_fd + 1, &_read_set, &_write_set, NULL, NULL);
   if (result < 0) {
-    if (server.terminate)
+    if (_server.terminate)
       throw std::runtime_error("Server received interrupt signal\n");
     else
       throw std::runtime_error("Select failed\n");
@@ -37,24 +37,24 @@ void SocketsManager::io_multiplexing() {
 }
 
 void SocketsManager::socket_read(int fd) {
-  if (FD_ISSET(fd, &read_set)) {
-    if (fd == server.fd && server.max_fd < FD_SETSIZE)
-      server.add_new_client_to_master_set();
+  if (FD_ISSET(fd, &_read_set)) {
+    if (fd == _server._fd && _server._max_fd < FD_SETSIZE)
+      _server.add_new_client_to_master_set();
     else
       load_client_queue(fd);
   }
 }
 
 void SocketsManager::load_client_queue(int client_fd) {
-  Client& client = *server.clients[client_fd];
+  Client& client = *_server._clients[client_fd];
   if (!client.read_into_buffer()) {
-    server.remove_client(client_fd);
+    _server.remove_client(client_fd);
     return;
   }
   if (client.buffer_has_linebreak()) {
     Parser parsed_message(client, client.get_buffer()); //set an array of string inside the Parser object, if the parsed message has more than one \r\n, save each one of then into a index of the array
     println(client.get_buffer());
-    CommandHandler command_handler(server.clients, server);
+    CommandHandler command_handler(_server._clients, _server);
     // insert a while  right here to iterate over the array of strings, an run one by one through the handle_command function.
     // this ensures that each command will be handled, even though not implemented e.g. a CAP command, will be take straight up to the default case, which is doesn't do anything
     command_handler.handle_command(parsed_message);
@@ -64,20 +64,20 @@ void SocketsManager::load_client_queue(int client_fd) {
 
 void SocketsManager::broadcast_message(const Parser& message, int sender_fd) {
   std::string formatted = message.format_message();
-  for (std::map<int, Client*>::iterator it = server.clients.begin(); it != server.clients.end(); ++it) {
+  for (std::map<int, Client*>::iterator it = _server._clients.begin(); it != _server._clients.end(); ++it) {
     int client_fd = it->first;
     if (client_fd != sender_fd) {
-      message_queues[client_fd].push(formatted);
+      _message_queues[client_fd].push(formatted);
     }
   }
 }
 
 void SocketsManager::socket_write(int fd) {
-  if (FD_ISSET(fd, &write_set) && !message_queues[fd].empty()) {
-    while (!message_queues[fd].empty()) {
-      std::string& msg = message_queues[fd].front();
+  if (FD_ISSET(fd, &_write_set) && !_message_queues[fd].empty()) {
+    while (!_message_queues[fd].empty()) {
+      std::string& msg = _message_queues[fd].front();
       if (send(fd, msg.c_str(), msg.length(), 0) > 0)
-        message_queues[fd].pop();
+        _message_queues[fd].pop();
       else
         break;
     }
