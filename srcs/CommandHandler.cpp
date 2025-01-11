@@ -8,20 +8,15 @@
 
 CommandHandler::CommandHandler(std::map<int, Client*> &clients, Server &server) : clients(clients), server(server) {}
 
-void CommandHandler::handle_command(std::vector<CommandEntry> command_entries) {
-  //make a for loop here to iterate over the command_entries and feed the switch 
-  //passing command_entries.type as the case and command_entries.param as the argument for the functions
-  // e.g. in the commands below
-for (std::vector<CommandEntry>::iterator it = command_entries.begin(); it != command_entries.end(); it++){
+void CommandHandler::handle_command(Parser &parser) {
+for (std::vector<CommandEntry>::iterator it = parser.command_entries.begin(); it != parser.command_entries.end(); it++){
     CommandEntry temp = *it;
     switch (temp.type) {
       case NICK:
-        nick(temp.params);
-        //nick(command_entries[i].params)
-        //ps: we have to adapt the nick function to work with the command_entries struct.
+        nick(parser, temp.params);
         break;
       case USER:
-        user(temp.params);
+        user(parser);
         break;
       default:
         // Handle unknown command
@@ -30,17 +25,18 @@ for (std::vector<CommandEntry>::iterator it = command_entries.begin(); it != com
   }
 }
 
-void CommandHandler::nick(const Parser &parser) {
+void CommandHandler::nick(const Parser &parser, const std::string &param) {
   Client &client = parser.get_sender();
-  std::string new_nick = parser.get_target();
+  // std::string new_nick = parser.get_target();
+  // std::string new_nick = param;
 
-  if (is_nickname_in_use(new_nick)) {
+  if (is_nickname_in_use(param)) {
     server.send_error(client.get_fd(), "433", "Nickname is already in use");
     return;
   }
   std::string old_nick = client.get_nickname();
-  update_nickname(client, new_nick);
-  broadcast_nickname_change(client, old_nick, new_nick);
+  update_nickname(client, param);
+  broadcast_nickname_change(client, old_nick, param); //here
 }
 
 bool CommandHandler::is_nickname_in_use(const std::string &new_nick) {
