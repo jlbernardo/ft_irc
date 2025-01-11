@@ -12,24 +12,21 @@ void CommandHandler::handle_command(std::vector<CommandEntry> command_entries) {
   //make a for loop here to iterate over the command_entries and feed the switch 
   //passing command_entries.type as the case and command_entries.param as the argument for the functions
   // e.g. in the commands below
-
-  switch (command_entries) {
-  // switch (command_entries[i].type) {
-    case NICK:
-      nick(parser);
-      //nick(command_entries[i].params)
-      //ps: we have to adapt the nick function to work with the command_entries struct.
-      break;
-    case USER:
-      user(parser);
-      break;
-    case CAP:
-      // nick(parser);
-      break;
-    // Add other command handlers here
-    default:
-      // Handle unknown command
-      break;
+for (std::vector<CommandEntry>::iterator it = command_entries.begin(); it != command_entries.end(); it++){
+    CommandEntry temp = *it;
+    switch (temp.type) {
+      case NICK:
+        nick(temp.params);
+        //nick(command_entries[i].params)
+        //ps: we have to adapt the nick function to work with the command_entries struct.
+        break;
+      case USER:
+        user(temp.params);
+        break;
+      default:
+        // Handle unknown command
+        break;
+    }
   }
 }
 
