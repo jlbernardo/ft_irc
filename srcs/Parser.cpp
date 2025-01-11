@@ -8,6 +8,23 @@
 #include "ft_irc.h"
 #include <iostream>
 
+std::string trim(const std::string& str) {
+    if(str.empty()) {
+        return str;
+    }
+    
+    // Find first non-whitespace
+    std::string::size_type first = str.find_first_not_of(" \t\n\r\f\v");
+    if(first == std::string::npos) {
+        return "";  // String is all whitespace
+    }
+    
+    // Find last non-whitespace
+    std::string::size_type last = str.find_last_not_of(" \t\n\r\f\v");
+    
+    return str.substr(first, (last - first + 1));
+}
+
 Parser::Parser(Client &sender, const std::string &raw_message)
     : _sender(sender), _sender_fd(sender.get_fd()) {
   _command_map["PRIVMSG"] = PRIVMSG;
@@ -21,16 +38,18 @@ Parser::Parser(Client &sender, const std::string &raw_message)
 void Parser::parse_message_components(const std::string &input) { // here
   
   std::istringstream iss(input);
-  _commands_left = split_raw_message(input, CRLF);
-  // here we need to check also if the first thing that the string has is really a command, because if we dont, the isstream will be parsed wrong
-  // e.g: :user42 NICK user43
+  commands_left = split_raw_message(input, CRLF);
 
-  iss >> _command >> _target;
-  to_uppercase(_command);
-  _command_type = parse_command_type(_command);
-  // the way that the param will be generated, has to acount the command_type structure of each one
-  // so the follwoing function should receive the command type as well
-  parse_parameters(iss);
+  for(std::vector<std::string>::iterator it = commands_left.begin(); it != commands_left.end(); it++) {
+    std::istringstream cmd(*it);
+    CommandEntry cmd_obj;
+    cmd >> cmd_obj.command;
+    getline(cmd, cmd_obj.params);
+    cmd_obj.params = trim(cmd_obj.params);
+    to_uppercase(cmd_obj.command);
+    cmd_obj.type = parse_command_type(cmd_obj.command);
+    command_entries.push_back(cmd_obj);
+  } 
 }
 
 std::vector<std::string> Parser::split_raw_message(const std::string &input, const std::string &delimiter) {
@@ -146,10 +165,6 @@ bool Parser::is_valid() const {
     return false;
   }
   return validate_command_specific();
-}
-
-std::string Parser::get_current_command() {
-  return _commands_left[0];
 }
 
 Client &Parser::get_sender() const { return _sender; }

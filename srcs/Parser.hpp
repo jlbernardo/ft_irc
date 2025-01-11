@@ -7,6 +7,16 @@
 
 enum CommandType { PRIVMSG, JOIN, NICK, USER, QUIT, UNKNOWN, CAP};
 
+struct CommandEntry {
+    CommandType type;
+    std::string command;
+    std::string params;
+    
+    CommandEntry(const CommandType& type, const std::string command, const std::string& params) 
+        : type(type), command(command), params(params) {}
+    CommandEntry() {}
+};
+
 class Parser {
 private:
   std::string _command;
@@ -15,7 +25,6 @@ private:
   Client &_sender;
   const int _sender_fd;
   std::vector<std::string> _parameters;
-  std::vector<std::string> _commands_left;
   std::map<const std::string, CommandType> _command_map;
   CommandType _command_type;
 
@@ -40,10 +49,11 @@ public:
   std::string get_target() const;
   Client &get_sender() const;
   std::vector<std::string> get_parameters() const;
-  std::string get_current_command();
   bool is_valid() const;
   std::string add_timestamp() const;
   std::string get_sender_info() const;
   bool is_channel_message() const;
   bool is_private_message() const;
+  std::vector<std::string> commands_left;
+  std::vector<CommandEntry> command_entries;
 };

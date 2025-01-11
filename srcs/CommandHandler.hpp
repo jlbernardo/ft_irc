@@ -14,7 +14,7 @@ public:
   void execute_command(const Parser &parser);
   void nick(const Parser &parser);
   void user(const Parser &parser);
-  void handle_command(const Parser &parser);
+  void handle_command(std::vector<CommandEntry> command_entries);
   bool is_nickname_in_use(const std::string &new_nick);
   void update_nickname(Client &client, const std::string &new_nick);
   void broadcast_nickname_change(Client &client, const std::string &old_nick, const std::string &new_nick);

@@ -8,10 +8,17 @@
 
 CommandHandler::CommandHandler(std::map<int, Client*> &clients, Server &server) : clients(clients), server(server) {}
 
-void CommandHandler::handle_command(const Parser &parser) {
-  switch (parser.get_command_type()) {
+void CommandHandler::handle_command(std::vector<CommandEntry> command_entries) {
+  //make a for loop here to iterate over the command_entries and feed the switch 
+  //passing command_entries.type as the case and command_entries.param as the argument for the functions
+  // e.g. in the commands below
+
+  switch (command_entries) {
+  // switch (command_entries[i].type) {
     case NICK:
       nick(parser);
+      //nick(command_entries[i].params)
+      //ps: we have to adapt the nick function to work with the command_entries struct.
       break;
     case USER:
       user(parser);
