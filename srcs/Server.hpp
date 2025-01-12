@@ -28,6 +28,7 @@ class Server {
   ~Server();
   static volatile __sig_atomic_t terminate;
   friend class SocketsManager;
+  int get_fd();
   // Channel* createChannel(const std::string& name, Client* creator); //need implement
   // void removeChannel(const std::string& name); //need implement
   // Channel* findChannel(const std::string& name); //need implement

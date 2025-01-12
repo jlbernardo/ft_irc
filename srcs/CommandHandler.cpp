@@ -55,11 +55,12 @@ void CommandHandler::update_nickname(Client &client, const std::string &new_nick
 void CommandHandler::broadcast_nickname_change(Client &client, const std::string &old_nick, const std::string &new_nick) {
   std::string message = ":" + old_nick + " NICK " + new_nick + "\r\n";
   // message = std::string(":127.0.0.1") + " 001 " + new_nick + " :Welcome to the IRC server! " + new_nick + "!" + "127.0.0.1" + CRLF;
-  for (std::map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
-    if (it->first != client.get_fd()) {
-      server.send_message(it->first, message);
-    }
-  }
+  // for (std::map<int, Client*>::iterator it = clients.begin(); it != clients.end(); ++it) {
+  //   if (it->first != client.get_fd()) {
+  //     server.send_message(it->first, message);
+  //   }
+  // }
+  server.send_message(client.get_fd(), message);
 }
 
 void CommandHandler::user(const Parser &parser) {

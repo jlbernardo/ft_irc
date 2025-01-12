@@ -119,6 +119,10 @@ void Server::send_message(int client_fd, const std::string &message) {
   }
 }
 
+int Server::get_fd() {
+  return _fd;
+}
+
 // void Server::stop() {}
 
 // void Server::handlePrivmsg(Client* client, const std::string& command) {} //need implement
