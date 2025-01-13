@@ -9,6 +9,7 @@ class Server {
  private:
   int _fd;
   int _port;
+  std::string _pass;
   fd_set _master_set;
   int _max_fd;
   std::map<std::string, Channel*> _channels;
@@ -24,11 +25,13 @@ class Server {
   void remove_client(int client_fd);
 
  public:
-  Server(int port);
+  Server(int port, const std::string& pass);
   ~Server();
   static volatile __sig_atomic_t terminate;
   friend class SocketsManager;
   int get_fd();
+  std::string get_pass();
+  void set_pass(const std::string& pass);
   // Channel* createChannel(const std::string& name, Client* creator); //need implement
   // void removeChannel(const std::string& name); //need implement
   // Channel* findChannel(const std::string& name); //need implement

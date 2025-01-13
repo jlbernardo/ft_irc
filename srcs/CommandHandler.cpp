@@ -12,6 +12,9 @@ void CommandHandler::handle_command(Parser &parser) {
 for (std::vector<CommandEntry>::iterator it = parser.command_entries.begin(); it != parser.command_entries.end(); it++){
     CommandEntry temp = *it;
     switch (temp.type) {
+      case PASS:
+        pass(parser, temp.params);
+        break;
       case NICK:
         nick(parser, temp.params);
         break;
@@ -25,10 +28,25 @@ for (std::vector<CommandEntry>::iterator it = parser.command_entries.begin(); it
   }
 }
 
+void CommandHandler::pass(const Parser &parser, const std::string &param) {
+  Client &client = parser.get_sender();
+
+  // ERR_NEEDMOREPARAMS (461)
+  if (param.empty()) {
+    server.send_message(client.get_fd(), ERR_NEEDMOREPARAMS(std::string("*")));
+  // ERR_ALREADYREGISTERED (462)
+  } else if (!client.is_authenticated()) {
+    server.send_message(client.get_fd(), ERR_ALREADYREGISTERED(std::string("*")));
+  // ERR_PASSWDMISMATCH (464)
+  } else if (param != server.get_pass()) {
+    server.send_message(client.get_fd(), ERR_PASSWDMISMATCH(std::string("*")));
+  }  else {
+    client.set_authentication(true);
+  }  
+}
+
 void CommandHandler::nick(const Parser &parser, const std::string &param) {
   Client &client = parser.get_sender();
-  // std::string new_nick = parser.get_target();
-  // std::string new_nick = param;
 
   if (is_nickname_in_use(param)) {
     server.send_error(client.get_fd(), "433", "Nickname is already in use");
@@ -36,7 +54,8 @@ void CommandHandler::nick(const Parser &parser, const std::string &param) {
   }
   std::string old_nick = client.get_nickname();
   update_nickname(client, param);
-  broadcast_nickname_change(client, old_nick, param); //here
+  broadcast_nickname_change(client, old_nick, param);
+  
 }
 
 bool CommandHandler::is_nickname_in_use(const std::string &new_nick) {
@@ -60,7 +79,10 @@ void CommandHandler::broadcast_nickname_change(Client &client, const std::string
   //     server.send_message(it->first, message);
   //   }
   // }
+  (void)client;
+  println("Should have printed: " + message);
   server.send_message(client.get_fd(), message);
+  // server.send_message(3, message); // SIGPIPE if hardcoded like that
 }
 
 void CommandHandler::user(const Parser &parser) {

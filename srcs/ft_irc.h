@@ -21,31 +21,17 @@
 
 // RPL_
 
-#define RPL_CONNECTED(serverhostname, nickname, targethostname) \
-	(":" + serverhostname + " 001 " + nickname +                \
-	 " :Welcome to the IRC server! " + nickname + "!" + targethostname + CRLF)
 
-#define RPL_YOURHOST(serverhostname, nickname, targethostname) \
-	(":" + serverhostname + " 002 " + nickname + " :Welcome to the IRC server! " + nickname + "!" + targethostname + CRLF)
-    // <client> :Your host is <servername>, running version <version>
+// ERR_ PASS command
 
-#define RPL_CREATED(serverhostname, nickname, targethostname) \
-	(":" + serverhostname + " 003 " + nickname + " :Welcome to the IRC server! " + nickname + "!" + targethostname + CRLF)
-    // <client> :This server was created <datetime>
+#define ERR_NEEDMOREPARAMS(nickname) \
+	(":461 " + nickname + " :Not enough parameters." + CRLF)
 
-#define RPL_MYINFO(serverhostname, nickname, targethostname) \
-	(":" + serverhostname + " 004 " + nickname + " :Welcome to the IRC server! " + nickname + "!" + targethostname + CRLF)
-    // <client> <servername> <version> <available user modes> <available channel modes> [<channel modes with a parameter>]
+#define ERR_ALREADYREGISTERED(nickname) \
+	(":462 " + nickname + " :You may not reregister !" + CRLF)
 
-//ERR_ NICK()
+#define ERR_PASSWDMISMATCH(nickname) \
+	(":464 " + nickname + " :Password incorrect !" + CRLF)
 
-// #define ERR_NONICKNAMEGIVEN(serverhostname, nickname, targethostname) \ 431
-// #define ERR_ERRONEUSNICKNAME(serverhostname, nickname, targethostname) \ 432
-// #define ERR_NICKNAMEINUSE(serverhostname, nickname, targethostname) \ 433
-// #define ERR_NICKCOLLISION(serverhostname, nickname, targethostname) \ 436
-
-//ERR_ USER()
-// ERR_NEEDMOREPARAMS (461)
-// ERR_ALREADYREGISTERED (462)
 
 #endif

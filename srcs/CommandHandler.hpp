@@ -6,12 +6,12 @@
 class CommandHandler {
 private:
   std::map<int, Client *> &clients;
-  Server &server;
 
 public:
   CommandHandler(std::map<int, Client *> &clients, Server &server);
-
+  Server &server;
   void execute_command(const Parser &parser);
+  void pass(const Parser &parser, const std::string &password);
   void nick(const Parser &parser, const std::string &new_nick);
   void user(const Parser &parser);
   void handle_command(Parser &parser);

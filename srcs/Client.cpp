@@ -24,7 +24,7 @@ void Client::set_hostname(int client_socket) {
 
 bool Client::read_into_buffer() {
   static char temp[1024];  // to automatically zero-initialize
-  ssize_t bytes_read = recv(_fd, temp, sizeof(temp) - 1, 0);
+  ssize_t bytes_read = recv(_fd, temp, sizeof(temp) - 1, 0); // SEGFAULT HERE
   if (bytes_read <= 0) {
     return false;
   }
@@ -73,7 +73,7 @@ void Client::set_realname(const std::string& realname) {
   _name = realname;
 }
 
-void Client::set_authenticated(bool status) {
+void Client::set_authentication(bool status) {
   _authenticated = status;
 }
 

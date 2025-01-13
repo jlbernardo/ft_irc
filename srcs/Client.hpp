@@ -32,9 +32,9 @@ class Client {
   const std::string& get_hostname() const;
   void set_hostname(int client_socket);
   bool is_authenticated() const;
+  void set_authentication(bool status);
   std::string get_buffer() const;
   void set_nickname(const std::string& nickname);
   void set_username(const std::string& username);
   void set_realname(const std::string& realname);
-  void set_authenticated(bool status);
 };

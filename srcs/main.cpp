@@ -13,7 +13,8 @@ int main(int argc, char* argv[]) {
     InputValidator::validatePassword(argv[2]);
 
     int port = std::atoi(argv[1]);
-    Server irc_server(port);
+    std::string pass = argv[2];
+    Server irc_server(port, pass);
     irc_server.start();
 
   } catch (const std::invalid_argument& e) {

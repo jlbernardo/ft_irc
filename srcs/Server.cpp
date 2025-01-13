@@ -19,7 +19,7 @@ template <typename T> std::string to_string(T value) {
 
 volatile sig_atomic_t Server::terminate = 0;
 
-Server::Server(int port) : _port(port), _max_fd(0) {
+Server::Server(int port, const std::string& pass) : _port(port), _pass(pass), _max_fd(0) {
   register_signals();
   initialize_socket();
   setup_server();
@@ -121,6 +121,14 @@ void Server::send_message(int client_fd, const std::string &message) {
 
 int Server::get_fd() {
   return _fd;
+}
+
+std::string Server::get_pass() {
+  return _pass;
+}
+
+void Server::set_pass(const std::string& pass){
+  _pass = pass;
 }
 
 // void Server::stop() {}
