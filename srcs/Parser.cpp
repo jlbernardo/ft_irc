@@ -32,7 +32,7 @@ Parser::Parser(Client &sender, const std::string &raw_message)
   _command_map["NICK"] = NICK;
   _command_map["USER"] = USER;
   _command_map["QUIT"] = QUIT;
-  _command_map["PASS"] = QUIT;
+  _command_map["PASS"] = PASS;
   parse_message_components(raw_message);
 }
 

@@ -13,7 +13,13 @@ for (std::vector<CommandEntry>::iterator it = parser.command_entries.begin(); it
     CommandEntry temp = *it;
     switch (temp.type) {
       case PASS:
-        pass(parser, temp.params);
+        try {
+          pass(parser, temp.params);
+        }
+        catch (const std::invalid_argument& e) {
+          std::cerr << e.what() << std::endl;
+          return ;
+        }
         break;
       case NICK:
         nick(parser, temp.params);
@@ -35,11 +41,13 @@ void CommandHandler::pass(const Parser &parser, const std::string &param) {
   if (param.empty()) {
     server.send_message(client.get_fd(), ERR_NEEDMOREPARAMS(std::string("*")));
   // ERR_ALREADYREGISTERED (462)
-  } else if (!client.is_authenticated()) {
+  } else if (client.is_authenticated()) {
     server.send_message(client.get_fd(), ERR_ALREADYREGISTERED(std::string("*")));
   // ERR_PASSWDMISMATCH (464)
   } else if (param != server.get_pass()) {
     server.send_message(client.get_fd(), ERR_PASSWDMISMATCH(std::string("*")));
+    server.error(client.get_fd(), "ERROR: wrong password");
+    throw std::invalid_argument(ERR_PASSWDMISMATCH(std::string("*")));
   }  else {
     client.set_authentication(true);
   }  

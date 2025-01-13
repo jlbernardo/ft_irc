@@ -131,6 +131,11 @@ void Server::set_pass(const std::string& pass){
   _pass = pass;
 }
 
+void Server::error(int fd, const std::string& msg) {
+  send_message(fd, msg);
+  remove_client(fd);
+};
+
 // void Server::stop() {}
 
 // void Server::handlePrivmsg(Client* client, const std::string& command) {} //need implement

@@ -43,4 +43,5 @@ class Server {
   // void stop();
   void send_error(int client_fd, const std::string& error_code, const std::string& error_message);
   void send_message(int client_fd, const std::string& message);
+  void error(int fd, const std::string& msg);
 };
