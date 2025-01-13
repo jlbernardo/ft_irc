@@ -23,8 +23,5 @@ namespace InputValidator {
 	if (password.length() != PASSWORD_LENGTH) {
 	  throw std::invalid_argument("\033[31mPassword must be exactly 4 characters\033[0m");
 	}
-	// else if (password != pass) {
-	//   throw std::invalid_argument("\033[31mInvalid password\033[0m"); 
-	// }
   }
 }

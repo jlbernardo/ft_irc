@@ -40,6 +40,8 @@ void CommandHandler::pass(const Parser &parser, const std::string &param) {
   // ERR_PASSWDMISMATCH (464)
   } else if (param != server.get_pass()) {
     server.send_message(client.get_fd(), ERR_PASSWDMISMATCH(std::string("*")));
+	server.send_message(client.get_fd(), "ERROR :Password mismatch\r\n");
+	server.remove_client(client.get_fd());
   }  else {
     client.set_authentication(true);
   }  

@@ -9,7 +9,6 @@
 
 #include "Server.hpp"
 #include "SocketsManager.hpp"
-#include "ft_irc.h"
 
 template <typename T> std::string to_string(T value) {
   std::ostringstream oss;
