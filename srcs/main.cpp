@@ -3,7 +3,6 @@
 
 #include "InputValidator.hpp"
 #include "Server.hpp"
-#include "ft_irc.h"
 
 static void print_usage(const char* program_name);
 
@@ -13,7 +12,7 @@ int main(int argc, char* argv[]) {
     InputValidator::validatePassword(argv[2]);
 
     int port = std::atoi(argv[1]);
-    std::string pass = argv[2];
+    const std::string pass = argv[2];
     Server irc_server(port, pass);
     irc_server.start();
 

@@ -1,0 +1,128 @@
+[
+ {
+  "directory": "/root/ft_irc",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-std=c++98",
+   "-g3",
+   "-MMD",
+   "-MP",
+   "-c",
+   "srcs/Client.cpp",
+   "-o",
+   "objects/Client.o"
+  ],
+  "file": "srcs/Client.cpp"
+ },
+ {
+  "directory": "/root/ft_irc",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-std=c++98",
+   "-g3",
+   "-MMD",
+   "-MP",
+   "-c",
+   "srcs/Parser.cpp",
+   "-o",
+   "objects/Parser.o"
+  ],
+  "file": "srcs/Parser.cpp"
+ },
+ {
+  "directory": "/root/ft_irc",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-std=c++98",
+   "-g3",
+   "-MMD",
+   "-MP",
+   "-c",
+   "srcs/CommandHandler.cpp",
+   "-o",
+   "objects/CommandHandler.o"
+  ],
+  "file": "srcs/CommandHandler.cpp"
+ },
+ {
+  "directory": "/root/ft_irc",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-std=c++98",
+   "-g3",
+   "-MMD",
+   "-MP",
+   "-c",
+   "srcs/Server.cpp",
+   "-o",
+   "objects/Server.o"
+  ],
+  "file": "srcs/Server.cpp"
+ },
+ {
+  "directory": "/root/ft_irc",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-std=c++98",
+   "-g3",
+   "-MMD",
+   "-MP",
+   "-c",
+   "srcs/InputValidator.cpp",
+   "-o",
+   "objects/InputValidator.o"
+  ],
+  "file": "srcs/InputValidator.cpp"
+ },
+ {
+  "directory": "/root/ft_irc",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-std=c++98",
+   "-g3",
+   "-MMD",
+   "-MP",
+   "-c",
+   "srcs/SocketsManager.cpp",
+   "-o",
+   "objects/SocketsManager.o"
+  ],
+  "file": "srcs/SocketsManager.cpp"
+ },
+ {
+  "directory": "/root/ft_irc",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-std=c++98",
+   "-g3",
+   "-MMD",
+   "-MP",
+   "-c",
+   "srcs/main.cpp",
+   "-o",
+   "objects/main.o"
+  ],
+  "file": "srcs/main.cpp"
+ }
+]

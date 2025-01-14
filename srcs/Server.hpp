@@ -22,7 +22,6 @@ class Server {
   void setup_server();
   void add_new_client_to_master_set();
   void handle_client_message(int client_fd);
-  void remove_client(int client_fd);
 
  public:
   Server(int port, const std::string& pass);
@@ -32,6 +31,7 @@ class Server {
   int get_fd();
   std::string get_pass();
   void set_pass(const std::string& pass);
+  void remove_client(int client_fd);
   // Channel* createChannel(const std::string& name, Client* creator); //need implement
   // void removeChannel(const std::string& name); //need implement
   // Channel* findChannel(const std::string& name); //need implement
