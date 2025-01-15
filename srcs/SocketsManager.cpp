@@ -1,11 +1,10 @@
 #include <stdexcept>
 
-#include "SocketsManager.hpp"
 #include "Client.hpp"
-#include "Server.hpp"
-#include "Parser.hpp"
 #include "CommandHandler.hpp"
-#include "ft_irc.h"
+#include "Commands.hpp"
+#include "Server.hpp"
+#include "SocketsManager.hpp"
 
 SocketsManager::SocketsManager(Server& serv) : _server(serv) {}
 
@@ -52,16 +51,18 @@ void SocketsManager::load_client_queue(int client_fd) {
     return;
   }
   if (client.buffer_has_linebreak()) {
-    Parser parsed_message(client, client.get_buffer());
-    println(client.get_buffer());
+    Commands cmds(client, client.get_buffer());
     CommandHandler command_handler(_server._clients, _server);
-    command_handler.handle_command(parsed_message);
-    client.clean_buffer();
+    command_handler.execute(cmds);
+    if (cmds._fatal_error)
+      _server.remove_client(client_fd);
+    else
+      client.clean_buffer();
   }
 }
 
-void SocketsManager::broadcast_message(const Parser& message, int sender_fd) {
-  std::string formatted = message.format_message();
+void SocketsManager::broadcast_message(const Commands& message, int sender_fd) {
+  std::string formatted = message.format_command();
   for (std::map<int, Client*>::iterator it = _server._clients.begin(); it != _server._clients.end(); ++it) {
     int client_fd = it->first;
     if (client_fd != sender_fd) {

@@ -6,7 +6,7 @@
 #include <string>
 
 class Server;
-class Parser;
+class Commands;
 
 class SocketsManager {
 public:
@@ -16,14 +16,12 @@ public:
   void io_multiplexing();
   void load_client_queue(int fd);
   void socket_read(int fd);
-  void broadcast_message(const Parser &message, int sender_fd);
+  void broadcast_message(const Commands &message, int sender_fd);
   void socket_write(int fd);
 
 private:
   fd_set _read_set;
   fd_set _write_set;
-  std::map<int, std::queue<std::string> >
-      _message_queues; // THIS IS GENERAL MESSAGE QUEUE, IT HOLD THE FORMATTED
-                      // MESSAGE OF EVERY CLIENT
+  std::map<int, std::queue<std::string> > _message_queues; // HOLDS THE FORMATTED MESSAGE OF EVERY CLIENT
   Server &_server;
 };

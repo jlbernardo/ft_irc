@@ -44,18 +44,6 @@ void Server::initialize_socket() {
   _server_addr.sin_port = htons(_port);
 }
 
-void Server::start() {
-  SocketsManager manager(*this);
-  while (true) {
-    manager.add_new_sockets_from_masterset_to_read_write();
-    manager.io_multiplexing();
-    for (int fd = 0; fd <= _max_fd; fd++) {
-      manager.socket_read(fd);
-      manager.socket_write(fd);
-    }
-  }
-}
-
 void Server::setup_server() {
   if (bind(_fd, (struct sockaddr *)&_server_addr, sizeof(_server_addr)) < 0) {
     close(_fd);
@@ -67,6 +55,18 @@ void Server::setup_server() {
   FD_ZERO(&_master_set);
   FD_SET(_fd, &_master_set);
   _max_fd = _fd;
+}
+
+void Server::start() {
+  SocketsManager manager(*this);
+  while (true) {
+    manager.add_new_sockets_from_masterset_to_read_write();
+    manager.io_multiplexing();
+    for (int fd = 0; fd <= _max_fd; fd++) {
+      manager.socket_read(fd);
+      manager.socket_write(fd);
+    }
+  }
 }
 
 void Server::add_new_client_to_master_set() {
@@ -81,8 +81,8 @@ void Server::add_new_client_to_master_set() {
   if (client_fd > _max_fd)
     _max_fd = client_fd;
   _clients[client_fd] = new Client(client_fd);
-  std::stringstream str;
 #ifdef TEST
+  std::stringstream str;
   str << "Connected to server on socket " << client_fd << ": ";
   send(client_fd, str.str().c_str(), str.str().length(), 0);
 #endif
@@ -105,10 +105,8 @@ Server::~Server() {
   close(_fd);
 }
 
-void Server::send_error(int client_fd, const std::string &error_code,
-                        const std::string &error_message) {
-  std::string message = ":" + to_string(client_fd) + " " + error_code +
-                        " " + error_message + "\r\n";
+void Server::send_error(int client_fd, const std::string &error_code, const std::string &error_message) {
+  std::string message = ":" + to_string(client_fd) + " " + error_code + " " + error_message + "\r\n";
   send_message(client_fd, message);
 }
 
@@ -129,11 +127,6 @@ std::string Server::get_pass() {
 void Server::set_pass(const std::string& pass){
   _pass = pass;
 }
-
-void Server::error(int fd, const std::string& msg) {
-  send_message(fd, msg);
-  remove_client(fd);
-};
 
 // void Server::stop() {}
 

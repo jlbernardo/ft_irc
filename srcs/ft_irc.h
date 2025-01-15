@@ -33,5 +33,11 @@
 #define ERR_PASSWDMISMATCH(nickname) \
 	(":464 " + nickname + " :Password incorrect !" + CRLF)
 
+/*
+ This message is sent from a server to a client to report a fatal error, before terminating the client’s connection.
+ This MUST only be used to report fatal errors. Regular errors should use the appropriate numerics or the IRCv3 standard replies framework.
+*/
+#define ERROR(message) \
+	(":ERROR " + message + CRLF)
 
 #endif
