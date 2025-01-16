@@ -34,13 +34,13 @@ void CommandHandler::pass(Commands &command, const std::string &param) {
 
   // ERR_NEEDMOREPARAMS (461)
   if (param.empty()) {
-    server.send_message(client.get_fd(), ERR_NEEDMOREPARAMS(std::string("*")));
+    server.send_message(client.get_fd(), ERR_NEEDMOREPARAMS(command.list.front().command)); 
     // ERR_ALREADYREGISTERED (462)
   } else if (client.is_authenticated()) {
-    server.send_message(client.get_fd(), ERR_ALREADYREGISTERED(std::string("*")));
+    server.send_message(client.get_fd(), ERR_ALREADYREGISTERED(command.get_sender().get_username()));
     // ERR_PASSWDMISMATCH (464)
   } else if (param != server.get_pass()) {
-    server.send_message(client.get_fd(), ERR_PASSWDMISMATCH(std::string("*")));
+    server.send_message(client.get_fd(), ERR_PASSWDMISMATCH());
     server.send_message(client.get_fd(), ERROR(std::string("wrong password")));
 	command._fatal_error = true;
   } else {
