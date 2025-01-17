@@ -1,13 +1,14 @@
+#include <map>
+
 #include "Client.hpp"
 #include "Commands.hpp"
 #include "Server.hpp"
-#include <map>
 
 class CommandHandler {
-private:
+ private:
   std::map<int, Client *> &clients;
 
-public:
+ public:
   CommandHandler(std::map<int, Client *> &clients, Server &server);
   Server &server;
   void execute_command(const Commands &parser);
@@ -19,4 +20,7 @@ public:
   void update_nickname(Client &client, const std::string &new_nick);
   void broadcast_nickname_change(Client &client, const std::string &old_nick, const std::string &new_nick);
   void update_user_info(Client &client, const std::string &username, const std::string &realname);
+  bool is_valid_nickname(const std::string &nickname);
+  bool is_valid_username(const std::string &username);
+  Client *is_nick_in_use(const std::string &new_nick);
 };

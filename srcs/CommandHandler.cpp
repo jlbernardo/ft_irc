@@ -1,5 +1,6 @@
 #include <map>
 #include <string>
+#include <regex>
 
 #include "Client.hpp"
 #include "CommandHandler.hpp"
@@ -69,7 +70,7 @@ void CommandHandler::nick(Commands &command, const std::string &param) {
         return;
     }
 
-    if (is_nickname_collision(param)) {
+    if (is_nickname_in_use(param)) {
         server.send_message(client.get_fd(), ERR_NICKCOLLISION(param, user, host));
         return;
     }
@@ -78,13 +79,20 @@ void CommandHandler::nick(Commands &command, const std::string &param) {
     update_nickname(client, param);
     broadcast_nickname_change(client, old_nick, param);
 
-    if (client.is_new_user()) {
+    if (!client.is_authenticated()) {
         server.send_message(client.get_fd(), RPL_WELCOME(client.get_nickname(), client.get_username()));
         server.send_message(client.get_fd(), RPL_YOURHOST(client.get_nickname()));
         server.send_message(client.get_fd(), RPL_CREATED(client.get_nickname()));
         server.send_message(client.get_fd(), RPL_MYINFO(client.get_nickname(), usermodes, channelmodes));
         client.set_authentication(true);
     }
+}
+
+// Check if the nickname is valid according to IRC specifications
+Client *CommandHandler::is_valid_nickname(const std::string &nickname) {
+    // IRC nickname rules: 1-9 characters, starts with a letter or special character, followed by letters, digits, or special characters
+    std::regex nickname_regex("^[a-zA-Z][a-zA-Z0-9\\-\\[\\]\\\\`^{}]*$");
+    return std::regex_match(nickname, nickname_regex);
 }
 
 bool CommandHandler::is_nickname_in_use(const std::string &new_nick) {
