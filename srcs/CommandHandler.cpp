@@ -48,16 +48,43 @@ void CommandHandler::pass(Commands &command, const std::string &param) {
   }
 }
 
+// todo: add its replies to the ft_irc.h and also make it use them as returning
+// messages to validate the connection with the client, as described in the
+// registration section at RFC .
 void CommandHandler::nick(Commands &command, const std::string &param) {
-  Client &client = command.get_sender();
+    Client &client = command.get_sender();
 
-  if (is_nickname_in_use(param)) {
-    server.send_error(client.get_fd(), "433", "Nickname is already in use");
-    return;
-  }
-  std::string old_nick = client.get_nickname();
-  update_nickname(client, param);
-  broadcast_nickname_change(client, old_nick, param);
+    if (param.empty()) {
+        server.send_message(client.get_fd(), ERR_NONICKNAMEGIVEN());
+        return;
+    }
+
+    if (!is_valid_nickname(param)) {
+        server.send_message(client.get_fd(), ERR_ERRONEUSNICKNAME(param));
+        return;
+    }
+
+    if (is_nickname_in_use(param)) {
+        server.send_message(client.get_fd(), ERR_NICKNAMEINUSE(param));
+        return;
+    }
+
+    if (is_nickname_collision(param)) {
+        server.send_message(client.get_fd(), ERR_NICKCOLLISION(param, user, host));
+        return;
+    }
+
+    std::string old_nick = client.get_nickname();
+    update_nickname(client, param);
+    broadcast_nickname_change(client, old_nick, param);
+
+    if (client.is_new_user()) {
+        server.send_message(client.get_fd(), RPL_WELCOME(client.get_nickname(), client.get_username()));
+        server.send_message(client.get_fd(), RPL_YOURHOST(client.get_nickname()));
+        server.send_message(client.get_fd(), RPL_CREATED(client.get_nickname()));
+        server.send_message(client.get_fd(), RPL_MYINFO(client.get_nickname(), usermodes, channelmodes));
+        client.set_authentication(true);
+    }
 }
 
 bool CommandHandler::is_nickname_in_use(const std::string &new_nick) {
