@@ -61,16 +61,6 @@ void SocketsManager::load_client_queue(int client_fd) {
   }
 }
 
-void SocketsManager::broadcast_message(const Commands& message, int sender_fd) {
-  std::string formatted = message.format_command();
-  for (std::map<int, Client*>::iterator it = _server._clients.begin(); it != _server._clients.end(); ++it) {
-    int client_fd = it->first;
-    if (client_fd != sender_fd) {
-      _message_queues[client_fd].push(formatted);
-    }
-  }
-}
-
 void SocketsManager::socket_write(int fd) {
   if (FD_ISSET(fd, &_write_set) && !_message_queues[fd].empty()) {
     while (!_message_queues[fd].empty()) {

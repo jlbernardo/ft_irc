@@ -1,4 +1,5 @@
 #include <map>
+#include <queue>
 
 #include "Client.hpp"
 #include "Commands.hpp"
@@ -7,6 +8,8 @@
 class CommandHandler {
  private:
   std::map<int, Client *> &clients;
+  void broadcast_message(const Commands &message, int sender_fd,
+                         std::map<int, std::queue<std::string> > &message_queues, std::map<int, Client *> _clients);
 
  public:
   CommandHandler(std::map<int, Client *> &clients, Server &server);
@@ -22,5 +25,5 @@ class CommandHandler {
   void update_user_info(Client &client, const std::string &username, const std::string &realname);
   bool is_valid_nickname(const std::string &nickname);
   bool is_valid_username(const std::string &username);
-  Client *is_nick_in_use(const std::string &new_nick);
+  bool is_nick_in_use(const std::string &new_nick);
 };

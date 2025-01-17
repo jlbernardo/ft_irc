@@ -168,8 +168,9 @@ inline std::string RPL_YOURHOST(const std::string& user) {
 }
 
 #include <ctime>
+
 inline std::string getCurrentDate() {
-  std::time_t now = std::time(nullptr);
+  std::time_t now = std::time(NULL);
   char buf[100];
   std::strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", std::localtime(&now));
   return std::string(buf);

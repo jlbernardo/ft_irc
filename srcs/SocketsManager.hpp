@@ -16,7 +16,6 @@ public:
   void io_multiplexing();
   void load_client_queue(int fd);
   void socket_read(int fd);
-  void broadcast_message(const Commands &message, int sender_fd);
   void socket_write(int fd);
 
 private:
