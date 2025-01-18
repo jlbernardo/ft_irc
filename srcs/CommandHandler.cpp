@@ -11,6 +11,7 @@
 CommandHandler::CommandHandler(std::map<int, Client *> &clients, Server &server) : clients(clients), server(server) {}
 
 void CommandHandler::execute(Commands &command) {
+  Client &sender = command.get_sender();
   for (std::list<Command>::iterator it = command.list.begin(); it != command.list.end(); it++) {
     Command temp = *it;
     switch (temp.type) {
@@ -23,8 +24,14 @@ void CommandHandler::execute(Commands &command) {
       case USER:
         user(command);
         break;
+      case CAP:
+        if (temp.params == "END") {
+          if (sender.is_authenticated()) {
+            send_welcome_messages(sender);
+          }
+          break;
+        }
       default:
-        // Handle unknown command
         break;
     }
   }
@@ -45,7 +52,7 @@ void CommandHandler::pass(Commands &command, const std::string &param) {
     server.send_message(client.get_fd(), ERROR(std::string("wrong password")));
     command._fatal_error = true;
   } else {
-    client.set_authentication(true);
+    client.set_authentication();
   }
 }
 
@@ -54,23 +61,15 @@ void CommandHandler::nick(Commands &command, const std::string &param) {
   if (param.empty()) {
     server.send_message(client.get_fd(), ERR_NONICKNAMEGIVEN());
     return;
-  }
-
-  if (is_nickname_in_use(param)) {
+  } else if (is_nickname_in_use(param)) {
     server.send_message(client.get_fd(), ERR_NICKNAMEINUSE(param));
     return;
   }
 
   std::string old_nick = client.get_nickname();
   update_nickname(client, param);
+  client.set_authentication();
   broadcast_nickname_change(client, old_nick, param);
-  if (!client.is_authenticated()) {
-    server.send_message(client.get_fd(), RPL_WELCOME(client.get_nickname(), client.get_username()));
-    server.send_message(client.get_fd(), RPL_YOURHOST(client.get_nickname()));
-    server.send_message(client.get_fd(), RPL_CREATED(client.get_nickname()));
-    server.send_message(client.get_fd(), RPL_MYINFO(client.get_nickname(), "", ""));
-    client.set_authentication(true);
-  }
 }
 
 bool CommandHandler::is_nickname_in_use(const std::string &new_nick) {
@@ -96,7 +95,8 @@ void CommandHandler::broadcast_message(const Commands &cmd, int sender_fd,
   }
 }
 
-void CommandHandler::broadcast_nickname_change(Client &client, const std::string &old_nick, const std::string &new_nick) {
+void CommandHandler::broadcast_nickname_change(Client &client, const std::string &old_nick,
+                                               const std::string &new_nick) {
   std::string cmd = old_nick + " changed his nickname to " + new_nick + "\r\n";
   // cmd = std::string(":127.0.0.1") + " 001 " + new_nick + " :Welcome to
   // the IRC server! " + new_nick + "!" + "127.0.0.1" + CRLF; for (std::map<int,
@@ -119,6 +119,15 @@ void CommandHandler::user(Commands &command) {
   }
   Client &client = command.get_sender();
   update_user_info(client, params[0], params[2]);
+}
+
+void CommandHandler::send_welcome_messages(Client &client) {
+  if (!client.is_authenticated()) return;
+
+  server.send_message(client.get_fd(), RPL_WELCOME(client.get_nickname(), client.get_username()));
+  server.send_message(client.get_fd(), RPL_YOURHOST(client.get_nickname()));
+  server.send_message(client.get_fd(), RPL_CREATED(client.get_nickname()));
+  server.send_message(client.get_fd(), RPL_MYINFO(client.get_nickname(), "", ""));
 }
 
 void CommandHandler::update_user_info(Client &client, const std::string &username, const std::string &realname) {

@@ -6,7 +6,7 @@
 
 #include "Client.hpp"
 
-enum CommandType { PRIVMSG, JOIN, NICK, USER, QUIT, PASS, UNKNOWN };
+enum CommandType { PRIVMSG, JOIN, NICK, USER, QUIT, PASS, CAP, UNKNOWN };
 
 struct Command {
   CommandType type;

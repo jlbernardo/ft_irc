@@ -10,6 +10,7 @@ class CommandHandler {
   std::map<int, Client *> &clients;
   void broadcast_message(const Commands &message, int sender_fd,
                          std::map<int, std::queue<std::string> > &message_queues, std::map<int, Client *> _clients);
+  void send_welcome_messages(Client &client);
 
  public:
   CommandHandler(std::map<int, Client *> &clients, Server &server);
