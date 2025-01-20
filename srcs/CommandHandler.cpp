@@ -37,21 +37,18 @@ void CommandHandler::execute(Commands &command) {
   }
 }
 
-void CommandHandler::pass(Commands &command, const std::string &param) {
+void CommandHandler::pass(Commands &command, const std::string &pass) {
   Client &client = command.get_sender();
-
-  // ERR_NEEDMOREPARAMS (461)
-  if (param.empty()) {
+  if (pass.empty()) {
     server.send_message(client.get_fd(), ERR_NEEDMOREPARAMS(command.list.front().command));
-    // ERR_ALREADYREGISTERED (462)
-  } else if (client.is_authenticated()) {
+  } else if (client.password_matched(server)) {
     server.send_message(client.get_fd(), ERR_ALREADYREGISTERED(command.get_sender().get_username()));
-    // ERR_PASSWDMISMATCH (464)
-  } else if (param != server.get_pass()) {
+  } else if (pass != server.get_pass()) {
     server.send_message(client.get_fd(), ERR_PASSWDMISMATCH());
     server.send_message(client.get_fd(), ERROR(std::string("wrong password")));
     command._fatal_error = true;
   } else {
+    client.set_pass(pass);
     client.set_authentication();
   }
 }
@@ -65,7 +62,6 @@ void CommandHandler::nick(Commands &command, const std::string &param) {
     server.send_message(client.get_fd(), ERR_NICKNAMEINUSE(param));
     return;
   }
-
   std::string old_nick = client.get_nickname();
   update_nickname(client, param);
   client.set_authentication();
@@ -119,6 +115,7 @@ void CommandHandler::user(Commands &command) {
   }
   Client &client = command.get_sender();
   update_user_info(client, params[0], params[2]);
+  std::cout << "Client username is: " << client.get_username() << std::endl;
 }
 
 void CommandHandler::send_welcome_messages(Client &client) {
