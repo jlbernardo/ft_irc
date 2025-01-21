@@ -56,10 +56,8 @@ void Client::set_username(const std::string &username) { _user = username; }
 
 void Client::set_realname(const std::string &realname) { _name = realname; }
 
-void Client::set_pass(const std::string &pass) { _pass = pass; }
-
-void Client::set_authentication() {
-  if (!_nick.empty() && !_user.empty() && !_pass.empty()) _authenticated = true;
+void Client::set_authentication(bool status) {
+  _authenticated = status;
 }
 
 void Client::clean_buffer() { _buffer.clear(); }

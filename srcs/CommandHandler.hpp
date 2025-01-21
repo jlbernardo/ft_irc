@@ -22,7 +22,7 @@ class CommandHandler {
   void execute(Commands &parser);
   bool is_nickname_in_use(const std::string &new_nick);
   void update_nickname(Client &client, const std::string &new_nick);
-  void broadcast_nickname_change(Client &client, const std::string &old_nick, const std::string &new_nick);
+  void broadcast_nickname_change(const std::string &old_nick, const std::string &new_nick);
   void update_user_info(Client &client, const std::string &username, const std::string &realname);
   bool is_valid_nickname(const std::string &nickname);
   bool is_valid_username(const std::string &username);

@@ -11,7 +11,6 @@
 CommandHandler::CommandHandler(std::map<int, Client *> &clients, Server &server) : clients(clients), server(server) {}
 
 void CommandHandler::execute(Commands &command) {
-  Client &sender = command.get_sender();
   for (std::list<Command>::iterator it = command.list.begin(); it != command.list.end(); it++) {
     Command temp = *it;
     switch (temp.type) {
@@ -25,12 +24,7 @@ void CommandHandler::execute(Commands &command) {
         user(command);
         break;
       case CAP:
-        if (temp.params == "END") {
-          if (sender.is_authenticated() && !sender.get_nickname().empty() && !sender.get_username().empty()) {
-            send_welcome_messages(sender);
-          }
           break;
-        }
       default:
         break;
     }
@@ -48,8 +42,8 @@ void CommandHandler::pass(Commands &command, const std::string &pass) {
     server.send_message(client.get_fd(), ERROR(std::string("wrong password")));
     command._fatal_error = true;
   } else {
-    client.set_pass(pass);
-    client.set_authentication();
+    client.set_authentication(true);
+    send_welcome_messages(client);
   }
 }
 
@@ -64,8 +58,7 @@ void CommandHandler::nick(Commands &command, const std::string &param) {
   }
   std::string old_nick = client.get_nickname();
   update_nickname(client, param);
-  client.set_authentication();
-  broadcast_nickname_change(client, old_nick, param);
+  broadcast_nickname_change(old_nick, param);
 }
 
 bool CommandHandler::is_nickname_in_use(const std::string &new_nick) {
@@ -91,8 +84,7 @@ void CommandHandler::broadcast_message(const Commands &cmd, int sender_fd,
   }
 }
 
-void CommandHandler::broadcast_nickname_change(Client &client, const std::string &old_nick,
-                                               const std::string &new_nick) {
+void CommandHandler::broadcast_nickname_change(const std::string &old_nick, const std::string &new_nick) {
   std::string cmd = old_nick + " changed his nickname to " + new_nick + "\r\n";
   // cmd = std::string(":127.0.0.1") + " 001 " + new_nick + " :Welcome to
   // the IRC server! " + new_nick + "!" + "127.0.0.1" + CRLF; for (std::map<int,
@@ -101,9 +93,7 @@ void CommandHandler::broadcast_nickname_change(Client &client, const std::string
   //     server.send_message(it->first, cmd);
   //   }
   // }
-  (void)client;
   // println("Should have printed: " + cmd);
-  server.send_message(client.get_fd(), cmd);
   // server.send_message(3, cmd); // SIGPIPE if hardcoded like that
 }
 

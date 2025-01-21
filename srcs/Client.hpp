@@ -38,8 +38,7 @@ class Client {
     const std::string &get_buffer() const;
 
 	// setters:
-    void set_authentication();
-	void set_pass(const std::string &pass);
+    void set_authentication(bool status);
     void set_hostname(int client_socket);
     void set_nickname(const std::string &nickname);
     void set_username(const std::string &username);
