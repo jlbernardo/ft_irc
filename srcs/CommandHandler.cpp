@@ -26,7 +26,7 @@ void CommandHandler::execute(Commands &command) {
         break;
       case CAP:
         if (temp.params == "END") {
-          if (sender.is_authenticated()) {
+          if (sender.is_authenticated() && !sender.get_nickname().empty() && !sender.get_username().empty()) {
             send_welcome_messages(sender);
           }
           break;
