@@ -1,5 +1,6 @@
 **Basic checks**
 
+
 - There is a Makefile, the project compiles correctly with the required options, is written in C++, and the executable is called as expected.
 - Ask and check how many poll() (or equivalent) are present in the code. There must be only one.
 - Verify that the poll() (or equivalent) is called every time before each accept, read/recv, write/send. After these calls, errno should not be used to -    trigger specific action (e.g. like reading again after errno == EAGAIN).
