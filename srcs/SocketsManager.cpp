@@ -1,14 +1,14 @@
 #include <stdexcept>
 
 #include "Client.hpp"
-#include "CommandHandler.hpp"
 #include "Commands.hpp"
+#include "CommandManager.hpp"
 #include "Server.hpp"
 #include "SocketsManager.hpp"
 
 SocketsManager::SocketsManager(Server& serv) : _server(serv) {}
 
-SocketsManager::~SocketsManager() { _message_queues.clear(); }
+SocketsManager::~SocketsManager() { _server._message_queues.clear(); }
 
 void SocketsManager::add_new_sockets_from_masterset_to_read_write() {
   FD_ZERO(&_read_set);
@@ -17,7 +17,7 @@ void SocketsManager::add_new_sockets_from_masterset_to_read_write() {
     for (int fd = 0; fd <= _server._max_fd; fd++) {
       if (FD_ISSET(fd, &_server._master_set)) {
         FD_SET(fd, &_read_set);
-        if (!_message_queues[fd].empty()) {
+        if (!_server._message_queues[fd].empty()) {
           FD_SET(fd, &_write_set);
         }
       }
@@ -52,8 +52,8 @@ void SocketsManager::load_client_queue(int client_fd) {
   }
   if (client.buffer_has_linebreak()) {
     Commands cmds(client, client.get_buffer());
-    CommandHandler command_handler(_server._clients, _server);
-    command_handler.execute(cmds);
+    CommandManager cmd_manager(_server);
+    cmd_manager.execute(cmds);
     if (cmds._fatal_error)
       _server.remove_client(client_fd);
     else
@@ -62,11 +62,11 @@ void SocketsManager::load_client_queue(int client_fd) {
 }
 
 void SocketsManager::socket_write(int fd) {
-  if (FD_ISSET(fd, &_write_set) && !_message_queues[fd].empty()) {
-    while (!_message_queues[fd].empty()) {
-      std::string& msg = _message_queues[fd].front();
+  if (FD_ISSET(fd, &_write_set) && !_server._message_queues[fd].empty()) {
+    while (!_server._message_queues[fd].empty()) {
+      std::string& msg = _server._message_queues[fd].front();
       if (send(fd, msg.c_str(), msg.length(), 0) > 0)
-        _message_queues[fd].pop();
+        _server._message_queues[fd].pop();
       else
         break;
     }

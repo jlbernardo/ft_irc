@@ -4,6 +4,10 @@
 #include <string>
 #include "Client.hpp"
 #include "Channel.hpp"
+#include <queue>
+
+typedef std::map<int, std::queue<std::string> > MessageQueueMap;
+typedef std::map<int, Client*> ClientMap;
 
 class Server {
  private:
@@ -13,7 +17,8 @@ class Server {
   fd_set _master_set;
   int _max_fd;
   std::map<std::string, Channel*> _channels;
-  std::map<int, Client*> _clients;
+  ClientMap _clients;
+  MessageQueueMap _message_queues;
   struct sockaddr_in _server_addr;
   static void signal_handler(int signum);
 
@@ -27,21 +32,17 @@ class Server {
   Server(int port, const std::string& pass);
   ~Server();
   static volatile __sig_atomic_t terminate;
-  friend class SocketsManager;
   int get_fd();
   std::string get_pass();
   void set_pass(const std::string& pass);
   void remove_client(int client_fd);
-  // Channel* createChannel(const std::string& name, Client* creator); //need implement
-  // void removeChannel(const std::string& name); //need implement
-  // Channel* findChannel(const std::string& name); //need implement
-  // void handleJoin(Client* client, const std::string& command); //need implement
-  // void handlePart(Client* client, const std::string& command); //need implement
-  // void handlePrivmsg(Client* client, const std::string& command); //need implement
 
   void start();
-  // void stop();
   void send_error(int client_fd, const std::string& error_code, const std::string& error_message);
   void send_message(int client_fd, const std::string& message);
   void error(int fd, const std::string& msg);
+
+  // Manager classes:
+  friend class SocketsManager;
+  friend class CommandManager;
 };

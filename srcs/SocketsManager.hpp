@@ -1,11 +1,7 @@
 #pragma once
 #include <sys/select.h>
+#include "Server.hpp"
 
-#include <map>
-#include <queue>
-#include <string>
-
-class Server;
 class Commands;
 
 class SocketsManager {
@@ -21,6 +17,5 @@ public:
 private:
   fd_set _read_set;
   fd_set _write_set;
-  std::map<int, std::queue<std::string> > _message_queues; // HOLDS THE FORMATTED MESSAGE OF EVERY CLIENT
   Server &_server;
 };
