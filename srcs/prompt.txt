@@ -1,8 +1,0 @@
-I'm coding an irc server in cpp98 and it's not ready yet. Currently I'm trying to implement the authentication process and I want to change the code so that only once the client sends CAP END I send the default welcome messages:
-
-```cpp
-    server.send_message(client.get_fd(), RPL_WELCOME(client.get_nickname(), client.get_username()));
-    server.send_message(client.get_fd(), RPL_YOURHOST(client.get_nickname()));
-    server.send_message(client.get_fd(), RPL_CREATED(client.get_nickname()));
-    server.send_message(client.get_fd(), RPL_MYINFO(client.get_nickname(), "", ""));
-```
