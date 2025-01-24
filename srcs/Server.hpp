@@ -1,23 +1,25 @@
 #pragma once
-#include <csignal>
-#include <netinet/in.h>
 
 #include <map>
+#include <string>
+#include "Client.hpp"
+#include "Channel.hpp"
 #include <queue>
 
-#include "Client.hpp"
-#include "Message.hpp"
+typedef std::map<int, std::queue<std::string> > MessageQueueMap;
+typedef std::map<int, Client*> ClientMap;
 
 class Server {
  private:
-  int _server_fd;
+  int _fd;
   int _port;
-  struct sockaddr_in _server_addr;
+  std::string _pass;
   fd_set _master_set;
-  /* _max_fd is set according to the greatest fd number we have to handle, there is no fixed limit. */
   int _max_fd;
-  std::map<int, Client*> _clients;
-  std::map<int, std::queue<std::string> > _message_queues;
+  std::map<std::string, Channel*> _channels;
+  ClientMap _clients;
+  MessageQueueMap _message_queues;
+  struct sockaddr_in _server_addr;
   static void signal_handler(int signum);
 
   void register_signals();
@@ -25,17 +27,22 @@ class Server {
   void setup_server();
   void add_new_client_to_master_set();
   void handle_client_message(int client_fd);
-  void broadcast_message(const Message& message, int sender_fd);
-  void remove_client(int client_fd);
-
-  // predicate functions:
-  bool theres_data_in_this_fd(int fd, fd_set* read_set) const { return (true == FD_ISSET(fd, read_set)); }
 
  public:
-  Server(int port);
+  Server(int port, const std::string& pass);
   ~Server();
-  static volatile sig_atomic_t _terminate;
+  static volatile __sig_atomic_t terminate;
+  int get_fd();
+  std::string get_pass();
+  void set_pass(const std::string& pass);
+  void remove_client(int client_fd);
 
   void start();
-  void stop();
+  void send_error(int client_fd, const std::string& error_code, const std::string& error_message);
+  void send_message(int client_fd, const std::string& message);
+  void error(int fd, const std::string& msg);
+
+  // Manager classes:
+  friend class SocketsManager;
+  friend class CommandManager;
 };

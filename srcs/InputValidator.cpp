@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include <stdexcept>
-
 #include "InputValidator.hpp"
+#include "ft_irc.h"
 
 namespace InputValidator {
   void validatePort(int argc, const char* port_str) {
@@ -22,9 +22,6 @@ namespace InputValidator {
   void validatePassword(const std::string& password) {
 	if (password.length() != PASSWORD_LENGTH) {
 	  throw std::invalid_argument("\033[31mPassword must be exactly 4 characters\033[0m");
-	}
-	else if (password != pass) {
-	  throw std::invalid_argument("\033[31mInvalid password\033[0m");
 	}
   }
 }
