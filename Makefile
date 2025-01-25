@@ -9,7 +9,7 @@ PATH_TEST_OBJS = ./test_objects/
 SRC_DIR = srcs/
 PASS = 89aX
 
-SRCS = Client Commands CommandManager Server InputValidator SocketsManager
+SRCS = Client Commands CommandsManager Server InputValidator SocketsManager
 MAIN = main
 
 OBJS = $(SRCS:%=$(PATH_OBJS)%.o)

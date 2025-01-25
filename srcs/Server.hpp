@@ -44,5 +44,5 @@ class Server {
 
   // Manager classes:
   friend class SocketsManager;
-  friend class CommandManager;
+  friend class CommandsManager;
 };

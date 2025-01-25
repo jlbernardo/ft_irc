@@ -2,7 +2,7 @@
 
 #include "Client.hpp"
 #include "Commands.hpp"
-#include "CommandManager.hpp"
+#include "CommandsManager.hpp"
 #include "Server.hpp"
 #include "SocketsManager.hpp"
 
@@ -52,9 +52,9 @@ void SocketsManager::load_client_queue(int client_fd) {
   }
   if (client.buffer_has_linebreak()) {
     Commands cmds(client, client.get_buffer());
-    CommandManager cmd_manager(_server);
+    CommandsManager cmd_manager(_server);
     cmd_manager.execute(cmds);
-    if (cmds._fatal_error)
+    if (cmds.get_fatal_error())
       _server.remove_client(client_fd);
     else
       client.clean_buffer();
