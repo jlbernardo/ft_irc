@@ -20,7 +20,6 @@ void Commands::init_command_map() {
   _command_map["USER"] = USER;
   _command_map["QUIT"] = QUIT;
   _command_map["PASS"] = PASS;
-  _command_map["CAP"] = CAP;
 }
 
 void Commands::init_list_of_commands(const std::string &raw_input) {

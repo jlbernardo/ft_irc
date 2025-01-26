@@ -3,7 +3,7 @@
 #include "ft_irc.h"
 
 Client::Client(int fd)
-    : _fd(fd), _nick("unknown"), _user("unknown"), _name("unknown"), _authenticated(false), _buffer("") {
+    : _fd(fd), _nick(""), _user(""), _name(""), _authenticated(false), _buffer("") {
   set_hostname(fd);
 }
 
@@ -11,7 +11,7 @@ void Client::set_hostname(int client_socket) {
   struct sockaddr_in addr;
   socklen_t len = sizeof(addr);
   if (getsockname(client_socket, (struct sockaddr *)&addr, &len) == -1) {
-    _hostname = "unknown";
+    _hostname = "";
     println("getsockname has failed, thus the name is: ");
     printlnnl(_hostname);
     return;

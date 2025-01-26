@@ -14,8 +14,8 @@ void CommandsManager::execute(Commands &commands) {
             case PRIVMSG:
                 // privmsg(commands, cmd);
                 break;
-            case JOIN:
-                // join(commands, cmd);
+				case JOIN:
+					// join(commands, cmd);
                 break;
             case NICK:
                 nick(commands, cmd);
@@ -28,9 +28,6 @@ void CommandsManager::execute(Commands &commands) {
                 break;
             case PASS:
                 pass(commands, cmd);
-                break;
-            case CAP:
-                // cap(commands, cmd);
                 break;
             default:
                 break;
@@ -107,10 +104,6 @@ void CommandsManager::pass(Commands &commands, const Command &cmd) {
         send_welcome_messages(client);
     }
 }
-
-// void CommandsManager::cap(Commands &commands, const Command &cmd) {
-//     // Implementation of CAP command
-// }
 
 void CommandsManager::broadcast_message(const std::string &msg, int sender_fd) {
     for (ClientMap::iterator it = server._clients.begin(); it != server._clients.end(); ++it) {
