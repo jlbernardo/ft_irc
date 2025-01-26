@@ -36,18 +36,23 @@ class Channel {
 		void broadcastMessage(const std::string& message, Client* sender = NULL);
 		
 		// Channel operator operations
-		void setOperator(Client* client, bool status);
+		void setMember(Client* client);
+		void setOperator(Client* client);
 		bool isOperator(Client* client) const;
 		
 		// Mode operations
-		void setMode(char mode, bool status);
-		bool checkMode(char mode) const;
+		//if only operators are able to set modes, a setter function to do it
+		// is not necessary, checkMode though, is necessary, because other entities
+		// outside the Channel class may neeed to access this information   
+		// void setMode(char mode, bool status);
+		bool checkChannelModes(char mode) const;
+		bool checkUserModes(char mode, Client* client) const;
 		
 		// Getters
 		const std::string& getName() const;
 		const std::string& getTopic() const;
 		const std::map<int, Client*>& getMembers() const;
-		
+			
 		// Required by subject
 		bool kickMember(Client* operator_client, Client* target, const std::string& reason);
 		bool inviteMember(Client* operator_client, Client* target);
