@@ -1,0 +1,423 @@
+\hypertarget{ft__irc_8h}{}\doxysection{srcs/ft\+\_\+irc.h File Reference}
+\label{ft__irc_8h}\index{srcs/ft\_irc.h@{srcs/ft\_irc.h}}
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$ctime$>$}\newline
+Include dependency graph for ft\+\_\+irc.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=264pt]{ft__irc_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=344pt]{ft__irc_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{ft__irc_8h_a5a2feab0ca66b147104d8a9fe75996f2}{println}}(x)~std\+::cout $<$$<$ x $<$$<$ std\+::endl
+\item 
+\#define \mbox{\hyperlink{ft__irc_8h_ab0fe0f39301b0356f14751acd8b65d99}{printlnnl}}(x)~std\+::cout $<$$<$ x
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_a2016af766f3f465e56a5fae842c9583d}{RPL\+\_\+\+WELCOME}} (const std\+::string \&nick, const std\+::string \&user)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_a2f8762cfd51721e16be880f52fc2f73c}{RPL\+\_\+\+ENDOFWHO}} (const std\+::string \&channel)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_a1bd87b7e6bd17bfeb0d6b9954808c2d2}{RPL\+\_\+\+CHANNELMODEIS}} (const std\+::string \&channel, const std\+::string \&mode, const std\+::string \&mode\+Params)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_a0b7469e979714fcfac48ff86eb9532fc}{RPL\+\_\+\+NOTOPIC}} (const std\+::string \&nick, const std\+::string \&channel)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_abfc779f8af107355ff21170cc013469a}{RPL\+\_\+\+TOPIC}} (const std\+::string \&nick, const std\+::string \&channel, const std\+::string \&topic)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_a1c9dc4d092d080b8cbdfcc0853a7297d}{RPL\+\_\+\+INVITING}} (const std\+::string \&nick, const std\+::string \&recipient, const std\+::string \&channel)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_a6078395e4d237b42249d1bb9b95292f0}{RPL\+\_\+\+WHOREPLY}} (const std\+::string \&channel, const std\+::string \&user, const std\+::string \&nick, const std\+::string \&flags, const std\+::string \&realname)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_abf5430c9533f284de7166cf9a84bd3fc}{RPL\+\_\+\+NAMREPLY}} (const std\+::string \&nick, const std\+::string \&channel, const std\+::string \&names)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_a52bca52ece30ef973dbfe41d865dea74}{RPL\+\_\+\+ENDOFNAMES}} (const std\+::string \&nick, const std\+::string \&channel)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_a015f48fda4a1a05f8496c0934aebe7f6}{ERR\+\_\+\+NOSUCHCHANNEL}} (const std\+::string \&channel)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_aa4190ae7014b08e3857a35f797b70561}{ERR\+\_\+\+NOSUCHNICK}} (const std\+::string \&recipient)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_a85dad074b503fda5876fb68395bcb5ed}{ERR\+\_\+\+NORECIPIENT}} (const std\+::string \&user)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_a67dc768d7ddeec338eb46466cdfb8f37}{ERR\+\_\+\+NOTEXTTOSEND}} (const std\+::string \&user)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_a5333105324fbe0cb40e5177a360db0fe}{ERR\+\_\+\+NONICKNAMEGIVEN}} ()
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_a80594b9e741c3d2d2584e9784593110c}{ERR\+\_\+\+ERRONEUSNICKNAME}} (const std\+::string \&nick)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_a6ae6d3d2b107f7600bb3b49a0f954868}{ERR\+\_\+\+NICKNAMEINUSE}} (const std\+::string \&nick)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_ac94f1e7adfd9a7962c24ae83d463c103}{ERR\+\_\+\+USERNOTINCHANNEL}} (const std\+::string \&operator\+\_\+, const std\+::string \&client, const std\+::string \&channel)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_a5f31fbe9f8cd5741ee642d6dcdef15a7}{ERR\+\_\+\+NOTONCHANNEL}} (const std\+::string \&channel)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_a96b8651e217514722bf920d522d8369d}{ERR\+\_\+\+USERONCHANNEL}} (const std\+::string \&nick, const std\+::string \&channel)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_a27411c218ffaafd0a73ba86194e4f758}{ERR\+\_\+\+NEEDMOREPARAMS}} (const std\+::string \&command)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_ac195ef27c017f130e8fb013da7cae2aa}{ERR\+\_\+\+ALREADYREGISTERED}} (const std\+::string \&user)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_a0d892bbbb3c831890e53db3c4f3b43a7}{ERR\+\_\+\+PASSWDMISMATCH}} ()
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_aab4d876b9074c3a4fb5f01c3161e3b0b}{ERR\+\_\+\+CHANNELISFULL}} (const std\+::string \&channel)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_a4a3e0bcaa723396db3fec1e445776fb0}{ERR\+\_\+\+INVITEONLYCHAN}} (const std\+::string \&channel)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_a2f001b3b0d57a62947667fe7cf15fabf}{ERR\+\_\+\+BADCHANNELKEY}} (const std\+::string \&user, const std\+::string \&channel)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_a8ac078e49128311e9ba26ffe5f98540b}{ERR\+\_\+\+CHANOPRIVSNEEDED}} (const std\+::string \&user, const std\+::string \&channel)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_aa65fe1a21d0de21098107502ea1331a7}{ERROR}} (const std\+::string message)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_af989c0f4c73060e1a25e56c2a2d95409}{RPL\+\_\+\+JOIN}} (const std\+::string \&user, const std\+::string \&channel)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_ad862ad70e5b2eed085698925c01c0dfb}{PRIVMSG\+\_\+\+BROADCAST}} (const std\+::string \&nick, const std\+::string \&user, const std\+::string \&channel, const std\+::string \&topic)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_a285d24508f316d670c2688e89aca76c1}{RPL\+\_\+\+PRIVMSG}} (const std\+::string \&user, const std\+::string \&dest, const std\+::string \&message)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_a993df1675fdfd7d8085d008791e7fa51}{RPL\+\_\+\+PARTMSG}} (const std\+::string \&nick, const std\+::string \&user, const std\+::string \&dest, const std\+::string \&message)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_ab68caafd96a671081fce7e134c089a1d}{RPL\+\_\+\+PARTNOMSG}} (const std\+::string \&nick, const std\+::string \&user, const std\+::string \&dest)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_a90292bc1b1b813ce62dbc8e638d2cf5e}{RPL\+\_\+\+KICKREASON}} (const std\+::string \&op\+\_\+nick, const std\+::string \&op\+\_\+user, const std\+::string \&channel, const std\+::string \&client, const std\+::string \&reason)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_abaa2450b976f270abbd44fa74f500429}{RPL\+\_\+\+KICKNOREASON}} (const std\+::string \&op\+\_\+nick, const std\+::string \&op\+\_\+user, const std\+::string \&channel, const std\+::string \&client)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_a907f5d609c7bd0ffeed748953d254c8c}{RPL\+\_\+\+KICKFEEDBACK}} (const std\+::string \&op\+\_\+nick, const std\+::string \&op\+\_\+user, const std\+::string \&channel, const std\+::string \&client)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_a0fa40d1a569115fb3179f52d8774f5bd}{RPL\+\_\+\+MODEBASE}} (const std\+::string \&nick, const std\+::string \&user, const std\+::string \&channel)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_a195dc5c15742608bf21ac188325f069f}{RPL\+\_\+\+INVITEMSG}} (const std\+::string \&nick, const std\+::string \&user, const std\+::string \&recipient, const std\+::string \&channel)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_a37c81afd517d1f5bbdd3299c83693ef6}{RPL\+\_\+\+YOURHOST}} (const std\+::string \&user)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_a0ed602ce2acf21623ad19a6f5b79c142}{get\+Current\+Date}} ()
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_a5f00f4410eb7ca6b09841d30883b2832}{RPL\+\_\+\+CREATED}} (const std\+::string \&user)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_a19018917cfc678a973e21ed3e4fcf526}{RPL\+\_\+\+MYINFO}} (const std\+::string \&user, const std\+::string \&user\+Modes, const std\+::string \&channel\+Modes)
+\item 
+std\+::string \mbox{\hyperlink{ft__irc_8h_acbb1d16731ad2638e03d586a582e19f8}{ERR\+\_\+\+NICKCOLLISION}} (const std\+::string \&nick, const std\+::string \&user, const std\+::string \&host)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const std\+::string \mbox{\hyperlink{ft__irc_8h_a90e1260e93fad49501518c5edae4907c}{SERVER}} = \char`\"{}\+:big.\+little.\+talk.\+irc\char`\"{}
+\item 
+const std\+::string \mbox{\hyperlink{ft__irc_8h_a26894f5f61a3de2e81c8b9837517ee35}{CRLF}} = \char`\"{}\textbackslash{}r\textbackslash{}n\char`\"{}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{ft__irc_8h_a5a2feab0ca66b147104d8a9fe75996f2}\label{ft__irc_8h_a5a2feab0ca66b147104d8a9fe75996f2}} 
+\index{ft\_irc.h@{ft\_irc.h}!println@{println}}
+\index{println@{println}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{println}{println}}
+{\footnotesize\ttfamily \#define println(\begin{DoxyParamCaption}\item[{}]{x }\end{DoxyParamCaption})~std\+::cout $<$$<$ x $<$$<$ std\+::endl}
+
+\mbox{\Hypertarget{ft__irc_8h_ab0fe0f39301b0356f14751acd8b65d99}\label{ft__irc_8h_ab0fe0f39301b0356f14751acd8b65d99}} 
+\index{ft\_irc.h@{ft\_irc.h}!printlnnl@{printlnnl}}
+\index{printlnnl@{printlnnl}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{printlnnl}{printlnnl}}
+{\footnotesize\ttfamily \#define printlnnl(\begin{DoxyParamCaption}\item[{}]{x }\end{DoxyParamCaption})~std\+::cout $<$$<$ x}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{ft__irc_8h_ac195ef27c017f130e8fb013da7cae2aa}\label{ft__irc_8h_ac195ef27c017f130e8fb013da7cae2aa}} 
+\index{ft\_irc.h@{ft\_irc.h}!ERR\_ALREADYREGISTERED@{ERR\_ALREADYREGISTERED}}
+\index{ERR\_ALREADYREGISTERED@{ERR\_ALREADYREGISTERED}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{ERR\_ALREADYREGISTERED()}{ERR\_ALREADYREGISTERED()}}
+{\footnotesize\ttfamily std\+::string ERR\+\_\+\+ALREADYREGISTERED (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{user }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_a2f001b3b0d57a62947667fe7cf15fabf}\label{ft__irc_8h_a2f001b3b0d57a62947667fe7cf15fabf}} 
+\index{ft\_irc.h@{ft\_irc.h}!ERR\_BADCHANNELKEY@{ERR\_BADCHANNELKEY}}
+\index{ERR\_BADCHANNELKEY@{ERR\_BADCHANNELKEY}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{ERR\_BADCHANNELKEY()}{ERR\_BADCHANNELKEY()}}
+{\footnotesize\ttfamily std\+::string ERR\+\_\+\+BADCHANNELKEY (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{user,  }\item[{const std\+::string \&}]{channel }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_aab4d876b9074c3a4fb5f01c3161e3b0b}\label{ft__irc_8h_aab4d876b9074c3a4fb5f01c3161e3b0b}} 
+\index{ft\_irc.h@{ft\_irc.h}!ERR\_CHANNELISFULL@{ERR\_CHANNELISFULL}}
+\index{ERR\_CHANNELISFULL@{ERR\_CHANNELISFULL}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{ERR\_CHANNELISFULL()}{ERR\_CHANNELISFULL()}}
+{\footnotesize\ttfamily std\+::string ERR\+\_\+\+CHANNELISFULL (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{channel }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_a8ac078e49128311e9ba26ffe5f98540b}\label{ft__irc_8h_a8ac078e49128311e9ba26ffe5f98540b}} 
+\index{ft\_irc.h@{ft\_irc.h}!ERR\_CHANOPRIVSNEEDED@{ERR\_CHANOPRIVSNEEDED}}
+\index{ERR\_CHANOPRIVSNEEDED@{ERR\_CHANOPRIVSNEEDED}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{ERR\_CHANOPRIVSNEEDED()}{ERR\_CHANOPRIVSNEEDED()}}
+{\footnotesize\ttfamily std\+::string ERR\+\_\+\+CHANOPRIVSNEEDED (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{user,  }\item[{const std\+::string \&}]{channel }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_a80594b9e741c3d2d2584e9784593110c}\label{ft__irc_8h_a80594b9e741c3d2d2584e9784593110c}} 
+\index{ft\_irc.h@{ft\_irc.h}!ERR\_ERRONEUSNICKNAME@{ERR\_ERRONEUSNICKNAME}}
+\index{ERR\_ERRONEUSNICKNAME@{ERR\_ERRONEUSNICKNAME}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{ERR\_ERRONEUSNICKNAME()}{ERR\_ERRONEUSNICKNAME()}}
+{\footnotesize\ttfamily std\+::string ERR\+\_\+\+ERRONEUSNICKNAME (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{nick }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_a4a3e0bcaa723396db3fec1e445776fb0}\label{ft__irc_8h_a4a3e0bcaa723396db3fec1e445776fb0}} 
+\index{ft\_irc.h@{ft\_irc.h}!ERR\_INVITEONLYCHAN@{ERR\_INVITEONLYCHAN}}
+\index{ERR\_INVITEONLYCHAN@{ERR\_INVITEONLYCHAN}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{ERR\_INVITEONLYCHAN()}{ERR\_INVITEONLYCHAN()}}
+{\footnotesize\ttfamily std\+::string ERR\+\_\+\+INVITEONLYCHAN (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{channel }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_a27411c218ffaafd0a73ba86194e4f758}\label{ft__irc_8h_a27411c218ffaafd0a73ba86194e4f758}} 
+\index{ft\_irc.h@{ft\_irc.h}!ERR\_NEEDMOREPARAMS@{ERR\_NEEDMOREPARAMS}}
+\index{ERR\_NEEDMOREPARAMS@{ERR\_NEEDMOREPARAMS}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{ERR\_NEEDMOREPARAMS()}{ERR\_NEEDMOREPARAMS()}}
+{\footnotesize\ttfamily std\+::string ERR\+\_\+\+NEEDMOREPARAMS (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{command }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_acbb1d16731ad2638e03d586a582e19f8}\label{ft__irc_8h_acbb1d16731ad2638e03d586a582e19f8}} 
+\index{ft\_irc.h@{ft\_irc.h}!ERR\_NICKCOLLISION@{ERR\_NICKCOLLISION}}
+\index{ERR\_NICKCOLLISION@{ERR\_NICKCOLLISION}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{ERR\_NICKCOLLISION()}{ERR\_NICKCOLLISION()}}
+{\footnotesize\ttfamily std\+::string ERR\+\_\+\+NICKCOLLISION (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{nick,  }\item[{const std\+::string \&}]{user,  }\item[{const std\+::string \&}]{host }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_a6ae6d3d2b107f7600bb3b49a0f954868}\label{ft__irc_8h_a6ae6d3d2b107f7600bb3b49a0f954868}} 
+\index{ft\_irc.h@{ft\_irc.h}!ERR\_NICKNAMEINUSE@{ERR\_NICKNAMEINUSE}}
+\index{ERR\_NICKNAMEINUSE@{ERR\_NICKNAMEINUSE}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{ERR\_NICKNAMEINUSE()}{ERR\_NICKNAMEINUSE()}}
+{\footnotesize\ttfamily std\+::string ERR\+\_\+\+NICKNAMEINUSE (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{nick }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_a5333105324fbe0cb40e5177a360db0fe}\label{ft__irc_8h_a5333105324fbe0cb40e5177a360db0fe}} 
+\index{ft\_irc.h@{ft\_irc.h}!ERR\_NONICKNAMEGIVEN@{ERR\_NONICKNAMEGIVEN}}
+\index{ERR\_NONICKNAMEGIVEN@{ERR\_NONICKNAMEGIVEN}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{ERR\_NONICKNAMEGIVEN()}{ERR\_NONICKNAMEGIVEN()}}
+{\footnotesize\ttfamily std\+::string ERR\+\_\+\+NONICKNAMEGIVEN (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_a85dad074b503fda5876fb68395bcb5ed}\label{ft__irc_8h_a85dad074b503fda5876fb68395bcb5ed}} 
+\index{ft\_irc.h@{ft\_irc.h}!ERR\_NORECIPIENT@{ERR\_NORECIPIENT}}
+\index{ERR\_NORECIPIENT@{ERR\_NORECIPIENT}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{ERR\_NORECIPIENT()}{ERR\_NORECIPIENT()}}
+{\footnotesize\ttfamily std\+::string ERR\+\_\+\+NORECIPIENT (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{user }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_a015f48fda4a1a05f8496c0934aebe7f6}\label{ft__irc_8h_a015f48fda4a1a05f8496c0934aebe7f6}} 
+\index{ft\_irc.h@{ft\_irc.h}!ERR\_NOSUCHCHANNEL@{ERR\_NOSUCHCHANNEL}}
+\index{ERR\_NOSUCHCHANNEL@{ERR\_NOSUCHCHANNEL}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{ERR\_NOSUCHCHANNEL()}{ERR\_NOSUCHCHANNEL()}}
+{\footnotesize\ttfamily std\+::string ERR\+\_\+\+NOSUCHCHANNEL (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{channel }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_aa4190ae7014b08e3857a35f797b70561}\label{ft__irc_8h_aa4190ae7014b08e3857a35f797b70561}} 
+\index{ft\_irc.h@{ft\_irc.h}!ERR\_NOSUCHNICK@{ERR\_NOSUCHNICK}}
+\index{ERR\_NOSUCHNICK@{ERR\_NOSUCHNICK}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{ERR\_NOSUCHNICK()}{ERR\_NOSUCHNICK()}}
+{\footnotesize\ttfamily std\+::string ERR\+\_\+\+NOSUCHNICK (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{recipient }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_a67dc768d7ddeec338eb46466cdfb8f37}\label{ft__irc_8h_a67dc768d7ddeec338eb46466cdfb8f37}} 
+\index{ft\_irc.h@{ft\_irc.h}!ERR\_NOTEXTTOSEND@{ERR\_NOTEXTTOSEND}}
+\index{ERR\_NOTEXTTOSEND@{ERR\_NOTEXTTOSEND}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{ERR\_NOTEXTTOSEND()}{ERR\_NOTEXTTOSEND()}}
+{\footnotesize\ttfamily std\+::string ERR\+\_\+\+NOTEXTTOSEND (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{user }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_a5f31fbe9f8cd5741ee642d6dcdef15a7}\label{ft__irc_8h_a5f31fbe9f8cd5741ee642d6dcdef15a7}} 
+\index{ft\_irc.h@{ft\_irc.h}!ERR\_NOTONCHANNEL@{ERR\_NOTONCHANNEL}}
+\index{ERR\_NOTONCHANNEL@{ERR\_NOTONCHANNEL}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{ERR\_NOTONCHANNEL()}{ERR\_NOTONCHANNEL()}}
+{\footnotesize\ttfamily std\+::string ERR\+\_\+\+NOTONCHANNEL (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{channel }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_a0d892bbbb3c831890e53db3c4f3b43a7}\label{ft__irc_8h_a0d892bbbb3c831890e53db3c4f3b43a7}} 
+\index{ft\_irc.h@{ft\_irc.h}!ERR\_PASSWDMISMATCH@{ERR\_PASSWDMISMATCH}}
+\index{ERR\_PASSWDMISMATCH@{ERR\_PASSWDMISMATCH}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{ERR\_PASSWDMISMATCH()}{ERR\_PASSWDMISMATCH()}}
+{\footnotesize\ttfamily std\+::string ERR\+\_\+\+PASSWDMISMATCH (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_ac94f1e7adfd9a7962c24ae83d463c103}\label{ft__irc_8h_ac94f1e7adfd9a7962c24ae83d463c103}} 
+\index{ft\_irc.h@{ft\_irc.h}!ERR\_USERNOTINCHANNEL@{ERR\_USERNOTINCHANNEL}}
+\index{ERR\_USERNOTINCHANNEL@{ERR\_USERNOTINCHANNEL}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{ERR\_USERNOTINCHANNEL()}{ERR\_USERNOTINCHANNEL()}}
+{\footnotesize\ttfamily std\+::string ERR\+\_\+\+USERNOTINCHANNEL (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{operator\+\_\+,  }\item[{const std\+::string \&}]{client,  }\item[{const std\+::string \&}]{channel }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_a96b8651e217514722bf920d522d8369d}\label{ft__irc_8h_a96b8651e217514722bf920d522d8369d}} 
+\index{ft\_irc.h@{ft\_irc.h}!ERR\_USERONCHANNEL@{ERR\_USERONCHANNEL}}
+\index{ERR\_USERONCHANNEL@{ERR\_USERONCHANNEL}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{ERR\_USERONCHANNEL()}{ERR\_USERONCHANNEL()}}
+{\footnotesize\ttfamily std\+::string ERR\+\_\+\+USERONCHANNEL (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{nick,  }\item[{const std\+::string \&}]{channel }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_aa65fe1a21d0de21098107502ea1331a7}\label{ft__irc_8h_aa65fe1a21d0de21098107502ea1331a7}} 
+\index{ft\_irc.h@{ft\_irc.h}!ERROR@{ERROR}}
+\index{ERROR@{ERROR}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{ERROR()}{ERROR()}}
+{\footnotesize\ttfamily std\+::string ERROR (\begin{DoxyParamCaption}\item[{const std\+::string}]{message }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_a0ed602ce2acf21623ad19a6f5b79c142}\label{ft__irc_8h_a0ed602ce2acf21623ad19a6f5b79c142}} 
+\index{ft\_irc.h@{ft\_irc.h}!getCurrentDate@{getCurrentDate}}
+\index{getCurrentDate@{getCurrentDate}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{getCurrentDate()}{getCurrentDate()}}
+{\footnotesize\ttfamily std\+::string get\+Current\+Date (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=293pt]{ft__irc_8h_a0ed602ce2acf21623ad19a6f5b79c142_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{ft__irc_8h_ad862ad70e5b2eed085698925c01c0dfb}\label{ft__irc_8h_ad862ad70e5b2eed085698925c01c0dfb}} 
+\index{ft\_irc.h@{ft\_irc.h}!PRIVMSG\_BROADCAST@{PRIVMSG\_BROADCAST}}
+\index{PRIVMSG\_BROADCAST@{PRIVMSG\_BROADCAST}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{PRIVMSG\_BROADCAST()}{PRIVMSG\_BROADCAST()}}
+{\footnotesize\ttfamily std\+::string PRIVMSG\+\_\+\+BROADCAST (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{nick,  }\item[{const std\+::string \&}]{user,  }\item[{const std\+::string \&}]{channel,  }\item[{const std\+::string \&}]{topic }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_a1bd87b7e6bd17bfeb0d6b9954808c2d2}\label{ft__irc_8h_a1bd87b7e6bd17bfeb0d6b9954808c2d2}} 
+\index{ft\_irc.h@{ft\_irc.h}!RPL\_CHANNELMODEIS@{RPL\_CHANNELMODEIS}}
+\index{RPL\_CHANNELMODEIS@{RPL\_CHANNELMODEIS}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{RPL\_CHANNELMODEIS()}{RPL\_CHANNELMODEIS()}}
+{\footnotesize\ttfamily std\+::string RPL\+\_\+\+CHANNELMODEIS (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{channel,  }\item[{const std\+::string \&}]{mode,  }\item[{const std\+::string \&}]{mode\+Params }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_a5f00f4410eb7ca6b09841d30883b2832}\label{ft__irc_8h_a5f00f4410eb7ca6b09841d30883b2832}} 
+\index{ft\_irc.h@{ft\_irc.h}!RPL\_CREATED@{RPL\_CREATED}}
+\index{RPL\_CREATED@{RPL\_CREATED}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{RPL\_CREATED()}{RPL\_CREATED()}}
+{\footnotesize\ttfamily std\+::string RPL\+\_\+\+CREATED (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{user }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=293pt]{ft__irc_8h_a5f00f4410eb7ca6b09841d30883b2832_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{ft__irc_8h_a52bca52ece30ef973dbfe41d865dea74}\label{ft__irc_8h_a52bca52ece30ef973dbfe41d865dea74}} 
+\index{ft\_irc.h@{ft\_irc.h}!RPL\_ENDOFNAMES@{RPL\_ENDOFNAMES}}
+\index{RPL\_ENDOFNAMES@{RPL\_ENDOFNAMES}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{RPL\_ENDOFNAMES()}{RPL\_ENDOFNAMES()}}
+{\footnotesize\ttfamily std\+::string RPL\+\_\+\+ENDOFNAMES (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{nick,  }\item[{const std\+::string \&}]{channel }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_a2f8762cfd51721e16be880f52fc2f73c}\label{ft__irc_8h_a2f8762cfd51721e16be880f52fc2f73c}} 
+\index{ft\_irc.h@{ft\_irc.h}!RPL\_ENDOFWHO@{RPL\_ENDOFWHO}}
+\index{RPL\_ENDOFWHO@{RPL\_ENDOFWHO}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{RPL\_ENDOFWHO()}{RPL\_ENDOFWHO()}}
+{\footnotesize\ttfamily std\+::string RPL\+\_\+\+ENDOFWHO (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{channel }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_a195dc5c15742608bf21ac188325f069f}\label{ft__irc_8h_a195dc5c15742608bf21ac188325f069f}} 
+\index{ft\_irc.h@{ft\_irc.h}!RPL\_INVITEMSG@{RPL\_INVITEMSG}}
+\index{RPL\_INVITEMSG@{RPL\_INVITEMSG}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{RPL\_INVITEMSG()}{RPL\_INVITEMSG()}}
+{\footnotesize\ttfamily std\+::string RPL\+\_\+\+INVITEMSG (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{nick,  }\item[{const std\+::string \&}]{user,  }\item[{const std\+::string \&}]{recipient,  }\item[{const std\+::string \&}]{channel }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_a1c9dc4d092d080b8cbdfcc0853a7297d}\label{ft__irc_8h_a1c9dc4d092d080b8cbdfcc0853a7297d}} 
+\index{ft\_irc.h@{ft\_irc.h}!RPL\_INVITING@{RPL\_INVITING}}
+\index{RPL\_INVITING@{RPL\_INVITING}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{RPL\_INVITING()}{RPL\_INVITING()}}
+{\footnotesize\ttfamily std\+::string RPL\+\_\+\+INVITING (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{nick,  }\item[{const std\+::string \&}]{recipient,  }\item[{const std\+::string \&}]{channel }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_af989c0f4c73060e1a25e56c2a2d95409}\label{ft__irc_8h_af989c0f4c73060e1a25e56c2a2d95409}} 
+\index{ft\_irc.h@{ft\_irc.h}!RPL\_JOIN@{RPL\_JOIN}}
+\index{RPL\_JOIN@{RPL\_JOIN}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{RPL\_JOIN()}{RPL\_JOIN()}}
+{\footnotesize\ttfamily std\+::string RPL\+\_\+\+JOIN (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{user,  }\item[{const std\+::string \&}]{channel }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_a907f5d609c7bd0ffeed748953d254c8c}\label{ft__irc_8h_a907f5d609c7bd0ffeed748953d254c8c}} 
+\index{ft\_irc.h@{ft\_irc.h}!RPL\_KICKFEEDBACK@{RPL\_KICKFEEDBACK}}
+\index{RPL\_KICKFEEDBACK@{RPL\_KICKFEEDBACK}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{RPL\_KICKFEEDBACK()}{RPL\_KICKFEEDBACK()}}
+{\footnotesize\ttfamily std\+::string RPL\+\_\+\+KICKFEEDBACK (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{op\+\_\+nick,  }\item[{const std\+::string \&}]{op\+\_\+user,  }\item[{const std\+::string \&}]{channel,  }\item[{const std\+::string \&}]{client }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_abaa2450b976f270abbd44fa74f500429}\label{ft__irc_8h_abaa2450b976f270abbd44fa74f500429}} 
+\index{ft\_irc.h@{ft\_irc.h}!RPL\_KICKNOREASON@{RPL\_KICKNOREASON}}
+\index{RPL\_KICKNOREASON@{RPL\_KICKNOREASON}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{RPL\_KICKNOREASON()}{RPL\_KICKNOREASON()}}
+{\footnotesize\ttfamily std\+::string RPL\+\_\+\+KICKNOREASON (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{op\+\_\+nick,  }\item[{const std\+::string \&}]{op\+\_\+user,  }\item[{const std\+::string \&}]{channel,  }\item[{const std\+::string \&}]{client }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_a90292bc1b1b813ce62dbc8e638d2cf5e}\label{ft__irc_8h_a90292bc1b1b813ce62dbc8e638d2cf5e}} 
+\index{ft\_irc.h@{ft\_irc.h}!RPL\_KICKREASON@{RPL\_KICKREASON}}
+\index{RPL\_KICKREASON@{RPL\_KICKREASON}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{RPL\_KICKREASON()}{RPL\_KICKREASON()}}
+{\footnotesize\ttfamily std\+::string RPL\+\_\+\+KICKREASON (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{op\+\_\+nick,  }\item[{const std\+::string \&}]{op\+\_\+user,  }\item[{const std\+::string \&}]{channel,  }\item[{const std\+::string \&}]{client,  }\item[{const std\+::string \&}]{reason }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_a0fa40d1a569115fb3179f52d8774f5bd}\label{ft__irc_8h_a0fa40d1a569115fb3179f52d8774f5bd}} 
+\index{ft\_irc.h@{ft\_irc.h}!RPL\_MODEBASE@{RPL\_MODEBASE}}
+\index{RPL\_MODEBASE@{RPL\_MODEBASE}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{RPL\_MODEBASE()}{RPL\_MODEBASE()}}
+{\footnotesize\ttfamily std\+::string RPL\+\_\+\+MODEBASE (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{nick,  }\item[{const std\+::string \&}]{user,  }\item[{const std\+::string \&}]{channel }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_a19018917cfc678a973e21ed3e4fcf526}\label{ft__irc_8h_a19018917cfc678a973e21ed3e4fcf526}} 
+\index{ft\_irc.h@{ft\_irc.h}!RPL\_MYINFO@{RPL\_MYINFO}}
+\index{RPL\_MYINFO@{RPL\_MYINFO}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{RPL\_MYINFO()}{RPL\_MYINFO()}}
+{\footnotesize\ttfamily std\+::string RPL\+\_\+\+MYINFO (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{user,  }\item[{const std\+::string \&}]{user\+Modes,  }\item[{const std\+::string \&}]{channel\+Modes }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_abf5430c9533f284de7166cf9a84bd3fc}\label{ft__irc_8h_abf5430c9533f284de7166cf9a84bd3fc}} 
+\index{ft\_irc.h@{ft\_irc.h}!RPL\_NAMREPLY@{RPL\_NAMREPLY}}
+\index{RPL\_NAMREPLY@{RPL\_NAMREPLY}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{RPL\_NAMREPLY()}{RPL\_NAMREPLY()}}
+{\footnotesize\ttfamily std\+::string RPL\+\_\+\+NAMREPLY (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{nick,  }\item[{const std\+::string \&}]{channel,  }\item[{const std\+::string \&}]{names }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_a0b7469e979714fcfac48ff86eb9532fc}\label{ft__irc_8h_a0b7469e979714fcfac48ff86eb9532fc}} 
+\index{ft\_irc.h@{ft\_irc.h}!RPL\_NOTOPIC@{RPL\_NOTOPIC}}
+\index{RPL\_NOTOPIC@{RPL\_NOTOPIC}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{RPL\_NOTOPIC()}{RPL\_NOTOPIC()}}
+{\footnotesize\ttfamily std\+::string RPL\+\_\+\+NOTOPIC (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{nick,  }\item[{const std\+::string \&}]{channel }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_a993df1675fdfd7d8085d008791e7fa51}\label{ft__irc_8h_a993df1675fdfd7d8085d008791e7fa51}} 
+\index{ft\_irc.h@{ft\_irc.h}!RPL\_PARTMSG@{RPL\_PARTMSG}}
+\index{RPL\_PARTMSG@{RPL\_PARTMSG}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{RPL\_PARTMSG()}{RPL\_PARTMSG()}}
+{\footnotesize\ttfamily std\+::string RPL\+\_\+\+PARTMSG (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{nick,  }\item[{const std\+::string \&}]{user,  }\item[{const std\+::string \&}]{dest,  }\item[{const std\+::string \&}]{message }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_ab68caafd96a671081fce7e134c089a1d}\label{ft__irc_8h_ab68caafd96a671081fce7e134c089a1d}} 
+\index{ft\_irc.h@{ft\_irc.h}!RPL\_PARTNOMSG@{RPL\_PARTNOMSG}}
+\index{RPL\_PARTNOMSG@{RPL\_PARTNOMSG}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{RPL\_PARTNOMSG()}{RPL\_PARTNOMSG()}}
+{\footnotesize\ttfamily std\+::string RPL\+\_\+\+PARTNOMSG (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{nick,  }\item[{const std\+::string \&}]{user,  }\item[{const std\+::string \&}]{dest }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_a285d24508f316d670c2688e89aca76c1}\label{ft__irc_8h_a285d24508f316d670c2688e89aca76c1}} 
+\index{ft\_irc.h@{ft\_irc.h}!RPL\_PRIVMSG@{RPL\_PRIVMSG}}
+\index{RPL\_PRIVMSG@{RPL\_PRIVMSG}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{RPL\_PRIVMSG()}{RPL\_PRIVMSG()}}
+{\footnotesize\ttfamily std\+::string RPL\+\_\+\+PRIVMSG (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{user,  }\item[{const std\+::string \&}]{dest,  }\item[{const std\+::string \&}]{message }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_abfc779f8af107355ff21170cc013469a}\label{ft__irc_8h_abfc779f8af107355ff21170cc013469a}} 
+\index{ft\_irc.h@{ft\_irc.h}!RPL\_TOPIC@{RPL\_TOPIC}}
+\index{RPL\_TOPIC@{RPL\_TOPIC}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{RPL\_TOPIC()}{RPL\_TOPIC()}}
+{\footnotesize\ttfamily std\+::string RPL\+\_\+\+TOPIC (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{nick,  }\item[{const std\+::string \&}]{channel,  }\item[{const std\+::string \&}]{topic }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_a2016af766f3f465e56a5fae842c9583d}\label{ft__irc_8h_a2016af766f3f465e56a5fae842c9583d}} 
+\index{ft\_irc.h@{ft\_irc.h}!RPL\_WELCOME@{RPL\_WELCOME}}
+\index{RPL\_WELCOME@{RPL\_WELCOME}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{RPL\_WELCOME()}{RPL\_WELCOME()}}
+{\footnotesize\ttfamily std\+::string RPL\+\_\+\+WELCOME (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{nick,  }\item[{const std\+::string \&}]{user }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_a6078395e4d237b42249d1bb9b95292f0}\label{ft__irc_8h_a6078395e4d237b42249d1bb9b95292f0}} 
+\index{ft\_irc.h@{ft\_irc.h}!RPL\_WHOREPLY@{RPL\_WHOREPLY}}
+\index{RPL\_WHOREPLY@{RPL\_WHOREPLY}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{RPL\_WHOREPLY()}{RPL\_WHOREPLY()}}
+{\footnotesize\ttfamily std\+::string RPL\+\_\+\+WHOREPLY (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{channel,  }\item[{const std\+::string \&}]{user,  }\item[{const std\+::string \&}]{nick,  }\item[{const std\+::string \&}]{flags,  }\item[{const std\+::string \&}]{realname }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{ft__irc_8h_a37c81afd517d1f5bbdd3299c83693ef6}\label{ft__irc_8h_a37c81afd517d1f5bbdd3299c83693ef6}} 
+\index{ft\_irc.h@{ft\_irc.h}!RPL\_YOURHOST@{RPL\_YOURHOST}}
+\index{RPL\_YOURHOST@{RPL\_YOURHOST}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{RPL\_YOURHOST()}{RPL\_YOURHOST()}}
+{\footnotesize\ttfamily std\+::string RPL\+\_\+\+YOURHOST (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{user }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{ft__irc_8h_a26894f5f61a3de2e81c8b9837517ee35}\label{ft__irc_8h_a26894f5f61a3de2e81c8b9837517ee35}} 
+\index{ft\_irc.h@{ft\_irc.h}!CRLF@{CRLF}}
+\index{CRLF@{CRLF}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{CRLF}{CRLF}}
+{\footnotesize\ttfamily const std\+::string CRLF = \char`\"{}\textbackslash{}r\textbackslash{}n\char`\"{}}
+
+\mbox{\Hypertarget{ft__irc_8h_a90e1260e93fad49501518c5edae4907c}\label{ft__irc_8h_a90e1260e93fad49501518c5edae4907c}} 
+\index{ft\_irc.h@{ft\_irc.h}!SERVER@{SERVER}}
+\index{SERVER@{SERVER}!ft\_irc.h@{ft\_irc.h}}
+\doxysubsubsection{\texorpdfstring{SERVER}{SERVER}}
+{\footnotesize\ttfamily const std\+::string SERVER = \char`\"{}\+:big.\+little.\+talk.\+irc\char`\"{}}
+

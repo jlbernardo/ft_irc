@@ -1,0 +1,17 @@
+<map id="Server::start" name="Server::start">
+<area shape="rect" id="node1" title=" " alt="" coords="5,143,108,170"/>
+<area shape="rect" id="node2" href="$classSocketsManager.html#afe85d6c0026f10100a0a7eed4e031f91" title=" " alt="" coords="156,26,379,82"/>
+<area shape="rect" id="node3" href="$classSocketsManager.html#afc022a1fa37a26b696ca0e4143c07c86" title=" " alt="" coords="193,107,342,148"/>
+<area shape="rect" id="node4" href="$classSocketsManager.html#a707cfffbb6ef097bec86212f97fec3b4" title=" " alt="" coords="160,173,375,199"/>
+<area shape="rect" id="node15" href="$classSocketsManager.html#a9b7d70918ecb2c9fb18dae1e0f718de3" title=" " alt="" coords="178,224,357,265"/>
+<area shape="rect" id="node5" href="$classSocketsManager.html#a0898eab2cc9881e3c3ff5c4ac5218fa2" title=" " alt="" coords="427,165,592,207"/>
+<area shape="rect" id="node6" href="$classClient.html#a283fee7351e9b52cff11c9c727b43c6e" title=" " alt="" coords="678,5,814,47"/>
+<area shape="rect" id="node7" href="$classClient.html#af56e0b5445c6add00a410b7a1d90b5c8" title=" " alt="" coords="672,71,820,98"/>
+<area shape="rect" id="node8" href="$classCommandsManager.html#a11a4f7e0c0df57dc182e1c0e95a6378c" title=" " alt="" coords="640,122,852,149"/>
+<area shape="rect" id="node11" href="$classClient.html#ac2a450468aaa9e4e18975b162af8e154" title=" " alt="" coords="679,173,813,199"/>
+<area shape="rect" id="node12" href="$classCommands.html#a7b632b2ad6bb54cb920c18efd132ffaf" title=" " alt="" coords="665,224,827,265"/>
+<area shape="rect" id="node13" href="$classClient.html#a5210d5922676cc1f71cda4951ad3a027" title=" " alt="" coords="659,290,833,317"/>
+<area shape="rect" id="node14" href="$classServer.html#ab1f941204f7fe3c7c31b61844ad4404f" title=" " alt="" coords="663,341,829,367"/>
+<area shape="rect" id="node9" href="$classCommands.html#a8e7a8de7d6938b8fceed1baf0495b5a4" title=" " alt="" coords="908,97,1044,123"/>
+<area shape="rect" id="node10" href="$classCommands.html#a2eaf5596436ad22e55a79121fb22563e" title=" " alt="" coords="900,147,1052,174"/>
+</map>

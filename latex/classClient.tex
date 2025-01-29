@@ -1,0 +1,229 @@
+\hypertarget{classClient}{}\doxysection{Client Class Reference}
+\label{classClient}\index{Client@{Client}}
+
+
+{\ttfamily \#include $<$Client.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classClient_af0ffba7d73ea07f7610d6b1a98fbc561}{Client}} (int fd)
+\item 
+\mbox{\hyperlink{classClient_a840e519ca781888cbd54181572ebe3a7}{$\sim$\+Client}} ()
+\item 
+void \mbox{\hyperlink{classClient_af56e0b5445c6add00a410b7a1d90b5c8}{clean\+\_\+buffer}} ()
+\item 
+bool \mbox{\hyperlink{classClient_a283fee7351e9b52cff11c9c727b43c6e}{buffer\+\_\+has\+\_\+linebreak}} ()
+\item 
+bool \mbox{\hyperlink{classClient_a5210d5922676cc1f71cda4951ad3a027}{read\+\_\+into\+\_\+buffer}} ()
+\item 
+int \mbox{\hyperlink{classClient_a14ccce738c29532eafeaac208af9915a}{get\+\_\+fd}} () const
+\item 
+const std\+::string \& \mbox{\hyperlink{classClient_aeffb35cfe5faa03ee7de4caceaf1e966}{get\+\_\+pass}} () const
+\item 
+const std\+::string \& \mbox{\hyperlink{classClient_aa42535f5590682a0ea60b51db5b1f26b}{get\+\_\+nickname}} () const
+\item 
+const std\+::string \& \mbox{\hyperlink{classClient_a764ef312204d05199499b05debf1afc9}{get\+\_\+username}} () const
+\item 
+const std\+::string \& \mbox{\hyperlink{classClient_a380a4fb7f826e0de34b05090925244d4}{get\+\_\+realname}} () const
+\item 
+const std\+::string \& \mbox{\hyperlink{classClient_ae32b14a44aab75e45807282391fbdd5b}{get\+\_\+hostname}} () const
+\item 
+const std\+::string \& \mbox{\hyperlink{classClient_ac2a450468aaa9e4e18975b162af8e154}{get\+\_\+buffer}} () const
+\item 
+void \mbox{\hyperlink{classClient_a04123ecf7541c0bea959a57d63a1bd62}{set\+\_\+authentication}} (bool status)
+\item 
+void \mbox{\hyperlink{classClient_a944c2208e1a8a857cfefd2beb81d72b5}{set\+\_\+hostname}} (int client\+\_\+socket)
+\item 
+void \mbox{\hyperlink{classClient_ab1966eb5ffc678b3257781e7acd73ec4}{set\+\_\+nickname}} (const std\+::string \&nickname)
+\item 
+void \mbox{\hyperlink{classClient_ae6d81a36b569c113f4688a8cfb153a60}{set\+\_\+username}} (const std\+::string \&username)
+\item 
+void \mbox{\hyperlink{classClient_ab4aaf1a0a8517519c5bcb4b7045b1214}{set\+\_\+realname}} (const std\+::string \&realname)
+\item 
+bool \mbox{\hyperlink{classClient_af2dd51edfcb54442da84e9e37fa1abcc}{password\+\_\+matched}} (\mbox{\hyperlink{classServer}{Server}} \&server) const
+\item 
+bool \mbox{\hyperlink{classClient_a6839225614f9a984a6978498bb793356}{is\+\_\+authenticated}} () const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classClient_af0ffba7d73ea07f7610d6b1a98fbc561}\label{classClient_af0ffba7d73ea07f7610d6b1a98fbc561}} 
+\index{Client@{Client}!Client@{Client}}
+\index{Client@{Client}!Client@{Client}}
+\doxysubsubsection{\texorpdfstring{Client()}{Client()}}
+{\footnotesize\ttfamily Client\+::\+Client (\begin{DoxyParamCaption}\item[{int}]{fd }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=316pt]{classClient_af0ffba7d73ea07f7610d6b1a98fbc561_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classClient_a840e519ca781888cbd54181572ebe3a7}\label{classClient_a840e519ca781888cbd54181572ebe3a7}} 
+\index{Client@{Client}!````~Client@{$\sim$Client}}
+\index{````~Client@{$\sim$Client}!Client@{Client}}
+\doxysubsubsection{\texorpdfstring{$\sim$Client()}{~Client()}}
+{\footnotesize\ttfamily Client\+::$\sim$\+Client (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classClient_a283fee7351e9b52cff11c9c727b43c6e}\label{classClient_a283fee7351e9b52cff11c9c727b43c6e}} 
+\index{Client@{Client}!buffer\_has\_linebreak@{buffer\_has\_linebreak}}
+\index{buffer\_has\_linebreak@{buffer\_has\_linebreak}!Client@{Client}}
+\doxysubsubsection{\texorpdfstring{buffer\_has\_linebreak()}{buffer\_has\_linebreak()}}
+{\footnotesize\ttfamily bool Client\+::buffer\+\_\+has\+\_\+linebreak (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classClient_a283fee7351e9b52cff11c9c727b43c6e_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classClient_af56e0b5445c6add00a410b7a1d90b5c8}\label{classClient_af56e0b5445c6add00a410b7a1d90b5c8}} 
+\index{Client@{Client}!clean\_buffer@{clean\_buffer}}
+\index{clean\_buffer@{clean\_buffer}!Client@{Client}}
+\doxysubsubsection{\texorpdfstring{clean\_buffer()}{clean\_buffer()}}
+{\footnotesize\ttfamily void Client\+::clean\+\_\+buffer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classClient_af56e0b5445c6add00a410b7a1d90b5c8_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classClient_ac2a450468aaa9e4e18975b162af8e154}\label{classClient_ac2a450468aaa9e4e18975b162af8e154}} 
+\index{Client@{Client}!get\_buffer@{get\_buffer}}
+\index{get\_buffer@{get\_buffer}!Client@{Client}}
+\doxysubsubsection{\texorpdfstring{get\_buffer()}{get\_buffer()}}
+{\footnotesize\ttfamily const std\+::string \& Client\+::get\+\_\+buffer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classClient_ac2a450468aaa9e4e18975b162af8e154_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classClient_a14ccce738c29532eafeaac208af9915a}\label{classClient_a14ccce738c29532eafeaac208af9915a}} 
+\index{Client@{Client}!get\_fd@{get\_fd}}
+\index{get\_fd@{get\_fd}!Client@{Client}}
+\doxysubsubsection{\texorpdfstring{get\_fd()}{get\_fd()}}
+{\footnotesize\ttfamily int Client\+::get\+\_\+fd (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classClient_ae32b14a44aab75e45807282391fbdd5b}\label{classClient_ae32b14a44aab75e45807282391fbdd5b}} 
+\index{Client@{Client}!get\_hostname@{get\_hostname}}
+\index{get\_hostname@{get\_hostname}!Client@{Client}}
+\doxysubsubsection{\texorpdfstring{get\_hostname()}{get\_hostname()}}
+{\footnotesize\ttfamily const std\+::string \& Client\+::get\+\_\+hostname (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classClient_aa42535f5590682a0ea60b51db5b1f26b}\label{classClient_aa42535f5590682a0ea60b51db5b1f26b}} 
+\index{Client@{Client}!get\_nickname@{get\_nickname}}
+\index{get\_nickname@{get\_nickname}!Client@{Client}}
+\doxysubsubsection{\texorpdfstring{get\_nickname()}{get\_nickname()}}
+{\footnotesize\ttfamily const std\+::string \& Client\+::get\+\_\+nickname (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classClient_aeffb35cfe5faa03ee7de4caceaf1e966}\label{classClient_aeffb35cfe5faa03ee7de4caceaf1e966}} 
+\index{Client@{Client}!get\_pass@{get\_pass}}
+\index{get\_pass@{get\_pass}!Client@{Client}}
+\doxysubsubsection{\texorpdfstring{get\_pass()}{get\_pass()}}
+{\footnotesize\ttfamily const std\+::string \& Client\+::get\+\_\+pass (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classClient_a380a4fb7f826e0de34b05090925244d4}\label{classClient_a380a4fb7f826e0de34b05090925244d4}} 
+\index{Client@{Client}!get\_realname@{get\_realname}}
+\index{get\_realname@{get\_realname}!Client@{Client}}
+\doxysubsubsection{\texorpdfstring{get\_realname()}{get\_realname()}}
+{\footnotesize\ttfamily const std\+::string \& Client\+::get\+\_\+realname (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classClient_a764ef312204d05199499b05debf1afc9}\label{classClient_a764ef312204d05199499b05debf1afc9}} 
+\index{Client@{Client}!get\_username@{get\_username}}
+\index{get\_username@{get\_username}!Client@{Client}}
+\doxysubsubsection{\texorpdfstring{get\_username()}{get\_username()}}
+{\footnotesize\ttfamily const std\+::string \& Client\+::get\+\_\+username (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classClient_a6839225614f9a984a6978498bb793356}\label{classClient_a6839225614f9a984a6978498bb793356}} 
+\index{Client@{Client}!is\_authenticated@{is\_authenticated}}
+\index{is\_authenticated@{is\_authenticated}!Client@{Client}}
+\doxysubsubsection{\texorpdfstring{is\_authenticated()}{is\_authenticated()}}
+{\footnotesize\ttfamily bool Client\+::is\+\_\+authenticated (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classClient_af2dd51edfcb54442da84e9e37fa1abcc}\label{classClient_af2dd51edfcb54442da84e9e37fa1abcc}} 
+\index{Client@{Client}!password\_matched@{password\_matched}}
+\index{password\_matched@{password\_matched}!Client@{Client}}
+\doxysubsubsection{\texorpdfstring{password\_matched()}{password\_matched()}}
+{\footnotesize\ttfamily bool Client\+::password\+\_\+matched (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classServer}{Server}} \&}]{server }\end{DoxyParamCaption}) const}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classClient_af2dd51edfcb54442da84e9e37fa1abcc_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classClient_a5210d5922676cc1f71cda4951ad3a027}\label{classClient_a5210d5922676cc1f71cda4951ad3a027}} 
+\index{Client@{Client}!read\_into\_buffer@{read\_into\_buffer}}
+\index{read\_into\_buffer@{read\_into\_buffer}!Client@{Client}}
+\doxysubsubsection{\texorpdfstring{read\_into\_buffer()}{read\_into\_buffer()}}
+{\footnotesize\ttfamily bool Client\+::read\+\_\+into\+\_\+buffer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classClient_a5210d5922676cc1f71cda4951ad3a027_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classClient_a04123ecf7541c0bea959a57d63a1bd62}\label{classClient_a04123ecf7541c0bea959a57d63a1bd62}} 
+\index{Client@{Client}!set\_authentication@{set\_authentication}}
+\index{set\_authentication@{set\_authentication}!Client@{Client}}
+\doxysubsubsection{\texorpdfstring{set\_authentication()}{set\_authentication()}}
+{\footnotesize\ttfamily void Client\+::set\+\_\+authentication (\begin{DoxyParamCaption}\item[{bool}]{status }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classClient_a944c2208e1a8a857cfefd2beb81d72b5}\label{classClient_a944c2208e1a8a857cfefd2beb81d72b5}} 
+\index{Client@{Client}!set\_hostname@{set\_hostname}}
+\index{set\_hostname@{set\_hostname}!Client@{Client}}
+\doxysubsubsection{\texorpdfstring{set\_hostname()}{set\_hostname()}}
+{\footnotesize\ttfamily void Client\+::set\+\_\+hostname (\begin{DoxyParamCaption}\item[{int}]{client\+\_\+socket }\end{DoxyParamCaption})}
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=316pt]{classClient_a944c2208e1a8a857cfefd2beb81d72b5_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classClient_ab1966eb5ffc678b3257781e7acd73ec4}\label{classClient_ab1966eb5ffc678b3257781e7acd73ec4}} 
+\index{Client@{Client}!set\_nickname@{set\_nickname}}
+\index{set\_nickname@{set\_nickname}!Client@{Client}}
+\doxysubsubsection{\texorpdfstring{set\_nickname()}{set\_nickname()}}
+{\footnotesize\ttfamily void Client\+::set\+\_\+nickname (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{nickname }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classClient_ab4aaf1a0a8517519c5bcb4b7045b1214}\label{classClient_ab4aaf1a0a8517519c5bcb4b7045b1214}} 
+\index{Client@{Client}!set\_realname@{set\_realname}}
+\index{set\_realname@{set\_realname}!Client@{Client}}
+\doxysubsubsection{\texorpdfstring{set\_realname()}{set\_realname()}}
+{\footnotesize\ttfamily void Client\+::set\+\_\+realname (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{realname }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classClient_ae6d81a36b569c113f4688a8cfb153a60}\label{classClient_ae6d81a36b569c113f4688a8cfb153a60}} 
+\index{Client@{Client}!set\_username@{set\_username}}
+\index{set\_username@{set\_username}!Client@{Client}}
+\doxysubsubsection{\texorpdfstring{set\_username()}{set\_username()}}
+{\footnotesize\ttfamily void Client\+::set\+\_\+username (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{username }\end{DoxyParamCaption})}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+srcs/\mbox{\hyperlink{Client_8hpp}{Client.\+hpp}}\item 
+srcs/\mbox{\hyperlink{Client_8cpp}{Client.\+cpp}}\end{DoxyCompactItemize}

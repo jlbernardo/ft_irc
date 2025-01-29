@@ -1,0 +1,50 @@
+\hypertarget{Server_8hpp}{}\doxysection{srcs/\+Server.hpp File Reference}
+\label{Server_8hpp}\index{srcs/Server.hpp@{srcs/Server.hpp}}
+{\ttfamily \#include $<$map$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include \char`\"{}Client.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Channel.\+hpp\char`\"{}}\newline
+{\ttfamily \#include $<$queue$>$}\newline
+Include dependency graph for Server.\+hpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{Server_8hpp__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{Server_8hpp__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classServer}{Server}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef std\+::map$<$ int, std\+::queue$<$ std\+::string $>$ $>$ \mbox{\hyperlink{Server_8hpp_adcff85f79ce861ea31aa568cd0d26a16}{Message\+Queue\+Map}}
+\item 
+typedef std\+::map$<$ int, \mbox{\hyperlink{classClient}{Client}} $\ast$ $>$ \mbox{\hyperlink{Server_8hpp_a1307bf8f7e59b04c17e0c6e4f5a8e938}{Client\+Map}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{Server_8hpp_a1307bf8f7e59b04c17e0c6e4f5a8e938}\label{Server_8hpp_a1307bf8f7e59b04c17e0c6e4f5a8e938}} 
+\index{Server.hpp@{Server.hpp}!ClientMap@{ClientMap}}
+\index{ClientMap@{ClientMap}!Server.hpp@{Server.hpp}}
+\doxysubsubsection{\texorpdfstring{ClientMap}{ClientMap}}
+{\footnotesize\ttfamily typedef std\+::map$<$int, \mbox{\hyperlink{classClient}{Client}}$\ast$$>$ \mbox{\hyperlink{Server_8hpp_a1307bf8f7e59b04c17e0c6e4f5a8e938}{Client\+Map}}}
+
+\mbox{\Hypertarget{Server_8hpp_adcff85f79ce861ea31aa568cd0d26a16}\label{Server_8hpp_adcff85f79ce861ea31aa568cd0d26a16}} 
+\index{Server.hpp@{Server.hpp}!MessageQueueMap@{MessageQueueMap}}
+\index{MessageQueueMap@{MessageQueueMap}!Server.hpp@{Server.hpp}}
+\doxysubsubsection{\texorpdfstring{MessageQueueMap}{MessageQueueMap}}
+{\footnotesize\ttfamily typedef std\+::map$<$int, std\+::queue$<$std\+::string$>$ $>$ \mbox{\hyperlink{Server_8hpp_adcff85f79ce861ea31aa568cd0d26a16}{Message\+Queue\+Map}}}
+
