@@ -56,4 +56,7 @@ class Channel {
 		bool kickMember(Client* operator_client, Client* target, const std::string& reason);
 		bool inviteMember(Client* operator_client, Client* target);
 		bool setTopic(Client* client, const std::string& new_topic);
+
+		//validation
+		bool parseChannelName(const std::string& name) const;
 };

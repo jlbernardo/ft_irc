@@ -2,12 +2,11 @@
 #include "ft_irc.h"
 #include <map>
 #include <ctype.h>
-// #include <utility>
 
 Channel::Channel(const std::string& name, Client* creator) : _name(name) {
 	std::string	input;
 
-	if (name.empty() || (name[0] != '#' && name[0] != '&')) {
+	if (!parseChannelName(name)) {
         ERR_BADCHANMASK(name);
 		this->~Channel();
 		return ;
@@ -165,3 +164,14 @@ bool Channel::setTopic(Client* operator_client, const std::string& new_topic) {
 
 	return false;
 }
+
+bool Channel::parseChannelName(const std::string &name) const
+{
+	std::string invalidChars = " ^G,";
+
+	size_t pos = name.find_first_of(invalidChars);
+
+	if (name.empty() || (name[0] != '#' && name[0] != '&') || pos != std::string::npos)
+		return false;
+	return true;
+};
