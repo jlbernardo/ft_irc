@@ -37,7 +37,7 @@ class Client {
     const std::string &get_realname() const;
     const std::string &get_hostname() const;
     const std::string &get_buffer() const;
-    Server* getServer();
+    Server* getServer() const;
 
 	// setters:
     void set_authentication(bool status);

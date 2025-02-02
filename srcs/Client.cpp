@@ -43,7 +43,7 @@ const std::string &Client::get_realname() const { return _name; }
 
 const std::string &Client::get_hostname() const { return _hostname; }
 
-Server* Client::getServer() { return _server; }
+Server* Client::getServer() const { return _server; }
 
 bool Client::is_authenticated() const { return _authenticated; }
 

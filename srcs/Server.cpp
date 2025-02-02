@@ -80,7 +80,7 @@ void Server::add_new_client_to_master_set() {
   FD_SET(client_fd, &_master_set);
   if (client_fd > _max_fd)
     _max_fd = client_fd;
-  _clients[client_fd] = new Client(client_fd);
+  _clients[client_fd] = new Client(client_fd, this);
 #ifdef TEST
   std::stringstream str;
   str << "Connected to server on socket " << client_fd << ": ";
@@ -127,6 +127,10 @@ std::string Server::get_pass() {
 void Server::set_pass(const std::string& pass){
   _pass = pass;
 }
+
+void Server::addNewChannel(Channel* new_channel){
+    _channels.insert(std::pair<std::string, Channel*>(new_channel->getName(), new_channel));
+};
 
 // void Server::stop() {}
 
