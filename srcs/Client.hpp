@@ -18,10 +18,11 @@ class Client {
 	std::string _pass;
     bool _authenticated;
     std::string _buffer;
+    Server* _server;
     // std::vector _joinedChannels;
 
   public:
-    Client(int fd);
+    Client(int fd,  Server* server);
     ~Client();
 
     void clean_buffer();
@@ -36,6 +37,7 @@ class Client {
     const std::string &get_realname() const;
     const std::string &get_hostname() const;
     const std::string &get_buffer() const;
+    Server* getServer();
 
 	// setters:
     void set_authentication(bool status);

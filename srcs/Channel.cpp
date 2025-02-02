@@ -6,13 +6,14 @@
 Channel::Channel(const std::string& name, Client* creator) : _name(name) {
 	std::string	input;
 
-	if (!parseChannelName(name)) {
-        ERR_BADCHANMASK(name);
+	if (!creator) {
+		errorln("Invalid creator.");
 		this->~Channel();
 		return ;
 	}
-	if (!creator) {
-		errorln("Invalid creator.");
+
+	if (!parseChannelName(name)) {
+		creator->getServer()->send_message(creator->get_fd(), ERR_BADCHANMASK(name));
 		this->~Channel();
 		return ;
 	}

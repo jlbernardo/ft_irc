@@ -5,9 +5,12 @@
 #include <cstdlib>
 #include <iostream>
 #include <map>
+#include "Server.hpp"
 #include "Client.hpp"
 
 #include <string>
+
+class Server;
 
 class Channel {
 	

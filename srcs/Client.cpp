@@ -2,8 +2,9 @@
 #include "Server.hpp"
 #include "ft_irc.h"
 
-Client::Client(int fd)
-    : _fd(fd), _nick(""), _user(""), _name(""), _authenticated(false), _buffer("") {
+Client::Client(int fd, Server* server)
+    : _fd(fd), _nick(""), _user(""), _name(""),
+    _authenticated(false), _buffer(""), _server(server) {
   set_hostname(fd);
 }
 
@@ -41,6 +42,8 @@ const std::string &Client::get_username() const { return _user; }
 const std::string &Client::get_realname() const { return _name; }
 
 const std::string &Client::get_hostname() const { return _hostname; }
+
+Server* Client::getServer() { return _server; }
 
 bool Client::is_authenticated() const { return _authenticated; }
 
