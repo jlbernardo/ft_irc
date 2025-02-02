@@ -127,6 +127,10 @@ inline std::string ERR_BADCHANNELKEY(const std::string& user, const std::string&
   return SERVER + " 475 " + user + " " + channel + " :Password for channel was either not given or incorrect" + CRLF;
 }
 
+inline std::string ERR_BADCHANMASK(const std::string& channel) {
+  return SERVER + "476" + channel + " :Bad Channel Mask" + CRLF;
+}
+
 inline std::string ERR_CHANOPRIVSNEEDED(const std::string& user, const std::string& channel) {
   return SERVER + " 482 " + user + " " + channel + " :You're not a channel operator!" + CRLF;
 }

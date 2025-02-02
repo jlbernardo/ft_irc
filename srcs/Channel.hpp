@@ -36,7 +36,6 @@ class Channel {
 		void broadcastMessage(const std::string& message, Client* sender = NULL);
 		
 		// Channel operator operations
-		void setMember(Client* client);
 		void setOperator(Client* client);
 		bool isOperator(Client* client) const;
 		
@@ -46,7 +45,7 @@ class Channel {
 		// outside the Channel class may neeed to access this information   
 		// void setMode(char mode, bool status);
 		bool checkChannelModes(char mode) const;
-		bool checkUserModes(char mode, Client* client) const;
+		bool checkUserModes(char mode, Client* client);
 		
 		// Getters
 		const std::string& getName() const;
