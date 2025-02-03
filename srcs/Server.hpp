@@ -42,6 +42,8 @@ class Server {
   void send_message(int client_fd, const std::string& message);
   void error(int fd, const std::string& msg);
 
+  bool username_already_registered(const std::string& username) const;
+
   // Manager classes:
   friend class SocketsManager;
   friend class CommandsManager;

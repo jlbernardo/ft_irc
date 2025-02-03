@@ -1,16 +1,18 @@
 #include <arpa/inet.h>
+#include <string.h>
+#include <unistd.h>
+
 #include <csignal>
 #include <cstring>
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
-#include <string.h>
-#include <unistd.h>
 
 #include "Server.hpp"
 #include "SocketsManager.hpp"
 
-template <typename T> std::string to_string(T value) {
+template <typename T>
+std::string to_string(T value) {
   std::ostringstream oss;
   oss << value;
   return oss.str();
@@ -18,7 +20,7 @@ template <typename T> std::string to_string(T value) {
 
 volatile sig_atomic_t Server::terminate = 0;
 
-Server::Server(int port, const std::string& pass) : _port(port), _pass(pass), _max_fd(0) {
+Server::Server(int port, const std::string &pass) : _port(port), _pass(pass), _max_fd(0) {
   register_signals();
   initialize_socket();
   setup_server();
@@ -78,8 +80,7 @@ void Server::add_new_client_to_master_set() {
     return;
   }
   FD_SET(client_fd, &_master_set);
-  if (client_fd > _max_fd)
-    _max_fd = client_fd;
+  if (client_fd > _max_fd) _max_fd = client_fd;
   _clients[client_fd] = new Client(client_fd);
 #ifdef TEST
   std::stringstream str;
@@ -97,8 +98,7 @@ void Server::remove_client(int client_fd) {
 
 Server::~Server() {
   std::cout << "\nShutting down server\n";
-  for (std::map<int, Client *>::iterator it = _clients.begin();
-       it != _clients.end(); ++it) {
+  for (std::map<int, Client *>::iterator it = _clients.begin(); it != _clients.end(); ++it) {
     delete it->second;
     close(it->first);
   }
@@ -116,24 +116,18 @@ void Server::send_message(int client_fd, const std::string &message) {
   }
 }
 
-int Server::get_fd() {
-  return _fd;
+int Server::get_fd() { return _fd; }
+
+std::string Server::get_pass() { return _pass; }
+
+void Server::set_pass(const std::string &pass) { _pass = pass; }
+
+bool Server::username_already_registered(const std::string &username) const {
+  for (ClientMap::const_iterator it = _clients.begin(); it != _clients.end(); ++it) {
+    if (it->second->get_username() == username) {
+	  std::cout << "wtf? " << username << std::endl;
+      return true;
+    }
+  }
+  return false;
 }
-
-std::string Server::get_pass() {
-  return _pass;
-}
-
-void Server::set_pass(const std::string& pass){
-  _pass = pass;
-}
-
-// void Server::stop() {}
-
-// void Server::handlePrivmsg(Client* client, const std::string& command) {} //need implement
-// void Server::handlePart(Client* client, const std::string& command){} //need implement
-// Channel* Server::createChannel(const std::string& name, Client* creator){} //need implement
-// void Server::removeChannel(const std::string& name) {} //need implement
-// Channel* Server::findChannel(const std::string& name) {} //need implement
-// void Server::handleJoin(Client* client, const std::string& command) {} //need implement
-// void Server::handle_client_message(int client_fd) {}
