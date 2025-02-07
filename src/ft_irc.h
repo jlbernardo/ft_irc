@@ -24,8 +24,8 @@
 const std::string SERVER = ":big.little.talk.irc";
 const std::string CRLF = "\r\n";
 
-inline std::string RPL_WELCOME(const std::string& nick, const std::string& user) {
-  return SERVER + " 001 " + user + " :Welcome to the Internet Relay Chat " + nick + "!" + user + "@*" + CRLF;
+inline std::string RPL_WELCOME(const std::string& nick, const std::string& user, const std::string& host) {
+  return SERVER + " 001 " + user + " :Welcome to the Internet Relay Chat " + nick + "!" + user + "@" + host + CRLF;
 }
 
 inline std::string RPL_ENDOFWHO(const std::string& channel) {
