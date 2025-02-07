@@ -18,8 +18,7 @@ void Client::set_hostname(int client_socket) {
     return;
   }
   _hostname = inet_ntoa(addr.sin_addr);
-  println("The hostname will be ");
-  printlnnl(_hostname);
+  println("The hostname will be: " << _hostname);
 }
 
 bool Client::read_into_buffer() {
