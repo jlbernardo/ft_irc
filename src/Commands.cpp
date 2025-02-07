@@ -44,7 +44,7 @@ void Commands::init_list_of_commands(const std::string &raw_input) {
     std::string param;
     bool found_colon = false;
     while (param_iss >> param) {
-      if (param[0] ==  ':' && !found_colon) {
+      if (param[0] ==  ':') {
         param = param.substr(1);
         found_colon = true;
         std::string remaining;
