@@ -132,6 +132,12 @@ void Server::addNewChannel(Channel* new_channel){
     _channels.insert(std::pair<std::string, Channel*>(new_channel->getName(), new_channel));
 };
 
+bool Server::checkForChannel(const std::string& channel_name){
+    if (_channels.find(channel_name) == _channels.end())
+        return false;
+    return true;
+};
+
 // void Server::stop() {}
 
 // void Server::handlePrivmsg(Client* client, const std::string& command) {} //need implement

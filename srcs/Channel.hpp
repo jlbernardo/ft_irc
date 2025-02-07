@@ -41,6 +41,8 @@ class Channel {
 		// Channel operator operations
 		void setOperator(Client* client);
 		bool isOperator(Client* client) const;
+		int getCurrentMembersCount();
+		int getUserLimit();
 		
 		// Mode operations
 		//if only operators are able to set modes, a setter function to do it

@@ -9,6 +9,8 @@
 typedef std::map<int, std::queue<std::string> > MessageQueueMap;
 typedef std::map<int, Client*> ClientMap;
 
+class Channel;
+
 class Server {
  private:
   int _fd;
@@ -42,6 +44,7 @@ class Server {
   void send_message(int client_fd, const std::string& message);
   void error(int fd, const std::string& msg);
   void addNewChannel(Channel* new_channel);
+  bool checkForChannel(const std::string& channel_name);
 
   // Manager classes:
   friend class SocketsManager;

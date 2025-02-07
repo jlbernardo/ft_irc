@@ -12,10 +12,10 @@ void CommandsManager::execute(Commands &commands) {
         const Command &cmd = *it;
         switch (cmd.type) {
             case PRIVMSG:
-                // privmsg(commands, cmd);
+                privmsg(commands, cmd);
                 break;
-				case JOIN:
-					// join(commands, cmd);
+            case JOIN:
+                // join(commands, cmd);
                 break;
             case NICK:
                 nick(commands, cmd);
@@ -26,8 +26,20 @@ void CommandsManager::execute(Commands &commands) {
             case QUIT:
                 // quit(commands, cmd);
                 break;
+            case KICK:
+                kick(commands, cmd);
+                break ;
             case PASS:
                 pass(commands, cmd);
+                break;
+            case INVITE:
+                // invite();
+                break;
+            case TOPIC:
+                // topic();
+                break;
+            case MODE:
+                // mode();
                 break;
             default:
                 break;
@@ -37,10 +49,25 @@ void CommandsManager::execute(Commands &commands) {
     commands.clear();
 }
 
-// void CommandsManager::privmsg(Commands &commands, const Command &cmd) {
-//     // Implementation of PRIVMSG command
-// }
-//
+void CommandsManager::privmsg(Commands &commands, const Command &cmd) {
+    Client &sender = commands.get_sender();
+    const std::string &target = cmd.parameters.empty() ? "" : cmd.parameters[0];
+    const std::string &msg = cmd.parameters.size() < 2 ? "" : cmd.parameters[1];
+
+    if (target.empty()) {
+        server.send_message(sender.get_fd(), ERR_NORECIPIENT(cmd.command));
+        return;
+    }
+    // else if () {
+    //     server.send_message(sender.get_fd(), ERR_NOSUCHNICK(target));
+    //     return;
+    // }
+    else if (msg.empty()) {
+        server.send_message(sender.get_fd(), ERR_NOTEXTTOSEND(target));
+        return;
+    }
+}
+
 // void CommandsManager::join(Commands &commands, const Command &cmd) {
 //     // Implementation of JOIN command
 // }
@@ -83,6 +110,36 @@ void CommandsManager::user(Commands &commands, const Command &cmd) {
     update_user_info(client, username, realname);
     send_welcome_messages(client);
 }
+
+void CommandsManager::join(Commands &commands, const Command &cmd) {
+    Channel* channel;
+    
+    if (!server.checkForChannel(cmd.parameters[0])) {
+        server.addNewChannel(new Channel(cmd.parameters[0], &commands.get_sender()));
+        // verify channel setting:
+    } else {
+        channel = server._channels[cmd.parameters[0]];
+    }
+    if (cmd.parameters[1][0] != '+' && cmd.parameters[1][0] != '-') {
+        
+    }
+
+    if (channel->checkChannelModes('l') && channel->getCurrentMembersCount() < channel->getUserLimit()) {
+        channel->addMember(&commands.get_sender());     
+    } else {
+        server.send_message(commands.get_sender().get_fd(), ERR_CHANNELISFULL(cmd.parameters[0]));
+    } 
+    if (channel->checkChannelModes('i')) {
+
+    } else if ("nbr of params") {
+        
+    } else if ("if the channel has key, does the matches the channel key?") {
+        
+    }
+    else {
+        server._channels[cmd.parameters[0]]->addMember(&commands.get_sender());
+    }
+};
 
 // void CommandsManager::quit(Commands &commands, const Command &cmd) {
 //     // Implementation of QUIT command

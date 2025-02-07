@@ -7,7 +7,7 @@ Channel::Channel(const std::string& name, Client* creator) : _name(name) {
 	std::string	input;
 
 	if (!creator) {
-		errorln("Invalid creator.");
+		creator->getServer()->send_message(creator->get_fd(), ERR_NONICKNAMEGIVEN());
 		this->~Channel();
 		return ;
 	}
@@ -21,42 +21,9 @@ Channel::Channel(const std::string& name, Client* creator) : _name(name) {
 	_members.insert(std::pair<int, Client*>(creator->get_fd(), creator));
 	_operators.insert(std::pair<int, Client*>(creator->get_fd(), creator));
 	creator->getServer()->addNewChannel(this);
-    //Those configs are not made at the channel creation. 
-
-	// input.clear();
-	// println("Set channel topic (press ENTER to skip)" << name << ":");
-	// std::getline(std::cin, input);
-	// if (!input.empty())
-	// 	_topic = input;
-	
-	// input.clear();
-	// println("Set channel password (press ENTER to skip):");
-	// std::getline(std::cin, input);
-	// if (!input.empty()) {
-	// 	_hasKey = true;
-	// 	_key = input;
-	// }
-
-	// input.clear();
-	// println("Set channel user limit (press ENTER to skip):");
-	// std::getline(std::cin, input);
-	// if (!input.empty())
-	// 	_userLimit = std::atoi(input.c_str());
 }
 
 Channel::~Channel() {
-	// for (std::map<int, Client*>::iterator it = _members.begin(); it != _members.end(); it++) {
-	// 	delete it->second;
-	// }
-	// _members.clear();
-	// for (std::map<int, Client*>::iterator it = _operators.begin(); it != _operators.end(); it++) {
-	// 	delete it->second;
-	// }
-	// _operators.clear();
-
-	// THIS IS NOT NEEDED, IF WE DELETE THE CLIENT POINTER 
-	// IT MEANS HE IS EXCLUDED ALSO FROM THE SERVER, 
-	// WHICH IS NOT WHAT WE WANT
 }
 
 void Channel::setOperator(Client* client) {
@@ -109,6 +76,7 @@ const std::map<int, Client*>& Channel::getMembers() const {
 }
 
 bool Channel::kickMember(Client* operator_client, Client* target, const std::string& reason) {
+	(void) reason;
 	if (!operator_client) {
 		errorln("Invalid operator.");
 	}
@@ -175,4 +143,14 @@ bool Channel::parseChannelName(const std::string &name) const
 	if (name.empty() || (name[0] != '#' && name[0] != '&') || pos != std::string::npos)
 		return false;
 	return true;
+};
+
+
+
+int getCurrentMembersCount() {
+	return 42;
+};
+
+int getUserLimit() {
+	return 42;
 };

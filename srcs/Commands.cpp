@@ -19,7 +19,11 @@ void Commands::init_command_map() {
   _command_map["NICK"] = NICK;
   _command_map["USER"] = USER;
   _command_map["QUIT"] = QUIT;
+  _command_map["KICK"] = KICK;
   _command_map["PASS"] = PASS;
+  _command_map["INVITE"] = INVITE;
+  _command_map["TOPIC"] = TOPIC;
+  _command_map["MODE"] = MODE;
 }
 
 void Commands::init_list_of_commands(const std::string &raw_input) {
