@@ -92,6 +92,7 @@ bool Channel::kickMember(Client* operator_client, Client* target, const std::str
 	}
 	else {
 		_members.erase(target->get_fd());
+		println("Kicking member " << target->get_username() << " for " << reason);
 		return true;
 	}
 

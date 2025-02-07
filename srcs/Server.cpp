@@ -8,6 +8,7 @@
 #include <unistd.h>
 
 #include "Server.hpp"
+#include "Channel.hpp"
 #include "SocketsManager.hpp"
 
 template <typename T> std::string to_string(T value) {

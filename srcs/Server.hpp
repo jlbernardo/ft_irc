@@ -2,8 +2,8 @@
 
 #include <map>
 #include <string>
-#include "Client.hpp"
 #include "Channel.hpp"
+#include "Client.hpp"
 #include <queue>
 
 typedef std::map<int, std::queue<std::string> > MessageQueueMap;
