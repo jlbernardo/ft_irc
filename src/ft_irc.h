@@ -103,6 +103,10 @@ inline std::string ERR_USERONCHANNEL(const std::string& nick, const std::string&
   return SERVER + " 443 * " + nick + " " + channel + " :Client on channel!" + CRLF;
 }
 
+inline std::string ERR_NOTREGISTERED() {
+  return SERVER + " 451 * :You have not registered" + CRLF;
+}
+
 inline std::string ERR_NEEDMOREPARAMS(const std::string& command) {
   return SERVER + " 461 * " + command + " " + ":Not enough parameters" + CRLF;
 }
