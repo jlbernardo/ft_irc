@@ -27,7 +27,7 @@ void CommandsManager::execute(Commands &commands) {
                 // quit(commands, cmd);
                 break;
             case KICK:
-                kick(commands, cmd);
+                // kick(commands, cmd);
                 break ;
             case PASS:
                 pass(commands, cmd);
@@ -111,35 +111,35 @@ void CommandsManager::user(Commands &commands, const Command &cmd) {
     send_welcome_messages(client);
 }
 
-void CommandsManager::join(Commands &commands, const Command &cmd) {
-    Channel* channel;
+// void CommandsManager::join(Commands &commands, const Command &cmd) {
+//     Channel* channel;
     
-    if (!server.checkForChannel(cmd.parameters[0])) {
-        server.addNewChannel(new Channel(cmd.parameters[0], &commands.get_sender()));
-        // verify channel setting:
-    } else {
-        channel = server._channels[cmd.parameters[0]];
-    }
-    if (cmd.parameters[1][0] != '+' && cmd.parameters[1][0] != '-') {
+//     if (!server.checkForChannel(cmd.parameters[0])) {
+//         server.addNewChannel(new Channel(cmd.parameters[0], &commands.get_sender()));
+//         // verify channel setting:
+//     } else {
+//         channel = server._channels[cmd.parameters[0]];
+//     }
+//     if (cmd.parameters[1][0] != '+' && cmd.parameters[1][0] != '-') {
         
-    }
+//     }
 
-    if (channel->checkChannelModes('l') && channel->getCurrentMembersCount() < channel->getUserLimit()) {
-        channel->addMember(&commands.get_sender());     
-    } else {
-        server.send_message(commands.get_sender().get_fd(), ERR_CHANNELISFULL(cmd.parameters[0]));
-    } 
-    if (channel->checkChannelModes('i')) {
+//     if (channel->checkChannelModes('l') && channel->getCurrentMembersCount() < channel->getUserLimit()) {
+//         channel->addMember(&commands.get_sender());     
+//     } else {
+//         server.send_message(commands.get_sender().get_fd(), ERR_CHANNELISFULL(cmd.parameters[0]));
+//     } 
+//     if (channel->checkChannelModes('i')) {
 
-    } else if ("nbr of params") {
+//     } else if ("nbr of params") {
         
-    } else if ("if the channel has key, does the matches the channel key?") {
+//     } else if ("if the channel has key, does the matches the channel key?") {
         
-    }
-    else {
-        server._channels[cmd.parameters[0]]->addMember(&commands.get_sender());
-    }
-};
+//     }
+//     else {
+//         server._channels[cmd.parameters[0]]->addMember(&commands.get_sender());
+//     }
+// };
 
 // void CommandsManager::quit(Commands &commands, const Command &cmd) {
 //     // Implementation of QUIT command

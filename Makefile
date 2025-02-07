@@ -6,7 +6,7 @@ TEST_FLAGS = $(FLAGS) -DTEST -fsanitize=address
 CXX = c++
 PATH_OBJS = ./objects/
 PATH_TEST_OBJS = ./test_objects/
-SRC_DIR = srcs/
+SRC_DIR = src/
 PASS = 89aX
 
 SRCS = Client Commands CommandsManager Server InputValidator SocketsManager Channel

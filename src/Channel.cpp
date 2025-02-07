@@ -148,10 +148,10 @@ bool Channel::parseChannelName(const std::string &name) const
 
 
 
-int getCurrentMembersCount() {
-	return 42;
+int Channel::getCurrentMembersCount() {
+	return _members.size();
 };
 
-int getUserLimit() {
-	return 42;
+int Channel::getUserLimit() {
+	return _userLimit;
 };
