@@ -100,7 +100,11 @@ void CommandsManager::user(Commands &commands, const Command &cmd) {
     }
 
     if (client.is_authenticated()) {
-        server.send_message(client.get_fd(), ERR_ALREADYREGISTERED(client.get_username()));
+        std::string username = params[0];
+        std::string realname = params[3];
+
+        update_user_info(client, username, realname);
+        send_welcome_messages(client);
         return;
     }
 
@@ -158,7 +162,6 @@ void CommandsManager::pass(Commands &commands, const Command &cmd) {
         commands.set_fatal_error(true);
     } else {
         client.set_authentication(true);
-        send_welcome_messages(client);
     }
 }
 
