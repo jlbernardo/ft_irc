@@ -42,8 +42,19 @@ void Commands::init_list_of_commands(const std::string &raw_input) {
     // Parse parameters
     std::istringstream param_iss(cmd_obj.params);
     std::string param;
+    bool found_colon = false;
     while (param_iss >> param) {
+      if (param[0] ==  ':' && !found_colon) {
+        param = param.substr(1);
+        found_colon = true;
+        std::string remaining;
+        std::getline(param_iss, remaining);
+        param += remaining;
+      }
+
       cmd_obj.parameters.push_back(param);
+      if (found_colon)
+        break ;
     }
 
     this->list.push_back(cmd_obj);
