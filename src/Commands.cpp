@@ -65,7 +65,7 @@ void Commands::init_list_of_commands(const std::string &raw_input) {
     std::cout << "Command: " << it->command << ", Parameters: ";
     for (std::vector<std::string>::const_iterator param_it = it->parameters.begin(); param_it != it->parameters.end();
          ++param_it) {
-      std::cout << *param_it << " ";
+      std::cout << *param_it << ", ";
     }
     std::cout << std::endl;
   }
