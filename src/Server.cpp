@@ -46,6 +46,9 @@ void Server::initialize_socket() {
 }
 
 void Server::setup_server() {
+  int opt = 1;
+  
+  setsockopt(_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
   if (bind(_fd, (struct sockaddr *)&_server_addr, sizeof(_server_addr)) < 0) {
     close(_fd);
     throw std::runtime_error("Failed to bind socket\n");
