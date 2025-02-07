@@ -182,7 +182,7 @@ void CommandsManager::broadcast_nickname_change(int sender_fd, const std::string
 void CommandsManager::send_welcome_messages(Client &client) {
     if (!client.is_authenticated()) return;
 
-    server.send_message(client.get_fd(), RPL_WELCOME(client.get_nickname(), client.get_username(), client.get_hostname()));
+    server.send_message(client.get_fd(), RPL_WELCOME( client.get_username(), client.get_client_identifier()));
     server.send_message(client.get_fd(), RPL_YOURHOST(client.get_nickname()));
     server.send_message(client.get_fd(), RPL_CREATED(client.get_nickname()));
     server.send_message(client.get_fd(), RPL_MYINFO(client.get_nickname(), "", ""));

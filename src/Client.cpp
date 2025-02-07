@@ -42,6 +42,13 @@ const std::string &Client::get_realname() const { return _name; }
 
 const std::string &Client::get_hostname() const { return _hostname; }
 
+const std::string &Client::get_client_identifier() const {
+  static std::string client_id;
+
+  client_id = _nick + "!" + _user + "@" + _hostname;
+  return client_id;
+ }
+
 Server* Client::getServer() const { return _server; }
 
 bool Client::is_authenticated() const { return _authenticated; }

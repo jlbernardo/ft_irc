@@ -36,6 +36,7 @@ class Client {
     const std::string &get_username() const;
     const std::string &get_realname() const;
     const std::string &get_hostname() const;
+    const std::string &get_client_identifier() const;
     const std::string &get_buffer() const;
     Server* getServer() const;
 
