@@ -51,20 +51,29 @@ void CommandsManager::execute(Commands &commands) {
 
 void CommandsManager::privmsg(Commands &commands, const Command &cmd) {
     Client &sender = commands.get_sender();
-    const std::string &target = cmd.parameters.empty() ? "" : cmd.parameters[0];
-    const std::string &msg = cmd.parameters.size() < 2 ? "" : cmd.parameters[1];
-
-    if (target.empty()) {
-        server.send_message(sender.get_fd(), ERR_NORECIPIENT(cmd.command));
+    
+    if (!sender.is_authenticated()) {
+        server.send_message(sender.get_fd(), ERR_NOTREGISTERED());
         return;
     }
-    // else if () {
-    //     server.send_message(sender.get_fd(), ERR_NOSUCHNICK(target));
-    //     return;
-    // }
-    else if (msg.empty()) {
-        server.send_message(sender.get_fd(), ERR_NOTEXTTOSEND(target));
+    if (cmd.parameters.empty()) {
+        server.send_message(sender.get_fd(), ERR_NORECIPIENT(sender.get_nickname()));
         return;
+    }
+    if (cmd.parameters.size() < 2) {
+        server.send_message(sender.get_fd(), ERR_NOTEXTTOSEND(sender.get_nickname()));
+        return;
+    }
+
+    const std::string &recipient = cmd.parameters[0];
+    const std::string &message = cmd.parameters[1];
+
+    for (std::map<int, Client *>::iterator it = server._clients.begin(); it != server._clients.end(); ++it) {
+        Client *client = it->second;
+        if (client->get_nickname() == recipient) {
+            server.send_message(client->get_fd(), RPL_PRIVMSG(sender.get_client_identifier(), recipient, message));
+            return;
+        }
     }
 }
 
