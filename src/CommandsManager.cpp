@@ -15,7 +15,7 @@ void CommandsManager::execute(Commands &commands) {
                 privmsg(commands, cmd);
                 break;
             case JOIN:
-                // join(commands, cmd);
+                join(commands, cmd);
                 break;
             case NICK:
                 nick(commands, cmd);
@@ -77,9 +77,37 @@ void CommandsManager::privmsg(Commands &commands, const Command &cmd) {
     }
 }
 
-// void CommandsManager::join(Commands &commands, const Command &cmd) {
-//     // Implementation of JOIN command
-// }
+void CommandsManager::join(Commands &commands, const Command &cmd) {
+    Channel* channel;
+    Client sender = commands.get_sender();
+    std::string channel_name = cmd.parameters[0];
+
+    if (!server.checkForChannel(channel_name)) {
+        channel = new Channel(channel_name, &sender);
+        server.addNewChannel(channel);
+        sender.add_channel(channel);
+        server.send_message(sender.get_fd(), RPL_JOIN(sender.get_client_identifier(), channel_name));
+        // verify channel setting:
+    } else {
+        channel = server._channels[channel_name];
+    }
+
+    if (!channel->isOperator(&sender)) {
+        if (channel->checkChannelModes('l') && channel->getCurrentMembersCount() < channel->getUserLimit()) {
+            channel->addMember(&sender);
+            server.send_message(sender.get_fd(), RPL_JOIN(sender.get_client_identifier(), channel_name));
+            if (!channel->getTopic().empty()) {
+                server.send_message(sender.get_fd(), RPL_TOPIC(sender.get_client_identifier(), channel_name, channel->getTopic()));
+            }
+        }
+        else if (channel->checkChannelModes('l')) {
+            server.send_message(sender.get_fd(), ERR_CHANNELISFULL(channel_name));
+        }
+        else {
+            channel->addMember(&sender);
+        }
+    }
+}
 
 void CommandsManager::nick(Commands &commands, const Command &cmd) {
     Client &sender = commands.get_sender();

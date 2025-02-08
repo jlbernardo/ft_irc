@@ -4,7 +4,8 @@
 
 Client::Client(int fd, Server* server)
     : _fd(fd), _nick(""), _user(""), _name(""),
-    _authenticated(false), _buffer(""), _server(server) {
+    _authenticated(false), _buffer(""), _server(server),
+    _joinedChannels() {
   set_hostname(fd);
 }
 
@@ -67,6 +68,10 @@ void Client::set_realname(const std::string &realname) { _name = realname; }
 
 void Client::set_authentication(bool status) {
   _authenticated = status;
+}
+
+void Client::add_channel(Channel* channel) {
+  _joinedChannels.push_back(channel);
 }
 
 void Client::clean_buffer() { _buffer.clear(); }

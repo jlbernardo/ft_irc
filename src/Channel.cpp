@@ -3,7 +3,9 @@
 #include <map>
 #include <ctype.h>
 
-Channel::Channel(const std::string& name, Client* creator) : _name(name) {
+Channel::Channel(const std::string& name, Client* creator) : _name(name),
+				_topic(""), _inviteOnly(false), _topicRestricted(false),
+				_hasKey(false), _userLimit(1024) {
 	std::string	input;
 
 	if (!creator) {
@@ -17,7 +19,7 @@ Channel::Channel(const std::string& name, Client* creator) : _name(name) {
 		this->~Channel();
 		return ;
 	}
-	
+
 	_members.insert(std::pair<int, Client*>(creator->get_fd(), creator));
 	_operators.insert(std::pair<int, Client*>(creator->get_fd(), creator));
 	creator->getServer()->addNewChannel(this);
@@ -146,7 +148,20 @@ bool Channel::parseChannelName(const std::string &name) const
 	return true;
 };
 
+bool Channel::addMember(Client* client) {
+	if (!client) {
+		errorln("Invalid client.");
+	}
+	else if (_members.find(client->get_fd()) != _members.end()) {
+		errorln(client->get_username() << " is already a member of this channel.");
+	}
+	else {
+		_members.insert(std::pair<int, Client*>(client->get_fd(), client));
+		return true;
+	}
 
+	return false;
+}
 
 int Channel::getCurrentMembersCount() {
 	return _members.size();

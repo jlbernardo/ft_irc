@@ -141,8 +141,8 @@ inline std::string ERR_CHANOPRIVSNEEDED(const std::string& user, const std::stri
 
 inline std::string ERROR(const std::string message) { return ":ERROR " + message + CRLF; }
 
-inline std::string RPL_JOIN(const std::string& user, const std::string& channel) {
-  return SERVER + user + " JOIN " + channel + CRLF;
+inline std::string RPL_JOIN(const std::string& client_id, const std::string& channel) {
+  return client_id + " JOIN " + channel + CRLF;
 }
 
 inline std::string PRIVMSG_BROADCAST(const std::string& nick, const std::string& user, const std::string& channel,

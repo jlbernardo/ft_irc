@@ -1,12 +1,15 @@
 #pragma once
 
+#include <vector>
+#include <string>
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
 
-#include <string>
+#include "Channel.hpp"
 
 class Server;
+class Channel;
 
 class Client {
   private:
@@ -19,7 +22,7 @@ class Client {
     bool _authenticated;
     std::string _buffer;
     Server* _server;
-    // std::vector _joinedChannels;
+    std::vector<Channel*> _joinedChannels;
 
   public:
     Client(int fd,  Server* server);
@@ -46,6 +49,7 @@ class Client {
     void set_nickname(const std::string &nickname);
     void set_username(const std::string &username);
     void set_realname(const std::string &realname);
+    void add_channel(Channel* channel);
 
 	// checkers:
 	bool password_matched(Server &server) const;

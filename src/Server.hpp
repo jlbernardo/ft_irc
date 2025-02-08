@@ -6,10 +6,11 @@
 #include "Client.hpp"
 #include <queue>
 
+class Client;
+class Channel;
+
 typedef std::map<int, std::queue<std::string> > MessageQueueMap;
 typedef std::map<int, Client*> ClientMap;
-
-class Channel;
 
 class Server {
  private:
