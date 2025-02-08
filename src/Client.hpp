@@ -42,6 +42,7 @@ class Client {
     const std::string &get_client_identifier() const;
     const std::string &get_buffer() const;
     Server* getServer() const;
+    std::vector<Channel&> get_joined_channels() const;
 
 	// setters:
     void set_authentication(bool status);

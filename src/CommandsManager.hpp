@@ -16,7 +16,7 @@ class CommandsManager {
   void user(Commands &commands, const Command &cmd);
   // void quit(Commands &commands, const Command &cmd);
   void pass(Commands &commands, const Command &cmd);
-  // void mode(Commands &commands, const Command &cmd);
+  void mode(Commands &commands, const Command &cmd);
   // void kick(Commands &commands, const Command &cmd);
 
   void broadcast_message(const std::string &msg, int sender_fd);

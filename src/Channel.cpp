@@ -23,6 +23,7 @@ Channel::Channel(const std::string& name, Client* creator) : _name(name),
 	_members.insert(std::pair<int, Client*>(creator->get_fd(), creator));
 	_operators.insert(std::pair<int, Client*>(creator->get_fd(), creator));
 	creator->getServer()->addNewChannel(this);
+	creator->add_channel(this);
 }
 
 Channel::~Channel() {
@@ -63,6 +64,12 @@ bool Channel::checkChannelModes(char mode) const {
 			errorln("Not a valid channel mode.");
 			return false;
 	}
+}
+
+bool Channel::isMember(Client* client) const {
+	if (client && _members.find(client->get_fd()) != _members.end())
+		return true;
+	return false;
 }
 
 const std::string& Channel::getName() const {

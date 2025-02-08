@@ -139,10 +139,14 @@ inline std::string ERR_CHANOPRIVSNEEDED(const std::string& user, const std::stri
   return SERVER + " 482 " + user + " " + channel + " :You're not a channel operator!" + CRLF;
 }
 
+inline std::string ERR_CANNOTSENDTOCHAN(const std::string& channel) {
+  return SERVER + " 404 * " + channel + " :Cannot send to channel" + CRLF;
+}
+
 inline std::string ERROR(const std::string message) { return ":ERROR " + message + CRLF; }
 
-inline std::string RPL_JOIN(const std::string& client_id, const std::string& channel) {
-  return client_id + " JOIN " + channel + CRLF;
+inline std::string RPL_JOIN(const std::string& user, const std::string& channel) {
+  return ":" + user + " JOIN " + channel + CRLF;
 }
 
 inline std::string PRIVMSG_BROADCAST(const std::string& nick, const std::string& user, const std::string& channel,

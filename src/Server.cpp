@@ -7,6 +7,7 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "ft_irc.h"
 #include "Server.hpp"
 #include "Channel.hpp"
 #include "SocketsManager.hpp"
@@ -115,6 +116,7 @@ void Server::send_error(int client_fd, const std::string &error_code, const std:
 }
 
 void Server::send_message(int client_fd, const std::string &message) {
+  println("Sending message to client " << client_fd << ": " << message);
   if (send(client_fd, message.c_str(), message.length(), 0) == -1) {
     std::cerr << "Error sending message to client " << client_fd << std::endl;
   }

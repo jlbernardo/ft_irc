@@ -51,6 +51,7 @@ class Channel {
 		// void setMode(char mode, bool status);
 		bool checkChannelModes(char mode) const;
 		bool checkUserModes(char mode, Client* client);
+		bool isMember(Client* client) const;
 		
 		// Getters
 		const std::string& getName() const;
