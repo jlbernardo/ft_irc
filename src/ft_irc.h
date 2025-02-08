@@ -150,8 +150,8 @@ inline std::string PRIVMSG_BROADCAST(const std::string& nick, const std::string&
   return SERVER + nick + "!~" + user + "@ft.irc TOPIC " + channel + " " + topic + CRLF;
 }
 
-inline std::string RPL_PRIVMSG(const std::string& user, const std::string& dest, const std::string& message) {
-  return SERVER + user + " PRIVMSG " + dest + " :" + message + CRLF;
+inline std::string RPL_PRIVMSG(const std::string& client_id, const std::string& dest, const std::string& message) {
+  return ":" + client_id + " PRIVMSG " + dest + " :" + message + CRLF;
 }
 
 inline std::string RPL_PARTMSG(const std::string& nick, const std::string& user, const std::string& dest,
@@ -200,7 +200,7 @@ inline std::string getCurrentDate() {
   return std::string(buf);
 }
 
-inline std::string RPL_CREATED(const std::string& user) {
+inline std::string RPL_CREATED(const std::string& user) { //change it so it reflects the server's creation date
   return SERVER + " 003 " + user + " :This server was created " + getCurrentDate() + CRLF;
 }
 
