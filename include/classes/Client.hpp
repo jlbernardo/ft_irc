@@ -16,12 +16,12 @@ class Client {
     std::string _hostname;
     std::string _identifier;
 
-    Server* _server;
+    Server &_server;
     bool _authenticated;
     std::vector<Channel*> _joinedChannels;
 
   public:
-    Client(int fd,  Server* server);
+    Client(int fd,  Server &server);
     ~Client();
 
     void clean_buffer();
@@ -30,7 +30,7 @@ class Client {
 
     // getters:
     int get_fd() const;
-    Server* getServer() const;
+    Server &getServer() const;
 	const std::string &get_pass() const;
     const std::string &get_buffer() const;
     const std::string &get_nickname() const;
@@ -44,6 +44,7 @@ class Client {
     void add_channel(Channel* channel);
     void set_hostname(int client_socket);
     void set_authentication(bool status);
+    void set_password(const std::string &password);
     void set_nickname(const std::string &nickname);
     void set_username(const std::string &username);
     void set_realname(const std::string &realname);

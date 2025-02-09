@@ -7,20 +7,20 @@ Channel::Channel(const std::string& name, Client* creator) : _name(name),
 	std::string	input;
 
 	if (!creator) {
-		creator->getServer()->send_message(creator->get_fd(), ERR_NONICKNAMEGIVEN());
+		creator->getServer().send_message(creator->get_fd(), ERR_NONICKNAMEGIVEN());
 		this->~Channel();
 		return ;
 	}
 
 	if (!parseChannelName(name)) {
-		creator->getServer()->send_message(creator->get_fd(), ERR_BADCHANMASK(name));
+		creator->getServer().send_message(creator->get_fd(), ERR_BADCHANMASK(name));
 		this->~Channel();
 		return ;
 	}
 
 	_members.insert(std::pair<int, Client*>(creator->get_fd(), creator));
 	_operators.insert(std::pair<int, Client*>(creator->get_fd(), creator));
-	creator->getServer()->addNewChannel(this);
+	creator->getServer().addNewChannel(this);
 	creator->add_channel(this);
 }
 
@@ -29,15 +29,15 @@ Channel::~Channel() {
 
 void Channel::setOperator(Client* client) {
 	if (!client) {
-		client->getServer()->send_message(client->get_fd(),
+		client->getServer().send_message(client->get_fd(),
 		ERR_NEEDMOREPARAMS("CLIENT"));
 	}
 	else if (_members.find(client->get_fd()) == _members.end()) {
-		client->getServer()->send_message(client->get_fd(),
+		client->getServer().send_message(client->get_fd(),
 		ERR_USERNOTINCHANNEL(client->get_username(), client->get_nickname(), _name));
 	}
 	else if (isOperator(client)) {
-		client->getServer()->send_message(client->get_fd(),
+		client->getServer().send_message(client->get_fd(),
 		ERROR("Already an operator of this channel."));
 	}
 	else {
@@ -90,15 +90,15 @@ bool Channel::kickMember(Client* oper, Client* target, const std::string& reason
 		logger.error("Invalid operator.");
 	}
 	else if (!target) {
-		oper->getServer()->send_message(oper->get_fd(),
+		oper->getServer().send_message(oper->get_fd(),
 		ERR_NEEDMOREPARAMS("TARGET"));
 	}
 	else if (!isOperator(oper)) {
-		oper->getServer()->send_message(oper->get_fd(),
+		oper->getServer().send_message(oper->get_fd(),
 		ERR_CHANOPRIVSNEEDED(oper->get_username(), _name));
 	}
 	else if (_members.find(target->get_fd()) == _members.end()) {
-		oper->getServer()->send_message(oper->get_fd(),
+		oper->getServer().send_message(oper->get_fd(),
 		ERR_USERNOTINCHANNEL(oper->get_username(), target->get_username(), _name));
 	}
 	else {
@@ -121,21 +121,21 @@ bool Channel::inviteMember(Client* oper, Client* target) {
 		logger.error("Invalid operator.");
 	}
 	else if (!target) {
-		oper->getServer()->send_message(oper->get_fd(),
+		oper->getServer().send_message(oper->get_fd(),
 		ERR_NEEDMOREPARAMS("TARGET"));
 	}
 	else if (!isOperator(oper)) {
-		oper->getServer()->send_message(oper->get_fd(),
+		oper->getServer().send_message(oper->get_fd(),
 		ERR_CHANOPRIVSNEEDED(oper->get_username(), _name));
 	}
 	else if (_members.find(target->get_fd()) != _members.end()) {
-		oper->getServer()->send_message(oper->get_fd(),
+		oper->getServer().send_message(oper->get_fd(),
 		ERR_USERONCHANNEL(target->get_nickname(), _name));
 	}
 	else {
-		oper->getServer()->send_message(oper->get_fd(),
+		oper->getServer().send_message(oper->get_fd(),
 			RPL_INVITING(oper->get_nickname(), target->get_nickname(), _name));
-		target->getServer()->send_message(target->get_fd(),
+		target->getServer().send_message(target->get_fd(),
 			RPL_INVITEMSG(oper->get_nickname(), oper->get_username(), target->get_username(), _name));
 		
 		return true;
@@ -149,7 +149,7 @@ bool Channel::setTopic(Client* oper, const std::string& new_topic) {
 		logger.error("Invalid operator.");
 	}
 	else if (!isOperator(oper)) {
-		oper->getServer()->send_message(oper->get_fd(),
+		oper->getServer().send_message(oper->get_fd(),
 		ERR_CHANOPRIVSNEEDED(oper->get_username(), _name));
 	}
 	else {
@@ -190,7 +190,7 @@ bool Channel::addMember(Client* client) {
 
 void Channel::broadcast(Client* sender, const std::string& message) {
 	if (message.empty()) {
-		sender->getServer()->send_message(sender->get_fd(),
+		sender->getServer().send_message(sender->get_fd(),
 		ERR_NOTEXTTOSEND(sender->get_username()));
 	}
 	else {
@@ -200,7 +200,7 @@ void Channel::broadcast(Client* sender, const std::string& message) {
 			if (member->get_fd() == sender->get_fd())
 				continue ;
 
-			member->getServer()->send_message(member->get_fd(), message);
+			member->getServer().send_message(member->get_fd(), message);
 		}
 	}
 }

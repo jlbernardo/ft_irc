@@ -83,7 +83,7 @@ void Server::add_new_client_to_master_set() {
   if (client_fd > _max_fd)
     _max_fd = client_fd;
 
-  _clients[client_fd] = new Client(client_fd, this);
+  _clients[client_fd] = new Client(client_fd, *this);
 
 #ifdef TEST
   std::stringstream str;
@@ -128,6 +128,18 @@ int Server::get_fd() {
 
 std::string Server::get_pass() {
   return _pass;
+}
+
+std::map<std::string, Channel*> &Server::get_channels() {
+  return _channels;
+}
+
+std::map<int, Client *> &Server::get_clients() {
+  return _clients;
+}
+
+MessageQueueMap &Server::get_message_queues() {
+  return _message_queues;
 }
 
 void Server::set_pass(const std::string& pass) {

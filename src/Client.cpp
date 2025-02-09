@@ -1,7 +1,7 @@
 #include "ft_irc.h"
 
 
-Client::Client(int fd, Server* server)
+Client::Client(int fd, Server &server)
     : _fd(fd), _nick(""), _user(""), _name(""), _pass(""),
     _buffer(""), _hostname(""), _identifier(""), _server(server),
     _authenticated(false), _joinedChannels() {
@@ -64,7 +64,7 @@ const std::string &Client::get_identifier() const {
   return _identifier;
 }
 
-Server* Client::getServer() const {
+Server &Client::getServer() const {
   return _server;
 }
 
@@ -94,6 +94,10 @@ void Client::set_username(const std::string &username) {
 
 void Client::set_realname(const std::string &realname) {
   _name = realname;
+}
+
+void Client::set_password(const std::string &pass) {
+  _pass = pass;
 }
 
 void Client::set_authentication(bool status) {

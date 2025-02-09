@@ -26,12 +26,12 @@ void Logger::debug(std::string message) {
 
 void Logger::info(std::string message) {
   std::string t = timestamp();
-  std::cout << WHITE << "[" + t + " INFO] " << message << DFT << std::endl;
+  std::cout << "[" + t + "  INFO] " << message << std::endl;
 }
 
 void Logger::warn(std::string message) {
   std::string t = timestamp();
-  std::cout << YELLOW << "[" + t + " WARN] " << message << DFT << std::endl;
+  std::cout << YELLOW << "[" + t + "  WARN] " << message << DFT << std::endl;
 }
 
 void Logger::error(std::string message) {

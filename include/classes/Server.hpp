@@ -41,6 +41,9 @@ class Server {
 
   int get_fd();
   std::string get_pass();
+  std::map<std::string, Channel*> &get_channels();
+  std::map<int, Client *> &get_clients();
+  MessageQueueMap &get_message_queues();
   void set_pass(const std::string& pass);
   void remove_client(int client_fd);
 
