@@ -116,10 +116,10 @@ void Server::send_error(int client_fd, const std::string &error_code, const std:
 }
 
 void Server::send_message(int client_fd, const std::string &message) {
-  logger.info("Sending message to client " + client_fd + (": " + message));
+  logger.info("Sending message to client " + to_string(client_fd) + ": " + message);
 
   if (send(client_fd, message.c_str(), message.length(), 0) == -1)
-    logger.error("Error sending message to client " + client_fd);
+    logger.error("Error sending message to client " + to_string(client_fd));
 }
 
 int Server::get_fd() {

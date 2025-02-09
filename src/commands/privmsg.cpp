@@ -22,7 +22,7 @@ void privmsg(Commands &commands, const Command &cmd) {
     const std::string &recipient = cmd.parameters[0];
     const std::string &message = cmd.parameters[1];
 
-    logger.info("Recipient: " + recipient[0]);
+    logger.info("Recipient: " + std::string(1, recipient[0]));
     if (recipient[0] == '#') {        
         if (server.checkForChannel(recipient)) {
             Channel* channel = server.get_channels()[recipient];

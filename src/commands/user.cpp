@@ -7,7 +7,7 @@ void user(Commands &commands, const Command &cmd) {
     Server &server = sender.getServer();
 
     // Debug print to verify parameters
-    logger.info("Parameters size: " + params.size());
+    logger.info("Parameters size: " + to_string(params.size()));
 
     if (params.size() < 4) {
         server.send_message(sender.get_fd(), ERR_NEEDMOREPARAMS(cmd.command));
