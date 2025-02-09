@@ -1,17 +1,20 @@
-#include <iostream>
-#include <sstream>
+#include "ft_irc.h"
 
-#include "Commands.hpp"
 
 Commands::Commands(Client &sender, const std::string &raw_input)
     : _sender(sender), _sender_fd(sender.get_fd()), _fatal_error(false) {
+  
   init_command_map();
   init_list_of_commands(raw_input);
 }
 
-Client &Commands::get_sender() const { return _sender; }
+Client &Commands::get_sender() const {
+  return _sender;
+}
 
-const std::list<Command> &Commands::get_list() const { return list; }
+const std::list<Command> &Commands::get_list() const {
+  return list;
+}
 
 void Commands::init_command_map() {
   _command_map["PRIVMSG"] = PRIVMSG;
@@ -30,6 +33,7 @@ void Commands::init_list_of_commands(const std::string &raw_input) {
   std::istringstream iss(raw_input);
   std::vector<std::string> vec;
   vec = separate_multiple_commands(raw_input, "\r\n");
+
   for (std::vector<std::string>::iterator it = vec.begin(); it != vec.end(); it++) {
     std::istringstream cmd(*it);
     Command cmd_obj;
@@ -62,18 +66,21 @@ void Commands::init_list_of_commands(const std::string &raw_input) {
 
   // Debug print to verify commands and parameters
   for (std::list<Command>::const_iterator it = list.begin(); it != list.end(); ++it) {
-    std::cout << "Command: " << it->command << ", Parameters: ";
+    std::string output;
+
+    output = "Command: " + it->command + ", Parameters: ";
     for (std::vector<std::string>::const_iterator param_it = it->parameters.begin(); param_it != it->parameters.end();
          ++param_it) {
-      std::cout << *param_it << ", ";
+      output += *param_it + ", ";
     }
-    std::cout << std::endl;
+   log.info(output);
   }
 }
 
 std::vector<std::string> Commands::separate_multiple_commands(const std::string &input, const std::string &delimiter) {
   std::vector<std::string> result;
   size_t start = 0;
+
   while (start < input.length()) {
     size_t end = input.find_first_of(delimiter, start);
     if (end == std::string::npos) {
@@ -87,14 +94,14 @@ std::vector<std::string> Commands::separate_multiple_commands(const std::string 
 }
 
 std::string Commands::trim(const std::string &str) {
-  if (str.empty()) {
+  if (str.empty())
     return str;
-  }
+
   // Find first non-whitespace
   std::string::size_type first = str.find_first_not_of(" \t\n\r\f\v");
-  if (first == std::string::npos) {
+  if (first == std::string::npos)
     return "";  // String is all whitespace
-  }
+
   // Find last non-whitespace
   std::string::size_type last = str.find_last_not_of(" \t\n\r\f\v");
   return str.substr(first, (last - first + 1));

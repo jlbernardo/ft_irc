@@ -1,7 +1,7 @@
 PORT ?= 6667
 NAME = ircserv
 NAME_TEST = ircserv_test
-FLAGS = -Wall -Wextra -Werror -std=c++98 -g3 -MMD -MP
+FLAGS = -Wall -Wextra -Werror -I./include -std=c++98 -g3 -MMD -MP
 TEST_FLAGS = $(FLAGS) -DTEST -fsanitize=address
 CXX = c++
 PATH_OBJS = ./objects/
@@ -9,17 +9,16 @@ PATH_TEST_OBJS = ./test_objects/
 SRC_DIR = src/
 PASS = 89aX
 
-SRCS = Client Commands CommandsManager Server InputValidator SocketsManager Channel
+SRC += Client Commands CommandsManager Server SocketsManager Channel
+SRC += $(addprefix utils/, Validator Logger)
 MAIN = main
 
-OBJS = $(SRCS:%=$(PATH_OBJS)%.o)
+OBJS = $(SRC:%=$(PATH_OBJS)%.o)
 MAIN_OBJ = $(MAIN:%=$(PATH_OBJS)%.o)
-TEST_OBJS = $(SRCS:%=$(PATH_TEST_OBJS)%.o)
+TEST_OBJS = $(SRC:%=$(PATH_TEST_OBJS)%.o)
 TEST_MAIN_OBJ = $(MAIN:%=$(PATH_TEST_OBJS)%.o)
 
 DEPS = $(OBJS:.o=.d) $(MAIN_OBJ:.o=.d) $(TEST_OBJS:.o=.d) $(TEST_MAIN_OBJ:.o=.d)
-
-.PHONY: all clean fclean re run test_connections
 
 all: $(NAME)
 
@@ -70,3 +69,5 @@ fclean: clean
 re: fclean all
 
 -include $(DEPS)
+
+.PHONY: all clean fclean re run test_connections

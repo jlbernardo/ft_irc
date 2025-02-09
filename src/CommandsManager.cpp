@@ -1,13 +1,12 @@
-#include <string>
-#include "Client.hpp"
-#include "CommandsManager.hpp"
 #include "ft_irc.h"
-#include <iostream>
 
-CommandsManager::CommandsManager(Server &server) : server(server) {}
+
+CommandsManager::CommandsManager(Server &server) : server(server) {
+}
 
 void CommandsManager::execute(Commands &commands) {
     const std::list<Command>& cmd_list = commands.get_list();
+
     for (std::list<Command>::const_iterator it = cmd_list.begin(); it != cmd_list.end(); ++it) {
         const Command &cmd = *it;
         switch (cmd.type) {
@@ -69,38 +68,38 @@ void CommandsManager::privmsg(Commands &commands, const Command &cmd) {
     const std::string &recipient = cmd.parameters[0];
     const std::string &message = cmd.parameters[1];
 
-    println("Recipient: " << recipient[0]);
+    log.info("Recipient: " + recipient[0]);
     if (recipient[0] == '#') {        
         if (server.checkForChannel(recipient)) {
             Channel* channel = server._channels[recipient];
-            println("Channel found: " << channel->getName());
+            log.info("Channel found: " + channel->getName());
             if (!channel->isMember(&sender)) {
                 server.send_message(sender.get_fd(), ERR_CANNOTSENDTOCHAN(recipient));
                 return;
             }
 
-            for (std::map<int, Client*>::const_iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it) {
+            for (std::map<int, Client *>::const_iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it) {
                 Client* member = it->second;
                 if (member != &sender) {
-                    server.send_message(member->get_fd(), RPL_PRIVMSG(sender.get_client_identifier(), recipient, message));
+                    server.send_message(member->get_fd(), RPL_PRIVMSG(sender.get_identifier(), recipient, message));
                 }
             }
         } else {
             server.send_message(sender.get_fd(), ERR_NOSUCHCHANNEL(recipient));
         }
-    } else {
+    }
+    else {
         bool userFound = false;
-        for (std::map<int, Client*>::iterator it = server._clients.begin(); it != server._clients.end(); ++it) {
+        for (std::map<int, Client *>::iterator it = server._clients.begin(); it != server._clients.end(); ++it) {
             Client* client = it->second;
             if (client->get_nickname() == recipient) {
-                server.send_message(client->get_fd(), RPL_PRIVMSG(sender.get_client_identifier(), recipient, message));
+                server.send_message(client->get_fd(), RPL_PRIVMSG(sender.get_identifier(), recipient, message));
                 userFound = true;
                 break;
             }
         }
-        if (!userFound) {
+        if (!userFound)
             server.send_message(sender.get_fd(), ERR_NOSUCHNICK(recipient));
-        }
     }
 }
 
@@ -113,14 +112,14 @@ void CommandsManager::join(Commands &commands, const Command &cmd) {
     if (server.checkForChannel(channel_name)) {
         channel = server._channels[channel_name];
         if (!channel->isOperator(&sender)) {
-            if (channel->checkChannelModes('l') && channel->getCurrentMembersCount() < channel->getUserLimit()) {
+            if (channel->mode('l') && channel->getCurrentMembersCount() < channel->getUserLimit()) {
                 channel->addMember(&sender);
-                server.send_message(sender.get_fd(), RPL_JOIN(sender.get_client_identifier(), channel_name));
+                server.send_message(sender.get_fd(), RPL_JOIN(sender.get_identifier(), channel_name));
                 if (!channel->getTopic().empty()) {
-                    server.send_message(sender.get_fd(), RPL_TOPIC(sender.get_client_identifier(), channel_name, channel->getTopic()));
+                    server.send_message(sender.get_fd(), RPL_TOPIC(sender.get_identifier(), channel_name, channel->getTopic()));
                 }
             }
-            else if (channel->checkChannelModes('l')) {
+            else if (channel->mode('l')) {
                 server.send_message(sender.get_fd(), ERR_CHANNELISFULL(channel_name));
             }
             else {
@@ -134,16 +133,17 @@ void CommandsManager::join(Commands &commands, const Command &cmd) {
     channel = &created_channel;
 
     if (server._channels.find(channel_name) != server._channels.end()) {
-        std::cout << "Channel created successfully: " << channel_name << std::endl;
-    } else {
-        std::cout << "Failed to create channel: " << channel_name << std::endl;
+       log.info("Channel created successfully: " + channel_name);
+    }
+    else {
+       log.info("Failed to create channel: " + channel_name);
     }
     std::string names;
 
-    for (std::map<int, Client*>::const_iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it) {
+    for (std::map<int, Client *>::const_iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it) {
         Client* member = it->second;
         if (member != &sender) {
-            server.send_message(member->get_fd(), RPL_JOIN(sender.get_client_identifier(), channel_name));
+            server.send_message(member->get_fd(), RPL_JOIN(sender.get_identifier(), channel_name));
             if (channel->isOperator(member))
                 names += "@";
             names += member->get_nickname() + " ";
@@ -180,7 +180,7 @@ void CommandsManager::user(Commands &commands, const Command &cmd) {
     Client &client = commands.get_sender();
 
     // Debug print to verify parameters
-    std::cout << "Parameters size: " << params.size() << std::endl;
+    log.info("Parameters size: " + params.size());
 
     if (params.size() < 4) {
         server.send_message(client.get_fd(), ERR_NEEDMOREPARAMS(cmd.command));
@@ -206,7 +206,9 @@ void CommandsManager::user(Commands &commands, const Command &cmd) {
 void CommandsManager::mode(Commands &commands, const Command &cmd) {
     Client &client = commands.get_sender();
 
-    server.send_message(client.get_fd(), RPL_MODEBASE(client.get_nickname(), client.get_username(), cmd.parameters[0]));
+    server.send_message(client.get_fd(),
+    RPL_MODEBASE(client.get_nickname(),
+    client.get_username(), cmd.parameters[0]));
 }
 
 // void CommandsManager::join(Commands &commands, const Command &cmd) {
@@ -222,12 +224,12 @@ void CommandsManager::mode(Commands &commands, const Command &cmd) {
         
 //     }
 
-//     if (channel->checkChannelModes('l') && channel->getCurrentMembersCount() < channel->getUserLimit()) {
+//     if (channel->mode('l') && channel->getCurrentMembersCount() < channel->getUserLimit()) {
 //         channel->addMember(&commands.get_sender());     
 //     } else {
 //         server.send_message(commands.get_sender().get_fd(), ERR_CHANNELISFULL(cmd.parameters[0]));
 //     } 
-//     if (channel->checkChannelModes('i')) {
+//     if (channel->mode('i')) {
 
 //     } else if ("nbr of params") {
         
@@ -246,37 +248,42 @@ void CommandsManager::mode(Commands &commands, const Command &cmd) {
 void CommandsManager::pass(Commands &commands, const Command &cmd) {
     Client &client = commands.get_sender();
     const std::string &pass = cmd.parameters.empty() ? "" : cmd.parameters[0];
+
     if (pass.empty()) {
         server.send_message(client.get_fd(), ERR_NEEDMOREPARAMS(cmd.command));
-    } else if (client.password_matched(server)) {
+    }
+    else if (client.password_matched(server)) {
         server.send_message(client.get_fd(), ERR_ALREADYREGISTERED(client.get_username()));
-    } else if (pass != server.get_pass()) {
+    }
+    else if (pass != server.get_pass()) {
         server.send_message(client.get_fd(), ERR_PASSWDMISMATCH());
-        server.send_message(client.get_fd(), ERROR(std::string("wrong password")));
+        server.send_message(client.get_fd(), ERROR(std::string("wrong pass")));
         commands.set_fatal_error(true);
-    } else {
+    }
+    else {
         client.set_authentication(true);
     }
 }
 
 void CommandsManager::broadcast_message(const std::string &msg, int sender_fd) {
-    for (ClientMap::iterator it = server._clients.begin(); it != server._clients.end(); ++it) {
+    for (std::map<int, Client *>::iterator it = server._clients.begin(); it != server._clients.end(); ++it) {
         int client_fd = it->first;
-        if (client_fd != sender_fd) {
+
+        if (client_fd != sender_fd)
             server._message_queues[client_fd].push(msg);
-        }
     }
 }
 
 void CommandsManager::broadcast_nickname_change(int sender_fd, const std::string &old_nick, const std::string &new_nick) {
     const std::string msg = ":" + old_nick + " NICK " + new_nick + "\r\n";
+
     broadcast_message(msg, sender_fd);
 }
 
 void CommandsManager::send_welcome_messages(Client &client) {
     if (!client.is_authenticated()) return;
 
-    server.send_message(client.get_fd(), RPL_WELCOME( client.get_username(), client.get_client_identifier()));
+    server.send_message(client.get_fd(), RPL_WELCOME( client.get_username(), client.get_identifier()));
     server.send_message(client.get_fd(), RPL_YOURHOST(client.get_nickname()));
     server.send_message(client.get_fd(), RPL_CREATED(client.get_nickname()));
     server.send_message(client.get_fd(), RPL_MYINFO(client.get_nickname(), "", ""));
@@ -294,9 +301,8 @@ void CommandsManager::update_nickname(Client &client, const std::string &new_nic
 
 bool CommandsManager::is_nickname_in_use(const std::string &new_nick) {
     for (std::map<int, Client *>::iterator it = server._clients.begin(); it != server._clients.end(); ++it) {
-        if (it->second->get_nickname() == new_nick) {
+        if (it->second->get_nickname() == new_nick)
             return true;
-        }
     }
     return false;
 }

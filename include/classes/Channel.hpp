@@ -1,26 +1,17 @@
 #pragma once
-#include <arpa/inet.h>
-#include <netinet/in.h>
-#include <sys/socket.h>
-#include <cstdlib>
-#include <iostream>
-#include <map>
-#include "Server.hpp"
-#include "Client.hpp"
+#ifndef CHANNEL_HPP
+# define CHANNEL_HPP
 
-#include <string>
-
-class Server;
+# include "ft_irc.h"
 
 class Channel {
 	
 	private:
-
-		std::string         _name;          // Channel name (starts with # or &)
-		std::string         _topic;         // Channel topic
-		std::string         _key;           // Channel password (if mode +k is set)
-		std::map<int, Client*> _members;    // Channel members (fd -> Client*)
-		std::map<int, Client*> _operators;  // Channel operators (fd -> Client*)
+		std::string         	_name;       // Channel name (starts with # or &)
+		std::string         	_topic;      // Channel topic
+		std::string         	_key;        // Channel pass (if mode +k is set)
+		std::map<int, Client*>	_members;    // Channel members (fd -> Client*)
+		std::map<int, Client*>	_operators;  // Channel operators (fd -> Client*)
 		
 		// Channel modes
 		bool _inviteOnly;      // mode +i
@@ -36,7 +27,7 @@ class Channel {
 		// Basic operations
 		bool addMember(Client* client);
 		bool removeMember(Client* client);
-		void broadcastMessage(const std::string& message, Client* sender = NULL);
+		void broadcast(Client* sender = NULL, const std::string& message);
 		
 		// Channel operator operations
 		void setOperator(Client* client);
@@ -45,11 +36,11 @@ class Channel {
 		int getUserLimit();
 		
 		// Mode operations
-		//if only operators are able to set modes, a setter function to do it
+		// if only operators are able to set modes, a setter function to do it
 		// is not necessary, checkMode though, is necessary, because other entities
 		// outside the Channel class may neeed to access this information   
 		// void setMode(char mode, bool status);
-		bool checkChannelModes(char mode) const;
+		bool mode(char mode) const;
 		bool checkUserModes(char mode, Client* client);
 		bool isMember(Client* client) const;
 		
@@ -66,3 +57,5 @@ class Channel {
 		//validation
 		bool parseChannelName(const std::string& name) const;
 };
+
+#endif

@@ -1,7 +1,5 @@
-#include "Channel.hpp"
 #include "ft_irc.h"
-#include <map>
-#include <ctype.h>
+
 
 Channel::Channel(const std::string& name, Client* creator) : _name(name),
 				_topic(""), _inviteOnly(false), _topicRestricted(false),
@@ -31,13 +29,16 @@ Channel::~Channel() {
 
 void Channel::setOperator(Client* client) {
 	if (!client) {
-		errorln("Invalid client.");
+		client->getServer()->send_message(client->get_fd(),
+		ERR_NEEDMOREPARAMS("CLIENT"));
 	}
 	else if (_members.find(client->get_fd()) == _members.end()) {
-		errorln(client->get_username() << " was not found in the members list.");
+		client->getServer()->send_message(client->get_fd(),
+		ERR_USERNOTINCHANNEL(client->get_username(), client->get_nickname(), _name));
 	}
 	else if (isOperator(client)) {
-		errorln(client->get_username() << " is already an operator of this channel.");
+		client->getServer()->send_message(client->get_fd(),
+		ERROR("Already an operator of this channel."));
 	}
 	else {
 		_operators.insert(std::pair<int, Client*>(client->get_fd(), client));
@@ -50,7 +51,7 @@ bool Channel::isOperator(Client* client) const {
 	return false;
 }
 
-bool Channel::checkChannelModes(char mode) const {
+bool Channel::mode(char mode) const {
 	switch (tolower(mode)) {
 		case 'i':
 			return _inviteOnly;
@@ -61,7 +62,7 @@ bool Channel::checkChannelModes(char mode) const {
 		case 'l':
 			return _userLimit;
 		default:
-			errorln("Not a valid channel mode.");
+			log.error("Not a valid channel mode.");
 			return false;
 	}
 }
@@ -84,60 +85,82 @@ const std::map<int, Client*>& Channel::getMembers() const {
 	return _members;
 }
 
-bool Channel::kickMember(Client* operator_client, Client* target, const std::string& reason) {
-	(void) reason;
-	if (!operator_client) {
-		errorln("Invalid operator.");
+bool Channel::kickMember(Client* oper, Client* target, const std::string& reason) {
+	if (!oper) {
+		log.error("Invalid operator.");
 	}
 	else if (!target) {
-		errorln("Invalid target.");
+		oper->getServer()->send_message(oper->get_fd(),
+		ERR_NEEDMOREPARAMS("TARGET"));
 	}
-	else if (!isOperator(operator_client)) {
-		errorln("Unable to kick " << target->get_username()
-				<< ": you do not have operator privileges.");
+	else if (!isOperator(oper)) {
+		oper->getServer()->send_message(oper->get_fd(),
+		ERR_CHANOPRIVSNEEDED(oper->get_username(), _name));
 	}
 	else if (_members.find(target->get_fd()) == _members.end()) {
-		errorln(target->get_username() << " is not a member of this channel.");
+		oper->getServer()->send_message(oper->get_fd(),
+		ERR_USERNOTINCHANNEL(oper->get_username(), target->get_username(), _name));
 	}
 	else {
 		_members.erase(target->get_fd());
-		println("Kicking member " << target->get_username() << " for " << reason);
+		if (reason.empty()) {
+			broadcast(NULL, RPL_KICKNOREASON(oper->get_nickname(), oper->get_username(),
+					  _name, target->get_username()));
+		}
+		else {
+			broadcast(NULL, RPL_KICKREASON(oper->get_nickname(), oper->get_username(),
+					  _name, target->get_username(), reason));
+		}
 		return true;
 	}
-
 	return false;
 }
 
-bool Channel::inviteMember(Client* operator_client, Client* target) {
-	if (!operator_client) {
-		errorln("Invalid operator.");
+bool Channel::inviteMember(Client* oper, Client* target) {
+	if (!oper) {
+		log.error("Invalid operator.");
 	}
 	else if (!target) {
-		errorln("Invalid target.");
+		oper->getServer()->send_message(oper->get_fd(),
+		ERR_NEEDMOREPARAMS("TARGET"));
 	}
-	else if (!isOperator(operator_client)) {
-		errorln("Unable invite members: you do not have operator privileges.");
+	else if (!isOperator(oper)) {
+		oper->getServer()->send_message(oper->get_fd(),
+		ERR_CHANOPRIVSNEEDED(oper->get_username(), _name));
 	}
 	else if (_members.find(target->get_fd()) != _members.end()) {
-		errorln(target->get_username() << " is already a member of '" << _name << "'.");
+		oper->getServer()->send_message(oper->get_fd(),
+		ERR_USERONCHANNEL(target->get_nickname(), _name));
 	}
 	else {
-		_members.insert(std::pair<int, Client*>(target->get_fd(), target));
+		oper->getServer()->send_message(oper->get_fd(),
+			RPL_INVITING(oper->get_nickname(), target->get_nickname(), _name));
+		target->getServer()->send_message(target->get_fd(),
+			RPL_INVITEMSG(oper->get_nickname(), oper->get_username(), target->get_username(), _name));
+		
 		return true;
 	}
 
 	return false;
 }
 
-bool Channel::setTopic(Client* operator_client, const std::string& new_topic) {
-	if (!operator_client) {
-		errorln("Invalid operator.");
+bool Channel::setTopic(Client* oper, const std::string& new_topic) {
+	if (!oper) {
+		log.error("Invalid operator.");
 	}
-	else if (!isOperator(operator_client)) {
-		errorln("Unable set topic: you do not have operator privileges.");
+	else if (!isOperator(oper)) {
+		oper->getServer()->send_message(oper->get_fd(),
+		ERR_CHANOPRIVSNEEDED(oper->get_username(), _name));
+	}
+	else if (&new_topic == nullptr) {
+		oper->getServer()->send_message(oper->get_fd(),
+		RPL_TOPIC(oper->get_nickname(), _name, _topic));
+		return true;
 	}
 	else {
 		_topic = new_topic;
+		broadcast(NULL, RPL_TOPIC(oper->get_nickname() + "has changed the topic for",
+				  _name, new_topic));
 		return true;
 	}
 
@@ -157,10 +180,10 @@ bool Channel::parseChannelName(const std::string &name) const
 
 bool Channel::addMember(Client* client) {
 	if (!client) {
-		errorln("Invalid client.");
+		log.error("Invalid client.");
 	}
 	else if (_members.find(client->get_fd()) != _members.end()) {
-		errorln(client->get_username() << " is already a member of this channel.");
+		log.error(client->get_username() + " is already a member of this channel.");
 	}
 	else {
 		_members.insert(std::pair<int, Client*>(client->get_fd(), client));
@@ -168,6 +191,23 @@ bool Channel::addMember(Client* client) {
 	}
 
 	return false;
+}
+
+void Channel::broadcast(Client* sender, const std::string& message) {
+	if (message.empty()) {
+		sender->getServer()->send_message(sender->get_fd(),
+		ERR_NOTEXTTOSEND(sender->get_username()));
+	}
+	else {
+		for (std::map<int, Client*>::iterator it = _members.begin(); it != _members.end(); ++it) {
+			Client *member = it->second;
+
+			if (member->get_fd() == sender->get_fd())
+				continue ;
+
+			member->getServer()->send_message(member->get_fd(), message);
+		}
+	}
 }
 
 int Channel::getCurrentMembersCount() {

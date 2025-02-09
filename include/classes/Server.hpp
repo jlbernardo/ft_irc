@@ -1,28 +1,29 @@
 #pragma once
+#ifndef SERVER_HPP
+# define SERVER_HPP
 
-#include <map>
-#include <string>
-#include "Channel.hpp"
-#include "Client.hpp"
-#include <queue>
-
-class Client;
-class Channel;
+# include "ft_irc.h"
 
 typedef std::map<int, std::queue<std::string> > MessageQueueMap;
-typedef std::map<int, Client*> ClientMap;
+
+template <typename T> std::string to_string(T value) {
+  std::ostringstream oss;
+  oss << value;
+  return oss.str();
+}
 
 class Server {
  private:
   int _fd;
   int _port;
+  int _max_fd;
   std::string _pass;
   fd_set _master_set;
-  int _max_fd;
   std::map<std::string, Channel*> _channels;
-  ClientMap _clients;
+  std::map<int, Client *> _clients;
   MessageQueueMap _message_queues;
   struct sockaddr_in _server_addr;
+
   static void signal_handler(int signum);
 
   void register_signals();
@@ -32,9 +33,11 @@ class Server {
   void handle_client_message(int client_fd);
 
  public:
+  static volatile __sig_atomic_t terminate;
+
   Server(int port, const std::string& pass);
   ~Server();
-  static volatile __sig_atomic_t terminate;
+
   int get_fd();
   std::string get_pass();
   void set_pass(const std::string& pass);
@@ -51,3 +54,5 @@ class Server {
   friend class SocketsManager;
   friend class CommandsManager;
 };
+
+#endif

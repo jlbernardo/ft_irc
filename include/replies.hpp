@@ -1,25 +1,8 @@
 #pragma once
+#ifndef REPLIES_HPP
+# define REPLIES_HPP
 
-#include <iostream>
-
-#include <string>
-
-#define println(x) std::cout << x << std::endl
-#define printlnnl(x) std::cout << x
-#define errorln(x) std::cerr << RED << x << DFT << std::endl;
-
-#define BLUE_GREEN	"\033[32;44m"
-#define MAG_YE		"\033[33;45m"
-#define RED     	"\033[1;31m"
-#define GREEN   	"\033[1;32m"
-#define YELLOW 		"\033[1;33m"
-#define BLUE    	"\033[1;34m"
-#define MAGENTA    	"\033[1;35m"
-#define CYAN    	"\033[1;36m"
-#define WHITE    	"\033[1;37m"
-#define ORANGE		"\033[0;38;5;166m"
-#define GREY		"\033[38;5;244m"
-#define DFT   		"\033[0m"
+# include <string>
 
 const std::string SERVER = ":big.little.talk.irc";
 const std::string CRLF = "\r\n";
@@ -80,7 +63,9 @@ inline std::string ERR_NOTEXTTOSEND(const std::string& user) {
   return SERVER + " 412 " + user + " :No message to send" + CRLF;
 }
 
-inline std::string ERR_NONICKNAMEGIVEN() { return SERVER + " 431 :No nickname given" + CRLF; }
+inline std::string ERR_NONICKNAMEGIVEN() {
+  return SERVER + " 431 :No nickname given" + CRLF;
+}
 
 inline std::string ERR_ERRONEUSNICKNAME(const std::string& nick) {
   return SERVER + " 432 * " + nick + " :Nickname is invalid" + CRLF;
@@ -90,17 +75,17 @@ inline std::string ERR_NICKNAMEINUSE(const std::string& nick) {
   return SERVER + " 433 * " + nick + " :Nickname is already in use" + CRLF;
 }
 
-inline std::string ERR_USERNOTINCHANNEL(const std::string& operator_, const std::string& client,
+inline std::string ERR_USERNOTINCHANNEL(const std::string& oper, const std::string& client,
                                         const std::string& channel) {
-  return SERVER + " 441 " + operator_ + " " + client + " " + channel + " :They aren't on that channel" + CRLF;
+  return SERVER + " 441 " + oper + " " + client + " " + channel + " :They aren't on that channel!" + CRLF;
 }
 
 inline std::string ERR_NOTONCHANNEL(const std::string& channel) {
-  return SERVER + " 442 * " + channel + " :Client not on channel!" + CRLF;
+  return SERVER + " 442 * " + channel + " :You're not on that channel!" + CRLF;
 }
 
 inline std::string ERR_USERONCHANNEL(const std::string& nick, const std::string& channel) {
-  return SERVER + " 443 * " + nick + " " + channel + " :Client on channel!" + CRLF;
+  return SERVER + " 443 * " + nick + " " + channel + " :is already on channel!" + CRLF;
 }
 
 inline std::string ERR_NOTREGISTERED() {
@@ -116,7 +101,7 @@ inline std::string ERR_ALREADYREGISTERED(const std::string& user) {
 }
 
 inline std::string ERR_PASSWDMISMATCH() {
-  return SERVER + " 464 * :Password was either not given or was incorrect" + CRLF;
+  return SERVER + " 464 * :pass was either not given or was incorrect" + CRLF;
 }
 
 inline std::string ERR_CHANNELISFULL(const std::string& channel) {
@@ -128,7 +113,7 @@ inline std::string ERR_INVITEONLYCHAN(const std::string& channel) {
 }
 
 inline std::string ERR_BADCHANNELKEY(const std::string& user, const std::string& channel) {
-  return SERVER + " 475 " + user + " " + channel + " :Password for channel was either not given or incorrect" + CRLF;
+  return SERVER + " 475 " + user + " " + channel + " :pass for channel was either not given or incorrect" + CRLF;
 }
 
 inline std::string ERR_BADCHANMASK(const std::string& channel) {
@@ -143,7 +128,9 @@ inline std::string ERR_CANNOTSENDTOCHAN(const std::string& channel) {
   return SERVER + " 404 * " + channel + " :Cannot send to channel" + CRLF;
 }
 
-inline std::string ERROR(const std::string message) { return ":ERROR " + message + CRLF; }
+inline std::string ERROR(const std::string message) {
+  return ":ERROR " + message + CRLF;
+}
 
 inline std::string RPL_JOIN(const std::string& user, const std::string& channel) {
   return ":" + user + " JOIN " + channel + CRLF;
@@ -177,11 +164,6 @@ inline std::string RPL_KICKNOREASON(const std::string& op_nick, const std::strin
   return SERVER + op_nick + "!" + op_user + "@ft.irc KICK " + channel + " " + client + CRLF;
 }
 
-inline std::string RPL_KICKFEEDBACK(const std::string& op_nick, const std::string& op_user, const std::string& channel,
-                                    const std::string& client) {
-  return SERVER + op_nick + "!" + op_user + "@ft.irc KICK " + channel + " " + client + CRLF;
-}
-
 inline std::string RPL_MODEBASE(const std::string& nick, const std::string& user, const std::string& channel) {
   return SERVER + nick + "!" + user + "@ft.irc MODE " + channel + " ";
 }
@@ -195,17 +177,8 @@ inline std::string RPL_YOURHOST(const std::string& user) {
   return SERVER + " 002 " + user + " :Your host is " + SERVER + ", running version 1.0" + CRLF;
 }
 
-#include <ctime>
-
-inline std::string getCurrentDate() {
-  std::time_t now = std::time(NULL);
-  char buf[100];
-  std::strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", std::localtime(&now));
-  return std::string(buf);
-}
-
 inline std::string RPL_CREATED(const std::string& user) { //change it so it reflects the server's creation date
-  return SERVER + " 003 " + user + " :This server was created " + getCurrentDate() + CRLF;
+  return SERVER + " 003 " + user + " :This server was created " + "DATE_PLACEHOLDER" + CRLF;
 }
 
 inline std::string RPL_MYINFO(const std::string& user, const std::string& userModes, const std::string& channelModes) {
@@ -215,3 +188,5 @@ inline std::string RPL_MYINFO(const std::string& user, const std::string& userMo
 inline std::string ERR_NICKCOLLISION(const std::string& nick, const std::string& user, const std::string& host) {
   return SERVER + " 436 " + SERVER + " " + nick + " :Nickname collision KILL from " + user + "@" + host + CRLF;
 }
+
+#endif

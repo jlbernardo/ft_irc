@@ -17,11 +17,13 @@ class Client {
     std::string _nick;
     std::string _user;
     std::string _name;
-    std::string _hostname;
 	std::string _pass;
-    bool _authenticated;
     std::string _buffer;
+    std::string _hostname;
+    std::string _identifier;
+
     Server* _server;
+    bool _authenticated;
     std::vector<Channel*> _joinedChannels;
 
   public:
@@ -29,30 +31,31 @@ class Client {
     ~Client();
 
     void clean_buffer();
-    bool buffer_has_linebreak();
     bool read_into_buffer();
+    bool buffer_has_linebreak();
 
     // getters:
     int get_fd() const;
+    Server* getServer() const;
 	const std::string &get_pass() const;
+    const std::string &get_buffer() const;
     const std::string &get_nickname() const;
     const std::string &get_username() const;
     const std::string &get_realname() const;
     const std::string &get_hostname() const;
-    const std::string &get_client_identifier() const;
-    const std::string &get_buffer() const;
-    Server* getServer() const;
-    std::vector<Channel&> get_joined_channels() const;
+    const std::string &get_identifier() const;
+    const std::vector<Channel*> &get_joined_channels() const;
 
 	// setters:
-    void set_authentication(bool status);
+    void add_channel(Channel* channel);
     void set_hostname(int client_socket);
+    void set_authentication(bool status);
     void set_nickname(const std::string &nickname);
     void set_username(const std::string &username);
     void set_realname(const std::string &realname);
-    void add_channel(Channel* channel);
+    void set_identifier(const std::string &identifier);
 
 	// checkers:
-	bool password_matched(Server &server) const;
     bool is_authenticated() const;
+	bool password_matched(Server &server) const;
 };
