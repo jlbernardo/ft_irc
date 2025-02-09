@@ -3,7 +3,7 @@ NAME = ircserv
 NAME_TEST = ircserv_test
 FLAGS = -Wall -Wextra -Werror -I./include -std=c++98 -g3 -MMD -MP
 TEST_FLAGS = $(FLAGS) -DTEST -fsanitize=address
-CXX = c++
+CXX = clang++
 PATH_OBJS = ./objects/
 PATH_TEST_OBJS = ./test_objects/
 SRC_DIR = src/
