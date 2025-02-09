@@ -2,26 +2,30 @@
 
 
 void pass(Commands &commands, const Command &cmd) {
-    Client &client = commands.get_sender();
-    Server &server = client.getServer();
+    Client &sender = commands.get_sender();
+    Server &server = sender.getServer();
     const std::string &pass = cmd.parameters.empty() ? "" : cmd.parameters[0];
 
     if (pass.empty()) {
-        server.send_message(client.get_fd(), ERR_NEEDMOREPARAMS(cmd.command));
+        server.send_message(sender.get_fd(), ERR_NEEDMOREPARAMS(cmd.command));
     }
-    else if (!client.get_pass().empty()) {
-        server.send_message(client.get_fd(), ERR_ALREADYREGISTERED(client.get_username()));
+    else if (!sender.get_pass().empty()) {
+        server.send_message(sender.get_fd(), ERR_ALREADYREGISTERED(sender.get_username()));
     }
     else if (pass == server.get_pass()) {
-        client.set_password(pass);
-        
-        if (!client.get_nickname().empty() && !client.get_username().empty()) {
-            client.set_authentication(true);
-            server.send_message(client.get_fd(), RPL_WELCOME(client.get_username(), client.get_identifier()));
+        sender.set_password(pass);
+
+        if (!sender.get_nickname().empty() && !sender.get_username().empty()) {
+            sender.set_authentication(true);
+
+            server.send_message(sender.get_fd(), RPL_WELCOME(sender.get_username(), sender.get_identifier()));
+            server.send_message(sender.get_fd(), RPL_YOURHOST(sender.get_nickname()));
+            server.send_message(sender.get_fd(), RPL_CREATED(sender.get_nickname()));
+            server.send_message(sender.get_fd(), RPL_MYINFO(sender.get_nickname(), "", ""));
         }
     }
     else {
-        server.send_message(client.get_fd(), ERR_PASSWDMISMATCH());
+        server.send_message(sender.get_fd(), ERR_PASSWDMISMATCH());
         commands.set_fatal_error(true);
     }
 }

@@ -16,21 +16,32 @@ void nick(Commands &commands, const Command &cmd) {
     
     if (new_nick.empty()) {
         server.send_message(sender.get_fd(), ERR_NONICKNAMEGIVEN());
-        return;
     }
     else if (is_nickname_in_use(server, new_nick)) {
         server.send_message(sender.get_fd(), ERR_NICKNAMEINUSE(new_nick));
-        return;
     }
-    std::string old_nick = sender.get_nickname();
-    sender.set_nickname(new_nick);
-    
-    const std::string nick_change_msg = ":" + old_nick + " NICK " + new_nick + "\r\n";
+    else if (sender.is_authenticated()) {
+        std::string old_nick = sender.get_nickname();
+        sender.set_nickname(new_nick);
+        
+        const std::string nick_change_msg = ":" + old_nick + " NICK " + new_nick + "\r\n";
+        for (std::map<int, Client *>::iterator it = server.get_clients().begin(); it != server.get_clients().end(); ++it) {
+            int client_fd = it->first;
 
-    for (std::map<int, Client *>::iterator it = server.get_clients().begin(); it != server.get_clients().end(); ++it) {
-        int client_fd = it->first;
+            if (client_fd != sender.get_fd())
+                server.get_message_queues()[client_fd].push(nick_change_msg);
+        }
+    }
+    else {
+        sender.set_nickname(new_nick);
 
-        if (client_fd != sender.get_fd())
-            server.get_message_queues()[client_fd].push(nick_change_msg);
+        if (!sender.get_pass().empty() && !sender.get_username().empty()) {
+            sender.set_authentication(true);
+            
+            server.send_message(sender.get_fd(), RPL_WELCOME(sender.get_username(), sender.get_identifier()));
+            server.send_message(sender.get_fd(), RPL_YOURHOST(sender.get_nickname()));
+            server.send_message(sender.get_fd(), RPL_CREATED(sender.get_nickname()));
+            server.send_message(sender.get_fd(), RPL_MYINFO(sender.get_nickname(), "", ""));
+        }
     }
 }
