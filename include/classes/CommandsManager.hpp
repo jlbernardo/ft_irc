@@ -1,6 +1,9 @@
-#include "Client.hpp"
-#include "Commands.hpp"
-#include "Server.hpp"
+#pragma once
+#ifndef COMMANDS_MANAGER_HPP
+# define COMMANDS_MANAGER_HPP
+
+# include "ft_irc.h"
+
 
 class CommandsManager {
  public:
@@ -26,3 +29,5 @@ class CommandsManager {
   void update_nickname(Client &client, const std::string &new_nick);
   bool is_nickname_in_use(const std::string &new_nick);
 };
+
+#endif

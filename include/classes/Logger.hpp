@@ -4,6 +4,7 @@
 
 # include "ft_irc.h"
 
+
 class Logger {
   private:
     Logger();
@@ -19,12 +20,5 @@ class Logger {
 
     static Logger &getInstance();
 };
-
-std::string timestamp() {
-  std::time_t now = std::time(NULL);
-  char buf[100];
-  std::strftime(buf, sizeof(buf), "%d.%m %H:%M:%S", std::localtime(&now));
-  return std::string(buf);
-}
 
 #endif

@@ -3,9 +3,8 @@
 
 int main(int argc, char** argv) {
   try {
-    validate.args(argc);
-    validate.port(argv[1]);
-    validate.pass(argv[2]);
+    validator.validate(argc);
+    validator.validate(argv[1]);
 
     int port = std::atoi(argv[1]);
     const std::string pass = argv[2];
@@ -14,7 +13,7 @@ int main(int argc, char** argv) {
     irc_server.start();
   }
   catch (const std::exception& e) {
-    log.fatal(e.what());
+    logger.fatal(e.what());
     return EXIT_ERR;
   }
 

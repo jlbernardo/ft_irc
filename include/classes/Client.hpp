@@ -1,15 +1,9 @@
 #pragma once
+#ifndef CLIENT_HPP
+# define CLIENT_HPP
 
-#include <vector>
-#include <string>
-#include <arpa/inet.h>
-#include <netinet/in.h>
-#include <sys/socket.h>
+# include "ft_irc.h"
 
-#include "Channel.hpp"
-
-class Server;
-class Channel;
 
 class Client {
   private:
@@ -59,3 +53,5 @@ class Client {
     bool is_authenticated() const;
 	bool password_matched(Server &server) const;
 };
+
+#endif

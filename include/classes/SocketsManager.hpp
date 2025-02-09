@@ -1,8 +1,9 @@
 #pragma once
-#include <sys/select.h>
-#include "Server.hpp"
+#ifndef SOCKETS_MANAGER_HPP
+# define SOCKETS_MANAGER_HPP
 
-class Commands;
+# include "ft_irc.h"
+
 
 class SocketsManager {
 public:
@@ -19,3 +20,5 @@ private:
   fd_set _write_set;
   Server &_server;
 };
+
+#endif

@@ -12,6 +12,7 @@ template <typename T> std::string to_string(T value) {
   return oss.str();
 }
 
+
 class Server {
  private:
   int _fd;

@@ -3,8 +3,10 @@
 # define FT_IRC_H
 
 # include <map>
+# include <list>
 # include <queue>
 # include <ctime>
+# include <vector>
 # include <string>
 # include <sstream>
 # include <csignal>
@@ -15,6 +17,7 @@
 # include <iostream>
 # include <stdexcept>
 # include <arpa/inet.h>
+# include <sys/select.h>
 # include <sys/socket.h>
 # include <netinet/in.h>
 # include "replies.hpp"
@@ -53,7 +56,7 @@ class CommandsManager;
 # define GREY       "\033[38;5;244m"
 # define DFT        "\033[0m"
 
-Logger log = Logger::getInstance();
-Validator validate = Validator();
+static Logger logger = Logger::getInstance();
+static Validator validator = Validator();
 
 #endif

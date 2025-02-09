@@ -1,10 +1,8 @@
 #pragma once
-#include <list>
-#include <map>
-#include <string>
-#include <vector>
+#ifndef COMMANDS_HPP
+# define COMMANDS_HPP
 
-#include "Client.hpp"
+# include "ft_irc.h"
 
 enum CommandType { PRIVMSG, JOIN, NICK, USER, QUIT, KICK,  PASS, INVITE, TOPIC, MODE, UNKNOWN };
 
@@ -14,6 +12,7 @@ struct Command {
   CommandType type;
   std::vector<std::string> parameters;
 };
+
 
 class Commands {
 
@@ -39,3 +38,5 @@ class Commands {
   bool get_fatal_error() const { return _fatal_error; }
   void clear() { list.clear(); }
 };
+
+#endif

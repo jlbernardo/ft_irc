@@ -73,7 +73,7 @@ void Commands::init_list_of_commands(const std::string &raw_input) {
          ++param_it) {
       output += *param_it + ", ";
     }
-   log.info(output);
+   logger.info(output);
   }
 }
 

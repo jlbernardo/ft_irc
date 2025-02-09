@@ -62,7 +62,7 @@ bool Channel::mode(char mode) const {
 		case 'l':
 			return _userLimit;
 		default:
-			log.error("Not a valid channel mode.");
+			logger.error("Not a valid channel mode.");
 			return false;
 	}
 }
@@ -87,7 +87,7 @@ const std::map<int, Client*>& Channel::getMembers() const {
 
 bool Channel::kickMember(Client* oper, Client* target, const std::string& reason) {
 	if (!oper) {
-		log.error("Invalid operator.");
+		logger.error("Invalid operator.");
 	}
 	else if (!target) {
 		oper->getServer()->send_message(oper->get_fd(),
@@ -118,7 +118,7 @@ bool Channel::kickMember(Client* oper, Client* target, const std::string& reason
 
 bool Channel::inviteMember(Client* oper, Client* target) {
 	if (!oper) {
-		log.error("Invalid operator.");
+		logger.error("Invalid operator.");
 	}
 	else if (!target) {
 		oper->getServer()->send_message(oper->get_fd(),
@@ -146,16 +146,11 @@ bool Channel::inviteMember(Client* oper, Client* target) {
 
 bool Channel::setTopic(Client* oper, const std::string& new_topic) {
 	if (!oper) {
-		log.error("Invalid operator.");
+		logger.error("Invalid operator.");
 	}
 	else if (!isOperator(oper)) {
 		oper->getServer()->send_message(oper->get_fd(),
 		ERR_CHANOPRIVSNEEDED(oper->get_username(), _name));
-	}
-	else if (&new_topic == nullptr) {
-		oper->getServer()->send_message(oper->get_fd(),
-		RPL_TOPIC(oper->get_nickname(), _name, _topic));
-		return true;
 	}
 	else {
 		_topic = new_topic;
@@ -180,10 +175,10 @@ bool Channel::parseChannelName(const std::string &name) const
 
 bool Channel::addMember(Client* client) {
 	if (!client) {
-		log.error("Invalid client.");
+		logger.error("Invalid client.");
 	}
 	else if (_members.find(client->get_fd()) != _members.end()) {
-		log.error(client->get_username() + " is already a member of this channel.");
+		logger.error(client->get_username() + " is already a member of this channel.");
 	}
 	else {
 		_members.insert(std::pair<int, Client*>(client->get_fd(), client));

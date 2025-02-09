@@ -7,18 +7,20 @@ CXX = c++
 PATH_OBJS = ./objects/
 PATH_TEST_OBJS = ./test_objects/
 SRC_DIR = src/
+UTILS_DIR = src/utils/
 PASS = 89aX
 
-SRC += Client Commands CommandsManager Server SocketsManager Channel
-SRC += $(addprefix utils/, Validator Logger)
+SRC = Client Commands CommandsManager Server SocketsManager Channel
+UTILS_SRC = Validator Logger
 MAIN = main
 
 OBJS = $(SRC:%=$(PATH_OBJS)%.o)
 MAIN_OBJ = $(MAIN:%=$(PATH_OBJS)%.o)
+UTILS_OBJS = $(UTILS_SRC:%=$(PATH_OBJS)%.o)
 TEST_OBJS = $(SRC:%=$(PATH_TEST_OBJS)%.o)
 TEST_MAIN_OBJ = $(MAIN:%=$(PATH_TEST_OBJS)%.o)
 
-DEPS = $(OBJS:.o=.d) $(MAIN_OBJ:.o=.d) $(TEST_OBJS:.o=.d) $(TEST_MAIN_OBJ:.o=.d)
+DEPS = $(OBJS:.o=.d) $(MAIN_OBJ:.o=.d) $(TEST_OBJS:.o=.d) $(TEST_MAIN_OBJ:.o=.d) $(UTILS_OBJS:.o=.d)
 
 all: $(NAME)
 
@@ -31,7 +33,7 @@ test_connections: $(NAME_TEST)
 quickmemtest: $(NAME_TEST)
 	@./$(NAME_TEST) $(PORT) $(PASS)
 
-$(NAME): $(OBJS) $(MAIN_OBJ)
+$(NAME): $(OBJS) $(MAIN_OBJ) $(UTILS_OBJS)
 	@mkdir -p $(dir $@)
 	$(CXX) $(FLAGS) $^ -o $@
 	@touch $@
@@ -48,6 +50,10 @@ $(PATH_OBJS)%.o: $(SRC_DIR)%.cpp
 $(PATH_TEST_OBJS)%.o: $(SRC_DIR)%.cpp
 	@mkdir -p $(PATH_TEST_OBJS)
 	$(CXX) $(TEST_FLAGS) -c $< -o $@
+
+$(PATH_OBJS)%.o: $(UTILS_DIR)%.cpp
+	@mkdir -p $(PATH_OBJS)
+	$(CXX) $(FLAGS) -c $< -o $@
 
 $(MAIN_OBJ): $(SRC_DIR)$(MAIN).cpp
 	@mkdir -p $(PATH_OBJS)

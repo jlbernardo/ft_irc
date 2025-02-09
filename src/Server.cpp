@@ -4,7 +4,9 @@
 volatile sig_atomic_t Server::terminate = 0;
 
 Server::Server(int port, const std::string& pass) 
-              : _port(port), _pass(pass), _max_fd(0) {
+              : _fd(0), _port(port),  _max_fd(0), _pass(pass),
+                _master_set(), _channels(), _clients(),
+                _message_queues(), _server_addr() {
 
   register_signals();
   initialize_socket();
@@ -73,7 +75,7 @@ void Server::add_new_client_to_master_set() {
   int client_fd = accept(_fd, (struct sockaddr *)&client_addr, &client_addr_len);
 
   if (client_fd < 0) {
-    log.error("Failed to accept connection");
+    logger.error("Failed to accept connection");
     return;
   }
 
@@ -98,7 +100,7 @@ void Server::remove_client(int client_fd) {
 }
 
 Server::~Server() {
- log.info("Shutting down server");
+ logger.info("Shutting down server");
 
   for (std::map<int, Client *>::iterator it = _clients.begin(); it != _clients.end(); ++it) {
     delete it->second;
@@ -114,10 +116,10 @@ void Server::send_error(int client_fd, const std::string &error_code, const std:
 }
 
 void Server::send_message(int client_fd, const std::string &message) {
-  log.info("Sending message to client " + client_fd + (": " + message));
+  logger.info("Sending message to client " + client_fd + (": " + message));
 
   if (send(client_fd, message.c_str(), message.length(), 0) == -1)
-    log.error("Error sending message to client " + client_fd);
+    logger.error("Error sending message to client " + client_fd);
 }
 
 int Server::get_fd() {

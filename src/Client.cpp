@@ -2,9 +2,9 @@
 
 
 Client::Client(int fd, Server* server)
-    : _fd(fd), _nick(""), _user(""), _name(""),
-    _authenticated(false), _buffer(""), _server(server),
-    _joinedChannels() {
+    : _fd(fd), _nick(""), _user(""), _name(""), _pass(""),
+    _buffer(""), _hostname(""), _identifier(""), _server(server),
+    _authenticated(false), _joinedChannels() {
 
   _identifier = _nick + "!" + _user + "@" + _hostname;
   set_hostname(fd);
@@ -19,12 +19,12 @@ void Client::set_hostname(int client_socket) {
 
   if (getsockname(client_socket, (struct sockaddr *)&addr, &len) == -1) {
     _hostname = "";
-    log.info("getsockname has failed, thus the name is: " + _hostname);
+    logger.info("getsockname has failed, thus the name is: " + _hostname);
     return;
   }
 
   _hostname = inet_ntoa(addr.sin_addr);
-  log.info("The hostname will be: " + _hostname);
+  logger.info("The hostname will be: " + _hostname);
 }
 
 bool Client::read_into_buffer() {
@@ -35,7 +35,7 @@ bool Client::read_into_buffer() {
     return false;
 
   _buffer.append(temp, bytes_read);
-  log.info(_buffer);
+  logger.info(_buffer);
 
   return true;
 }

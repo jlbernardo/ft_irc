@@ -68,11 +68,11 @@ void CommandsManager::privmsg(Commands &commands, const Command &cmd) {
     const std::string &recipient = cmd.parameters[0];
     const std::string &message = cmd.parameters[1];
 
-    log.info("Recipient: " + recipient[0]);
+    logger.info("Recipient: " + recipient[0]);
     if (recipient[0] == '#') {        
         if (server.checkForChannel(recipient)) {
             Channel* channel = server._channels[recipient];
-            log.info("Channel found: " + channel->getName());
+            logger.info("Channel found: " + channel->getName());
             if (!channel->isMember(&sender)) {
                 server.send_message(sender.get_fd(), ERR_CANNOTSENDTOCHAN(recipient));
                 return;
@@ -133,10 +133,10 @@ void CommandsManager::join(Commands &commands, const Command &cmd) {
     channel = &created_channel;
 
     if (server._channels.find(channel_name) != server._channels.end()) {
-       log.info("Channel created successfully: " + channel_name);
+       logger.info("Channel created successfully: " + channel_name);
     }
     else {
-       log.info("Failed to create channel: " + channel_name);
+       logger.info("Failed to create channel: " + channel_name);
     }
     std::string names;
 
@@ -180,7 +180,7 @@ void CommandsManager::user(Commands &commands, const Command &cmd) {
     Client &client = commands.get_sender();
 
     // Debug print to verify parameters
-    log.info("Parameters size: " + params.size());
+    logger.info("Parameters size: " + params.size());
 
     if (params.size() < 4) {
         server.send_message(client.get_fd(), ERR_NEEDMOREPARAMS(cmd.command));
