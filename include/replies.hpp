@@ -11,6 +11,18 @@ inline std::string RPL_WELCOME(const std::string& user, const std::string& clien
   return SERVER + " 001 " + user + " :Welcome to the Internet Relay Chat, " + client_id + CRLF;
 }
 
+inline std::string RPL_YOURHOST(const std::string& user) {
+  return SERVER + " 002 " + user + " :Your host is " + SERVER + ", running version 1.0" + CRLF;
+}
+
+inline std::string RPL_CREATED(const std::string& user, std::string& startup) {
+  return SERVER + " 003 " + user + " :This server was created on " + startup + CRLF;
+}
+
+inline std::string RPL_MYINFO(const std::string& user, const std::string& userModes, const std::string& channelModes) {
+  return SERVER + " 004 " + user + " " + SERVER + " " + "1.0 " + userModes + " " + channelModes + CRLF;
+}
+
 inline std::string RPL_ENDOFWHO(const std::string& channel) {
   return SERVER + " 315 " + channel + " :End of /WHO list." + CRLF;
 }
@@ -51,6 +63,10 @@ inline std::string ERR_NOSUCHCHANNEL(const std::string& channel) {
   return SERVER + " 403 * " + channel + " :Invalid channel name!" + CRLF;
 }
 
+inline std::string ERR_CANNOTSENDTOCHAN(const std::string& channel) {
+  return SERVER + " 404 * " + channel + " :Cannot send to channel" + CRLF;
+}
+
 inline std::string ERR_NOSUCHNICK(const std::string& recipient) {
   return SERVER + " 406 " + recipient + " :No such nick" + CRLF;
 }
@@ -73,6 +89,10 @@ inline std::string ERR_ERRONEUSNICKNAME(const std::string& nick) {
 
 inline std::string ERR_NICKNAMEINUSE(const std::string& nick) {
   return SERVER + " 433 * " + nick + " :Nickname is already in use" + CRLF;
+}
+
+inline std::string ERR_NICKCOLLISION(const std::string& nick, const std::string& user, const std::string& host) {
+  return SERVER + " 436 " + SERVER + " " + nick + " :Nickname collision KILL from " + user + "@" + host + CRLF;
 }
 
 inline std::string ERR_USERNOTINCHANNEL(const std::string& oper, const std::string& client,
@@ -117,15 +137,11 @@ inline std::string ERR_BADCHANNELKEY(const std::string& user, const std::string&
 }
 
 inline std::string ERR_BADCHANMASK(const std::string& channel) {
-  return SERVER + "476" + channel + " :Bad Channel Mask" + CRLF;
+  return SERVER + " 476 " + channel + " :Bad Channel Mask" + CRLF;
 }
 
 inline std::string ERR_CHANOPRIVSNEEDED(const std::string& user, const std::string& channel) {
   return SERVER + " 482 " + user + " " + channel + " :You're not a channel operator!" + CRLF;
-}
-
-inline std::string ERR_CANNOTSENDTOCHAN(const std::string& channel) {
-  return SERVER + " 404 * " + channel + " :Cannot send to channel" + CRLF;
 }
 
 inline std::string ERROR(const std::string message) {
@@ -171,22 +187,6 @@ inline std::string RPL_MODEBASE(const std::string& nick, const std::string& user
 inline std::string RPL_INVITEMSG(const std::string& nick, const std::string& user, const std::string& recipient,
                                  const std::string& channel) {
   return SERVER + nick + "!~" + user + "@ft.irc INVITE " + recipient + " :" + channel + CRLF;
-}
-
-inline std::string RPL_YOURHOST(const std::string& user) {
-  return SERVER + " 002 " + user + " :Your host is " + SERVER + ", running version 1.0" + CRLF;
-}
-
-inline std::string RPL_CREATED(const std::string& user, std::string& startup) {
-  return SERVER + " 003 " + user + " :This server was created on " + startup + CRLF;
-}
-
-inline std::string RPL_MYINFO(const std::string& user, const std::string& userModes, const std::string& channelModes) {
-  return SERVER + " 004 " + user + " " + SERVER + " " + "1.0 " + userModes + " " + channelModes + CRLF;
-}
-
-inline std::string ERR_NICKCOLLISION(const std::string& nick, const std::string& user, const std::string& host) {
-  return SERVER + " 436 " + SERVER + " " + nick + " :Nickname collision KILL from " + user + "@" + host + CRLF;
 }
 
 #endif
