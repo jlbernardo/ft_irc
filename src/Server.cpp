@@ -4,9 +4,9 @@
 volatile sig_atomic_t Server::terminate = 0;
 
 Server::Server(int port, const std::string& pass) 
-              : _fd(0), _port(port),  _max_fd(0), _pass(pass),
-                _master_set(), _channels(), _clients(),
-                _message_queues(), _server_addr() {
+              : _fd(0), _port(port),  _max_fd(0), _startup_date(""),
+                _pass(pass), _master_set(), _channels(),
+                _clients(), _message_queues(), _server_addr() {
 
   register_signals();
   initialize_socket();
@@ -58,6 +58,8 @@ void Server::setup_server() {
 }
 
 void Server::start() {
+  _startup_date = timestamp("%b %d, %Y at %H:%M:%S");
+
   SocketsManager manager(*this);
   while (true) {
     manager.add_new_sockets_from_masterset_to_read_write();
@@ -126,8 +128,12 @@ int Server::get_fd() {
   return _fd;
 }
 
-std::string Server::get_pass() {
+std::string &Server::get_pass() {
   return _pass;
+}
+
+std::string &Server::get_startup_date() {
+  return _startup_date;
 }
 
 std::map<std::string, Channel*> &Server::get_channels() {

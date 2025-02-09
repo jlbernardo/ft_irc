@@ -18,6 +18,7 @@ class Server {
   int _fd;
   int _port;
   int _max_fd;
+  std::string _startup_date;
   std::string _pass;
   fd_set _master_set;
   std::map<std::string, Channel*> _channels;
@@ -40,7 +41,8 @@ class Server {
   ~Server();
 
   int get_fd();
-  std::string get_pass();
+  std::string &get_pass();
+  std::string &get_startup_date();
   std::map<std::string, Channel*> &get_channels();
   std::map<int, Client *> &get_clients();
   MessageQueueMap &get_message_queues();

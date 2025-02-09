@@ -20,7 +20,7 @@ void pass(Commands &commands, const Command &cmd) {
 
             server.send_message(sender.get_fd(), RPL_WELCOME(sender.get_username(), sender.get_identifier()));
             server.send_message(sender.get_fd(), RPL_YOURHOST(sender.get_nickname()));
-            server.send_message(sender.get_fd(), RPL_CREATED(sender.get_nickname()));
+            server.send_message(sender.get_fd(), RPL_CREATED(sender.get_nickname(), server.get_startup_date()));
             server.send_message(sender.get_fd(), RPL_MYINFO(sender.get_nickname(), "", ""));
         }
     }

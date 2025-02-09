@@ -177,8 +177,8 @@ inline std::string RPL_YOURHOST(const std::string& user) {
   return SERVER + " 002 " + user + " :Your host is " + SERVER + ", running version 1.0" + CRLF;
 }
 
-inline std::string RPL_CREATED(const std::string& user) { //change it so it reflects the server's creation date
-  return SERVER + " 003 " + user + " :This server was created " + "DATE_PLACEHOLDER" + CRLF;
+inline std::string RPL_CREATED(const std::string& user, std::string& startup) {
+  return SERVER + " 003 " + user + " :This server was created on " + startup + CRLF;
 }
 
 inline std::string RPL_MYINFO(const std::string& user, const std::string& userModes, const std::string& channelModes) {

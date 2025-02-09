@@ -59,6 +59,8 @@ class CommandsManager;
 static Logger logger = Logger::getInstance();
 static Validator validator = Validator();
 
+std::string timestamp(const char *format);
+
 void privmsg(Commands &commands, const Command &cmd);
 void join(Commands &commands, const Command &cmd);
 void nick(Commands &commands, const Command &cmd);
