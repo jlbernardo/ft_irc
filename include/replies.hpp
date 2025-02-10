@@ -7,20 +7,20 @@
 const std::string SERVER = ":big.little.talk.irc";
 const std::string CRLF = "\r\n";
 
-inline std::string RPL_WELCOME(const std::string& user, const std::string& client_id) {
-  return SERVER + " 001 " + user + " :Welcome to the Internet Relay Chat, " + client_id + CRLF;
+inline std::string RPL_WELCOME(const std::string& nick, const std::string& client_id) {
+  return SERVER + " 001 " + nick + " :Welcome to the Internet Relay Chat, " + client_id + CRLF;
 }
 
-inline std::string RPL_YOURHOST(const std::string& user) {
-  return SERVER + " 002 " + user + " :Your host is " + SERVER + ", running version 1.0" + CRLF;
+inline std::string RPL_YOURHOST(const std::string& nick) {
+  return SERVER + " 002 " + nick + " :Your host is " + SERVER + ", running version 1.0" + CRLF;
 }
 
-inline std::string RPL_CREATED(const std::string& user, std::string& startup) {
-  return SERVER + " 003 " + user + " :This server was created on " + startup + CRLF;
+inline std::string RPL_CREATED(const std::string& nick, std::string& startup) {
+  return SERVER + " 003 " + nick + " :This server was created on " + startup + CRLF;
 }
 
-inline std::string RPL_MYINFO(const std::string& user, const std::string& userModes, const std::string& channelModes) {
-  return SERVER + " 004 " + user + " " + SERVER + " " + "1.0 " + userModes + " " + channelModes + CRLF;
+inline std::string RPL_MYINFO(const std::string& nick, const std::string& userModes, const std::string& channelModes) {
+  return SERVER + " 004 " + nick + " " + SERVER + " " + "1.0 " + userModes + " " + channelModes + CRLF;
 }
 
 inline std::string RPL_ENDOFWHO(const std::string& channel) {

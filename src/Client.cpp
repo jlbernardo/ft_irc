@@ -6,7 +6,6 @@ Client::Client(int fd, Server &server)
     _buffer(""), _hostname(""), _identifier(""), _server(server),
     _authenticated(false), _joinedChannels() {
 
-  _identifier = _nick + "!" + _user + "@" + _hostname;
   set_hostname(fd);
 }
 

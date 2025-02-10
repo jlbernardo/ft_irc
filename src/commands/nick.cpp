@@ -37,11 +37,13 @@ void nick(Commands &commands, const Command &cmd) {
 
         if (!sender.get_pass().empty() && !sender.get_username().empty()) {
             sender.set_authentication(true);
-            
+
+            sender.set_identifier(new_nick + "!" + sender.get_username() + "@" + sender.get_hostname());
+
             server.send_message(sender.get_fd(), RPL_WELCOME(sender.get_username(), sender.get_identifier()));
-            server.send_message(sender.get_fd(), RPL_YOURHOST(sender.get_nickname()));
-            server.send_message(sender.get_fd(), RPL_CREATED(sender.get_nickname(), server.get_startup_date()));
-            server.send_message(sender.get_fd(), RPL_MYINFO(sender.get_nickname(), "", ""));
+            server.send_message(sender.get_fd(), RPL_YOURHOST(new_nick));
+            server.send_message(sender.get_fd(), RPL_CREATED(new_nick, server.get_startup_date()));
+            server.send_message(sender.get_fd(), RPL_MYINFO(new_nick, "", ""));
         }
     }
 }
