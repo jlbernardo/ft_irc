@@ -1,4 +1,4 @@
-#include "ft_irc.h"
+#include "ft_irc.hpp"
 
 
 void mode(Commands &commands, const Command &cmd) {

@@ -2,7 +2,7 @@
 #ifndef CHANNEL_HPP
 # define CHANNEL_HPP
 
-# include "ft_irc.h"
+# include "ft_irc.hpp"
 
 class Channel {
 	

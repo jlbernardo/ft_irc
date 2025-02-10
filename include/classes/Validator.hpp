@@ -2,7 +2,7 @@
 #ifndef VALIDATOR_HPP
 # define VALIDATOR_HPP
 
-# include "ft_irc.h"
+# include "ft_irc.hpp"
 
 const int MIN_PORT = 1024;
 const int MAX_PORT = 65535;

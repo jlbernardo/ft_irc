@@ -1,4 +1,4 @@
-#include "ft_irc.h"
+#include "ft_irc.hpp"
 
 
 void join(Commands &commands, const Command &cmd) {

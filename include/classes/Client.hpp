@@ -2,7 +2,7 @@
 #ifndef CLIENT_HPP
 # define CLIENT_HPP
 
-# include "ft_irc.h"
+# include "ft_irc.hpp"
 
 
 class Client {

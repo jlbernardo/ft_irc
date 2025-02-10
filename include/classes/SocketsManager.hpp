@@ -2,7 +2,7 @@
 #ifndef SOCKETS_MANAGER_HPP
 # define SOCKETS_MANAGER_HPP
 
-# include "ft_irc.h"
+# include "ft_irc.hpp"
 
 
 class SocketsManager {

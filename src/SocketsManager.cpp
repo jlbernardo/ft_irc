@@ -1,4 +1,4 @@
-#include "ft_irc.h"
+#include "ft_irc.hpp"
 
 SocketsManager::SocketsManager(Server& serv) : _server(serv) {
 }

@@ -1,4 +1,4 @@
-#include "ft_irc.h"
+#include "ft_irc.hpp"
 
 
 CommandsManager::CommandsManager(Server &server) : server(server) {

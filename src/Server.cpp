@@ -1,4 +1,4 @@
-#include "ft_irc.h"
+#include "ft_irc.hpp"
 
 
 volatile sig_atomic_t Server::terminate = 0;

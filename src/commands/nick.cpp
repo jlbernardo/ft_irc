@@ -1,4 +1,4 @@
-#include "ft_irc.h"
+#include "ft_irc.hpp"
 
 
 bool is_nickname_in_use(Server &server, const std::string &new_nick) {

@@ -2,7 +2,7 @@
 #ifndef LOGGER_HPP
 # define LOGGER_HPP
 
-# include "ft_irc.h"
+# include "ft_irc.hpp"
 
 
 class Logger {

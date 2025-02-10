@@ -1,6 +1,6 @@
 #pragma once
-#ifndef FT_IRC_H
-# define FT_IRC_H
+#ifndef FT_IRC_HPP
+# define FT_IRC_HPP
 
 # include <map>
 # include <list>

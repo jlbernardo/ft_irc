@@ -1,4 +1,4 @@
-#include "ft_irc.h"
+#include "ft_irc.hpp"
 
 
 Commands::Commands(Client &sender, const std::string &raw_input)

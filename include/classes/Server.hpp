@@ -2,7 +2,7 @@
 #ifndef SERVER_HPP
 # define SERVER_HPP
 
-# include "ft_irc.h"
+# include "ft_irc.hpp"
 
 typedef std::map<int, std::queue<std::string> > MessageQueueMap;
 

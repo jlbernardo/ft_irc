@@ -2,7 +2,7 @@
 #ifndef COMMANDS_HPP
 # define COMMANDS_HPP
 
-# include "ft_irc.h"
+# include "ft_irc.hpp"
 
 enum CommandType { PRIVMSG, JOIN, NICK, USER, QUIT, KICK,  PASS, INVITE, TOPIC, MODE, UNKNOWN };
 

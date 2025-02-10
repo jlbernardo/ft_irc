@@ -1,4 +1,4 @@
-#include "ft_irc.h"
+#include "ft_irc.hpp"
 
 std::string timestamp(const char *format) {
   std::time_t now = std::time(NULL);

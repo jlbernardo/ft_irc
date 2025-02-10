@@ -1,4 +1,4 @@
-#include "ft_irc.h"
+#include "ft_irc.hpp"
 
 
 Channel::Channel(const std::string& name, Client* creator) : _name(name),

@@ -2,7 +2,7 @@
 #ifndef COMMANDS_MANAGER_HPP
 # define COMMANDS_MANAGER_HPP
 
-# include "ft_irc.h"
+# include "ft_irc.hpp"
 
 
 class CommandsManager {
