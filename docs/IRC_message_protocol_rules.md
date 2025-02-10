@@ -31,7 +31,7 @@ To build a solid C++ IRC server, we must understand how the IRC clients will for
 * **MODE:** Used to change the settings (modes) of a channel or user. For channels, commonly used modes include:
     * `+i`: Invite-only mode, requiring an invitation to join.
     * `+t`: Topic-restricted mode, allowing only chanops to change the topic.
-    * `+k`: Key mode, requiring a password to join.
+    * `+k`: Key mode, requiring a pass to join.
     * `+o`: Grants channel operator privileges to a user.
     * `+l`: Sets a user limit for the channel.
 * **KICK:** Removes a user from a channel. Only chanops can use this command.
@@ -45,7 +45,7 @@ To build a solid C++ IRC server, we must understand how the IRC clients will for
 * **Kicking a User:** `KICK #MyChannel User1 :Reason for kicking`
 * **Inviting a User:** `INVITE User2 #MyChannel`
 * **Setting a Topic:** `TOPIC #MyChannel :This is the new topic`
-* **Setting a Channel Key (Password):** `MODE #MyChannel +k MySecretPassword`
+* **Setting a Channel Key (pass):** `MODE #MyChannel +k MySecretPassword`
 * **Setting Invite-Only Mode:** `MODE #MyChannel +i`
 * **Setting Topic-Restricted Mode:** `MODE #MyChannel +t`
 * **Granting Channel Operator Privileges:** `MODE #MyChannel +o User3`
