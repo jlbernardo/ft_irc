@@ -8,13 +8,11 @@ Channel::Channel(const std::string& name, Client* creator) : _name(name),
 
 	if (!creator) {
 		creator->getServer().send_message(creator->get_fd(), ERR_NONICKNAMEGIVEN());
-		this->~Channel();
 		return ;
 	}
 
 	if (!parseChannelName(name)) {
 		creator->getServer().send_message(creator->get_fd(), ERR_BADCHANMASK(name));
-		this->~Channel();
 		return ;
 	}
 
