@@ -34,7 +34,7 @@ void join(Commands &commands, const Command &cmd) {
        logger.info("Channel created successfully: " + channel_name);
     }
     else {
-       logger.info("Failed to create channel: " + channel_name);
+       logger.warn("Failed to create channel: " + channel_name);
     }
     std::string names;
 

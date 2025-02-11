@@ -18,7 +18,7 @@ void Client::set_hostname(int client_socket) {
 
   if (getsockname(client_socket, (struct sockaddr *)&addr, &len) == -1) {
     _hostname = "";
-    logger.info("getsockname has failed, thus the name is: " + _hostname);
+    logger.warn("getsockname has failed, thus the name is: " + _hostname);
     return;
   }
 
