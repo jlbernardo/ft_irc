@@ -93,7 +93,14 @@ std::vector<std::string> Commands::separate_multiple_commands(const std::string 
   return result;
 }
 
-std::string Commands::trim(const std::string &str) {
+CommandType Commands::find_command_type(const std::string &cmd) {
+  if (_command_map.find(cmd) != _command_map.end()) {
+    return _command_map[cmd];
+  }
+  return UNKNOWN;
+}
+
+std::string trim(const std::string &str) {
   if (str.empty())
     return str;
 
@@ -111,11 +118,4 @@ void Commands::to_uppercase(std::string &str) {
   for (unsigned int i = 0; i < str.length(); i++) {
     str[i] = std::toupper(str[i]);
   }
-}
-
-CommandType Commands::find_command_type(const std::string &cmd) {
-  if (_command_map.find(cmd) != _command_map.end()) {
-    return _command_map[cmd];
-  }
-  return UNKNOWN;
 }

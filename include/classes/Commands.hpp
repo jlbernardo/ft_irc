@@ -26,7 +26,6 @@ class Commands {
   void init_command_map();
   void init_list_of_commands(const std::string &raw_input);
   std::vector<std::string> separate_multiple_commands(const std::string &input, const std::string &delimiter);
-  std::string trim(const std::string &str);
   void to_uppercase(std::string &str);
   CommandType find_command_type(const std::string &command);
 
