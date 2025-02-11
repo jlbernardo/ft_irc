@@ -11,36 +11,40 @@ void SocketsManager::add_new_sockets_from_masterset_to_read_write() {
   FD_ZERO(&_read_set);
   FD_ZERO(&_write_set);
 
-  if (_server._max_fd < FD_SETSIZE) {
-    for (int fd = 0; fd <= _server._max_fd; fd++) {
-      if (FD_ISSET(fd, &_server._master_set)) {
-        FD_SET(fd, &_read_set);
-        if (!_server._message_queues[fd].empty()) {
-          FD_SET(fd, &_write_set);
-        }
-      }
-    }
-  } // Jesus, tem piedade de nós (e eu nem sou religiosa)
+  if (_server._max_fd > FD_SETSIZE)
+    return;
+
+  for (int fd = 0; fd <= _server._max_fd; fd++) {
+    if (!FD_ISSET(fd, &_server._master_set))
+      continue;
+
+    FD_SET(fd, &_read_set);
+
+    if (!_server._message_queues[fd].empty())
+      FD_SET(fd, &_write_set);
+  }
 }
 
 void SocketsManager::io_multiplexing() {
   int result = select(_server._max_fd + 1, &_read_set, &_write_set, NULL, NULL);
 
-  if (result < 0) {
-    if (_server.terminate)
-      throw std::runtime_error("Server received interrupt signal");
-    else
-      throw std::runtime_error("Select failed");
-  }
+  if (result >= 0)
+    return ;
+
+  if (result < 0 && _server.terminate)
+    throw std::runtime_error("Server received interrupt signal");
+  
+  throw std::runtime_error("Select failed");
 }
 
 void SocketsManager::socket_read(int fd) {
-  if (FD_ISSET(fd, &_read_set)) {
-    if (fd == _server._fd && _server._max_fd < FD_SETSIZE)
-      _server.add_new_client_to_master_set();
-    else
-      load_client_queue(fd);
-  }
+  if (!FD_ISSET(fd, &_read_set))
+    return ;
+
+  if (fd == _server._fd && _server._max_fd < FD_SETSIZE)
+    _server.add_new_client_to_master_set();
+  else
+    load_client_queue(fd);
 }
 
 void SocketsManager::load_client_queue(int client_fd) {
@@ -69,10 +73,10 @@ void SocketsManager::socket_write(int fd) {
     while (!_server._message_queues[fd].empty()) {
       std::string& msg = _server._message_queues[fd].front();
       
-      if (send(fd, msg.c_str(), msg.length(), 0) > 0)
-        _server._message_queues[fd].pop();
-      else
+      if (send(fd, msg.c_str(), msg.length(), 0) <= 0)
         break;
+
+      _server._message_queues[fd].pop();
     }
   }
 }
