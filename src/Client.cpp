@@ -5,8 +5,6 @@ Client::Client(int fd, Server &server)
     : _fd(fd), _nick(""), _user(""), _name(""), _pass(""),
     _buffer(""), _hostname(""), _identifier(""), _server(server),
     _authenticated(false), _joinedChannels() {
-
-  set_hostname(fd);
 }
 
 Client::~Client() {
@@ -34,7 +32,6 @@ bool Client::read_into_buffer() {
     return false;
 
   _buffer.append(temp, bytes_read);
-  logger.info(_buffer);
 
   return true;
 }

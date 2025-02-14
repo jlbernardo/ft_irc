@@ -26,7 +26,7 @@ void Logger::debug(std::string message) {
 
 void Logger::info(std::string message) {
   std::string t = timestamp("%d.%m %H:%M:%S");
-  std::cout << "[" + t + "  INFO] " << trim(message) << std::endl;
+  std::cout << "[" + t + "  INFO] " << trim(message) << DFT << std::endl;
 }
 
 void Logger::warn(std::string message) {
