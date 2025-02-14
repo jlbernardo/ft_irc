@@ -68,10 +68,12 @@ void Commands::init_list_of_commands(const std::string &raw_input) {
   for (std::list<Command>::const_iterator it = list.begin(); it != list.end(); ++it) {
     std::string output;
 
-    output = "Command: " + it->command + ", Parameters: ";
+    output = "Command: " + it->command + " | Parameters: ";
     for (std::vector<std::string>::const_iterator param_it = it->parameters.begin(); param_it != it->parameters.end();
          ++param_it) {
-      output += *param_it + ", ";
+      output += *param_it;
+      if (param_it + 1 != it->parameters.end())
+        output += ", ";
     }
    logger.info(output);
   }
