@@ -2,7 +2,7 @@
 
 
 Channel::Channel(const std::string& name, Client* creator) : _name(name),
-				_topic(""), _inviteOnly(false), _topicRestricted(false),
+				_topic("empty"), _key(""), _inviteOnly(false), _topicRestricted(false),
 				_hasKey(false), _userLimit(1024) {
 	std::string	input;
 
@@ -23,6 +23,10 @@ Channel::Channel(const std::string& name, Client* creator) : _name(name),
 }
 
 Channel::~Channel() {
+}
+
+Channel::Channel(const Channel &copy) {
+	*this = copy;
 }
 
 void Channel::setOperator(Client* client) {
@@ -76,6 +80,7 @@ const std::string& Channel::getName() const {
 }
 
 const std::string& Channel::getTopic() const {
+	logger.debug("Channel topic: " + _topic);
 	return _topic;
 }
 

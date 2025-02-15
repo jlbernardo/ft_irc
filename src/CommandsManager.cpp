@@ -40,6 +40,9 @@ void CommandsManager::execute(Commands &commands) {
             case MODE:
                 mode(commands, cmd);
                 break;
+            case WHO:
+                who(commands, cmd);
+                break;
             default:
                 break;
         }

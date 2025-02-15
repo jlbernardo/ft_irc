@@ -24,7 +24,7 @@ void privmsg(Commands &commands, const Command &cmd) {
 
     logger.info("Recipient: " + std::string(1, recipient[0]));
     if (recipient[0] == '#') {        
-        if (server.checkForChannel(recipient)) {
+        if (server.channelExists(recipient)) {
             Channel* channel = server.get_channels()[recipient];
             logger.info("Channel found: " + channel->getName());
             if (!channel->isMember(&sender)) {

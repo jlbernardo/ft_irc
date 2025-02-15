@@ -158,7 +158,7 @@ void Server::addChannel(Channel* new_channel) {
     );
 }
 
-bool Server::checkForChannel(const std::string& channel_name) {
+bool Server::channelExists(const std::string& channel_name) {
     if (_channels.find(channel_name) == _channels.end())
         return false;
     return true;

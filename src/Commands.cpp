@@ -27,6 +27,7 @@ void Commands::init_command_map() {
   _command_map["INVITE"] = INVITE;
   _command_map["TOPIC"] = TOPIC;
   _command_map["MODE"] = MODE;
+  _command_map["WHO"] = WHO;
 }
 
 void Commands::init_list_of_commands(const std::string &raw_input) {

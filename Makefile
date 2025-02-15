@@ -16,7 +16,7 @@ PASS = 2508
 MAIN = main
 UTILS = Validator Logger
 CLASSES = Client Commands CommandsManager Server SocketsManager Channel
-COMMANDS = invite join kick mode nick pass privmsg quit topic user
+COMMANDS = invite join kick mode nick pass privmsg quit topic user who
 
 # PATHS
 SRC_PATH = src/

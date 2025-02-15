@@ -7,7 +7,7 @@ void join(Commands &commands, const Command &cmd) {
     Server &server = sender.getServer();
     std::string channel_name = cmd.parameters[0];
 
-    if (server.checkForChannel(channel_name)) {
+    if (server.channelExists(channel_name)) {
         channel = server.get_channels()[channel_name];
         if (!channel->isOperator(&sender)) {
             if (channel->mode('l') && channel->getCurrentMembersCount() < channel->getUserLimit()) {
@@ -30,10 +30,13 @@ void join(Commands &commands, const Command &cmd) {
     Channel created_channel(channel_name, &sender);
     channel = &created_channel;
 
+    logger.debug("CHANNEL CREATION INFO");
+    logger.debug("Channel name: " + channel->getName());
+    logger.debug("Channel topic: " + channel->getTopic());
+    logger.debug("Channel members count: " + to_string(channel->getCurrentMembersCount()));
+
     if (server.get_channels().find(channel_name) != server.get_channels().end()) {
         logger.info("Channel created successfully: " + channel_name);
-        server.addChannel(channel);
-        channel->setOperator(&sender);
     }
     else {
        logger.warn("Failed to create channel: " + channel_name);

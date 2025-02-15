@@ -22,6 +22,7 @@ class Channel {
 	public:	
 
 		Channel(const std::string& name, Client* creator);
+		Channel(const Channel &copy);
 		~Channel();
 
 		// Basic operations
