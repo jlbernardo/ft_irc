@@ -31,10 +31,13 @@ void join(Commands &commands, const Command &cmd) {
     channel = &created_channel;
 
     if (server.get_channels().find(channel_name) != server.get_channels().end()) {
-       logger.info("Channel created successfully: " + channel_name);
+        logger.info("Channel created successfully: " + channel_name);
+        server.addChannel(channel);
+        channel->setOperator(&sender);
     }
     else {
        logger.warn("Failed to create channel: " + channel_name);
+       return ;
     }
     std::string names;
 

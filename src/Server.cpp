@@ -152,7 +152,7 @@ void Server::set_pass(const std::string& pass) {
   _pass = pass;
 }
 
-void Server::addNewChannel(Channel* new_channel) {
+void Server::addChannel(Channel* new_channel) {
     _channels.insert(
       std::pair<std::string, Channel*>(new_channel->getName(), new_channel)
     );

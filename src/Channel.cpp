@@ -18,7 +18,7 @@ Channel::Channel(const std::string& name, Client* creator) : _name(name),
 
 	_members.insert(std::pair<int, Client*>(creator->get_fd(), creator));
 	_operators.insert(std::pair<int, Client*>(creator->get_fd(), creator));
-	creator->getServer().addNewChannel(this);
+	creator->getServer().addChannel(this);
 	creator->add_channel(this);
 }
 

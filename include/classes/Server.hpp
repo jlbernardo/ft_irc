@@ -53,7 +53,7 @@ class Server {
   void send_error(int client_fd, const std::string& error_code, const std::string& error_message);
   void send_message(int client_fd, const std::string& message);
   void error(int fd, const std::string& msg);
-  void addNewChannel(Channel* new_channel);
+  void addChannel(Channel* new_channel);
   bool checkForChannel(const std::string& channel_name);
 
   // Manager classes:
