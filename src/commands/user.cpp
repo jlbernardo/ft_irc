@@ -20,7 +20,7 @@ void user(Commands &commands, const Command &cmd) {
         std::string realname = params[3];
 
         sender.set_username(username);
-        sender.set_hostname(sender.get_fd());  // Pass the sender_fd as the socket descriptor
+        sender.set_hostname(sender.get_fd());
         sender.set_realname(realname);
         
         if (!sender.get_pass().empty() && !sender.get_nickname().empty()) {

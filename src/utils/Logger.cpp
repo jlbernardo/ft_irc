@@ -30,7 +30,7 @@ Logger &Logger::getInstance() {
 
 void Logger::debug(std::string message) {
 	std::string t = timestamp("%d.%m %H:%M:%S");
-	std::cout << BLUE << "[" + t + " DEBUG] " << trim(message) << DFT << std::endl;
+	std::cout << ORANGE << "[" + t + " DEBUG] " << trim(message) << DFT << std::endl;
 }
 
 void Logger::info(std::string message) {

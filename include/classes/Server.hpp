@@ -23,7 +23,7 @@ class Server {
 		std::string _startup_date;
 		MessageQueueMap _message_queues;
 		struct sockaddr_in _server_addr;
-		std::map<int, Client *> _clients;
+		std::map<int, Client*> _clients;
 		std::map<std::string, Channel*> _channels;
 
 		static void signal_handler(int signum);

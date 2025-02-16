@@ -47,15 +47,15 @@ inline std::string RPL_INVITING(const std::string& nick, const std::string& reci
 inline std::string RPL_WHOREPLY(const std::string& channel, const std::string& user, const std::string &host,
                                 const std::string& nick, const std::string& flags, const std::string& realname) {
   return SERVER + " 352 " + channel + " " + user + " " + host + " big.little.talk.irc " + nick + " " + flags +
-         ":0 " + realname + CRLF;
+         " :0 " + realname + CRLF;
 }
 
 inline std::string RPL_NAMREPLY(const std::string& nick, const std::string& channel, const std::string& names) {
-  return SERVER + " 353 " + nick + " = " + channel + " : " + names + CRLF;
+  return SERVER + " 353 " + nick + " = " + channel + " :" + names + CRLF;
 }
 
 inline std::string RPL_ENDOFNAMES(const std::string& nick, const std::string& channel) {
-  return SERVER + " 366 " + nick + " " + channel + " : End of names list" + CRLF;
+  return SERVER + " 366 " + nick + " " + channel + " :End of names list" + CRLF;
 }
 
 // 400s

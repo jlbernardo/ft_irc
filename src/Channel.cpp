@@ -2,7 +2,7 @@
 
 
 Channel::Channel(const std::string& name, Client* creator) : _name(name),
-				_topic("empty"), _key(""), _inviteOnly(false), _topicRestricted(false),
+				_topic(""), _key(""), _inviteOnly(false), _topicRestricted(false),
 				_hasKey(false), _userLimit(1024) {
 	std::string	input;
 
@@ -95,7 +95,6 @@ const std::string& Channel::getName() const {
 }
 
 const std::string& Channel::getTopic() const {
-	logger.debug("Channel topic: " + _topic);
 	return _topic;
 }
 

@@ -10,7 +10,6 @@ void who(Commands &commands, const Command &cmd) {
         return ;
     }
 
-    logger.debug("WHO: " + mask);
     if (mask[0] == '#' || mask[0] == '&') {
         if (!server.channelExists(mask)) {
             server.send_message(client.get_fd(), ERR_NOSUCHCHANNEL(mask));
@@ -18,7 +17,6 @@ void who(Commands &commands, const Command &cmd) {
         }
 
         Channel *channel = server.get_channels()[mask];
-        logger.debug("CHANNEL NAME: " + channel->getName());
 
         for (std::map<int, Client *>::const_iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it) {
             Client *member = it->second;
@@ -41,18 +39,18 @@ void who(Commands &commands, const Command &cmd) {
                 target = &client;
                 break ;
             }
-            if (it == clients.end()) {
-                server.send_message(client.get_fd(), ERR_NOSUCHNICK(mask));
-                return ;
-            }
         }
-        
-        std::string username = target->get_username();
-        std::string hostname = target->get_hostname();
-        std::string nickname = target->get_nickname();
-        std::string realname = target->get_realname();
+        if (target) {
+            std::string username = target->get_username();
+            std::string hostname = target->get_hostname();
+            std::string nickname = target->get_nickname();
+            std::string realname = target->get_realname();
 
-        server.send_message(client.get_fd(), RPL_WHOREPLY(mask, username, hostname, nickname, "H", realname));
+            server.send_message(client.get_fd(), RPL_WHOREPLY(mask, username, hostname, nickname, "H", realname));
+        }
+        else {
+            server.send_message(client.get_fd(), ERR_NOSUCHNICK(mask));
+        }
     }
 
     server.send_message(client.get_fd(), RPL_ENDOFWHO(mask));

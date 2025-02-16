@@ -52,7 +52,7 @@ class CommandsManager;
 # define MAGENTA    "\033[1;35m"
 # define CYAN       "\033[1;36m"
 # define WHITE      "\033[1;37m"
-# define ORANGE     "\033[0;38;5;166m"
+# define ORANGE     "\033[1;38;5;166m"
 # define GREY       "\033[38;5;244m"
 # define DFT        "\033[0m"
 
