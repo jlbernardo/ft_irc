@@ -10,13 +10,15 @@ void who(Commands &commands, const Command &cmd) {
         return ;
     }
 
+    logger.debug("WHO: " + mask);
     if (mask[0] == '#' || mask[0] == '&') {
-        Channel *channel = server.get_channels()[mask];
-
         if (!server.channelExists(mask)) {
             server.send_message(client.get_fd(), ERR_NOSUCHCHANNEL(mask));
             return ;
         }
+
+        Channel *channel = server.get_channels()[mask];
+        logger.debug("CHANNEL NAME: " + channel->getName());
 
         for (std::map<int, Client *>::const_iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it) {
             Client *member = it->second;

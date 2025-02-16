@@ -5,13 +5,11 @@
 # include "ft_irc.hpp"
 
 class Channel {
-	
 	private:
 		std::string         	_name;       // Channel name (starts with # or &)
 		std::string         	_topic;      // Channel topic
 		std::string         	_key;        // Channel pass (if mode +k is set)
 		std::map<int, Client*>	_members;    // Channel members (fd -> Client*)
-		std::map<int, Client*>	_operators;  // Channel operators (fd -> Client*)
 		
 		// Channel modes
 		bool _inviteOnly;      // mode +i
@@ -19,11 +17,12 @@ class Channel {
 		bool _hasKey;          // mode +k
 		size_t _userLimit;     // mode +l
 
-	public:	
-
-		Channel(const std::string& name, Client* creator);
-		Channel(const Channel &copy);
+	public:
+		std::map<int, Client*>	_operators;  // Channel operators (fd -> Client*)
 		~Channel();
+		Channel(const Channel &copy);
+		Channel& operator=(const Channel &copy);
+		Channel(const std::string& name, Client* creator);
 
 		// Basic operations
 		bool addMember(Client* client);

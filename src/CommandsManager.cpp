@@ -4,6 +4,19 @@
 CommandsManager::CommandsManager(Server &server) : server(server) {
 }
 
+CommandsManager::~CommandsManager() {
+}
+
+CommandsManager::CommandsManager(const CommandsManager &copy) : server(copy.server) {
+    *this = copy;
+}
+
+CommandsManager &CommandsManager::operator=(const CommandsManager &copy) {
+    if (this != &copy)
+        server = copy.server;
+    return *this;
+}
+
 void CommandsManager::execute(Commands &commands) {
     const std::list<Command>& cmd_list = commands.get_list();
 

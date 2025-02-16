@@ -9,12 +9,14 @@ const int MAX_PORT = 65535;
 
 
 class Validator {
-  public:
-    Validator();
-    ~Validator();
+	public:
+		Validator();
+		~Validator();
+		Validator(const Validator &copy);
+		Validator &operator=(const Validator &copy);
 
-    void validate(int argc);
-    void validate(const char *port_str);
+		void validate(int argc);
+		void validate(const char *port_str);
 };
 
 #endif

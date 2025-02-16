@@ -18,11 +18,26 @@ Channel::Channel(const std::string& name, Client* creator) : _name(name),
 
 	_members.insert(std::pair<int, Client*>(creator->get_fd(), creator));
 	_operators.insert(std::pair<int, Client*>(creator->get_fd(), creator));
-	creator->getServer().addChannel(this);
-	creator->add_channel(this);
+	// creator->getServer().addChannel(this);
+	// creator->add_channel(this);
 }
 
 Channel::~Channel() {
+}
+
+Channel& Channel::operator=(const Channel &copy) {
+	if (this != &copy) {
+		_name = copy._name;
+		_topic = copy._topic;
+		_key = copy._key;
+		_members = copy._members;
+		_operators = copy._operators;
+		_inviteOnly = copy._inviteOnly;
+		_topicRestricted = copy._topicRestricted;
+		_hasKey = copy._hasKey;
+		_userLimit = copy._userLimit;
+	}
+	return *this;
 }
 
 Channel::Channel(const Channel &copy) {

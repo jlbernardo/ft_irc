@@ -27,13 +27,22 @@ void join(Commands &commands, const Command &cmd) {
         return ;
     }
 
-    Channel created_channel(channel_name, &sender);
-    channel = &created_channel;
+    Channel* created_channel = new Channel(channel_name, &sender);
+    server.addChannel(created_channel);
+    sender.add_channel(created_channel);
+    channel = created_channel;
 
     logger.debug("CHANNEL CREATION INFO");
     logger.debug("Channel name: " + channel->getName());
     logger.debug("Channel topic: " + channel->getTopic());
     logger.debug("Channel members count: " + to_string(channel->getCurrentMembersCount()));
+    
+    std::map<std::string, Channel*> server_ch = server.get_channels();
+
+    for (std::map<std::string, Channel*>::iterator it = server_ch.begin(); it != server_ch.end(); ++it) {
+        logger.warn("Server channel list: " + it->second->getName());
+        logger.warn("Channel is operator: " + it->second->_operators.begin()->second->get_nickname());
+    }
 
     if (server.get_channels().find(channel_name) != server.get_channels().end()) {
         logger.info("Channel created successfully: " + channel_name);

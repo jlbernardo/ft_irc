@@ -3,14 +3,48 @@
 
 volatile sig_atomic_t Server::terminate = 0;
 
-Server::Server(int port, const std::string& pass) 
-              : _fd(0), _port(port),  _max_fd(0), _startup_date(""),
-                _pass(pass), _master_set(), _channels(),
-                _clients(), _message_queues(), _server_addr() {
+Server::Server(int port, const std::string& pass) : _fd(0), _port(port),
+                _max_fd(0), _pass(pass), _master_set(), _startup_date(""),
+                _message_queues(), _server_addr(), _clients(), _channels() {
 
   register_signals();
   initialize_socket();
   setup_server();
+}
+
+Server::~Server() {
+ logger.info("Shutting down server");
+
+  for (std::map<std::string, Channel*>::iterator it = _channels.begin(); it != _channels.end(); ++it) {
+    delete it->second;
+  }
+
+  for (std::map<int, Client *>::iterator it = _clients.begin(); it != _clients.end(); ++it) {
+    delete it->second;
+    close(it->first);
+  }
+
+  close(_fd);
+}
+
+Server::Server(const Server &copy) {
+  *this = copy;
+}
+
+Server &Server::operator=(const Server &copy) {
+  if (this != &copy) {
+    _fd = copy._fd;
+    _port = copy._port;
+    _max_fd = copy._max_fd;
+    _pass = copy._pass;
+    _master_set = copy._master_set;
+    _startup_date = copy._startup_date;
+    _message_queues = copy._message_queues;
+    _server_addr = copy._server_addr;
+    _clients = copy._clients;
+    _channels = copy._channels;
+  }
+  return *this;
 }
 
 void Server::register_signals() {
@@ -101,17 +135,6 @@ void Server::remove_client(int client_fd) {
   _clients.erase(client_fd);
 }
 
-Server::~Server() {
- logger.info("Shutting down server");
-
-  for (std::map<int, Client *>::iterator it = _clients.begin(); it != _clients.end(); ++it) {
-    delete it->second;
-    close(it->first);
-  }
-
-  close(_fd);
-}
-
 void Server::send_error(int client_fd, const std::string &error_code, const std::string &error_message) {
   std::string message = ":" + to_string(client_fd) + " " + error_code + " " + error_message + "\r\n";
   send_message(client_fd, message);
@@ -153,9 +176,17 @@ void Server::set_pass(const std::string& pass) {
 }
 
 void Server::addChannel(Channel* new_channel) {
-    _channels.insert(
-      std::pair<std::string, Channel*>(new_channel->getName(), new_channel)
-    );
+    _channels[new_channel->getName()] = new_channel;
+
+
+
+
+    // O QUE FAZER NO PART PARA DELETAR
+    // delete _channels[new_channel->getName()];
+    // _channels.erase(new_channel->getName());
+    // _channels.insert(
+    //   std::pair<std::string, Channel*>(new_channel->getName(), new_channel)
+    // );
 }
 
 bool Server::channelExists(const std::string& channel_name) {

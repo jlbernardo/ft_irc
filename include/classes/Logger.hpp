@@ -6,19 +6,21 @@
 
 
 class Logger {
-  private:
-    Logger();
+	private:
+		Logger();
 
-  public:
-    ~Logger();
+	public:
+		~Logger();
+		Logger(const Logger &copy);
+		Logger &operator=(const Logger &copy);
 
-    void debug(std::string message);
-    void info(std::string message);
-    void warn(std::string message);
-    void error(std::string message);
-    void fatal(std::string message);
+		void debug(std::string message);
+		void info(std::string message);
+		void warn(std::string message);
+		void error(std::string message);
+		void fatal(std::string message);
 
-    static Logger &getInstance();
+		static Logger &getInstance();
 };
 
 #endif

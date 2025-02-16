@@ -7,6 +7,16 @@ SocketsManager::~SocketsManager() {
   _server._message_queues.clear();
 }
 
+SocketsManager::SocketsManager(const SocketsManager& copy) : _server(copy._server) {
+  *this = copy;
+}
+
+SocketsManager& SocketsManager::operator=(const SocketsManager& copy) {
+  if (this != &copy)
+    _server = copy._server;
+  return *this;
+}
+
 void SocketsManager::add_new_sockets_from_masterset_to_read_write() {
   FD_ZERO(&_read_set);
   FD_ZERO(&_write_set);
