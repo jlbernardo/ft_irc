@@ -3,7 +3,7 @@
 
 Channel::Channel(const std::string& name, Client* creator) : _name(name),
 				_topic(""), _key(""), _inviteOnly(false), _topicRestricted(false),
-				_hasKey(false), _userLimit(1024) {
+				_hasKey(false), _userLimit(0) {
 	std::string	input;
 
 	if (!creator) {
@@ -18,8 +18,6 @@ Channel::Channel(const std::string& name, Client* creator) : _name(name),
 
 	_members.insert(std::pair<int, Client*>(creator->get_fd(), creator));
 	_operators.insert(std::pair<int, Client*>(creator->get_fd(), creator));
-	// creator->getServer().addChannel(this);
-	// creator->add_channel(this);
 }
 
 Channel::~Channel() {
@@ -68,6 +66,34 @@ bool Channel::isOperator(Client* client) const {
 	return false;
 }
 
+std::string Channel::getModes() const {
+	std::string modes = "+";
+
+	if (_inviteOnly)
+		modes += "i";
+	if (_topicRestricted)
+		modes += "t";
+	if (_hasKey)
+		modes += "k";
+	if (_userLimit)
+		modes += "l";
+	if (modes.length() == 1)
+		modes = "";
+
+	return modes;
+}
+
+std::string Channel::getModeParams() const {
+	std::string params = "";
+
+	if (_hasKey)
+		params += _key + " ";
+	if (_userLimit)
+		params += to_string(_userLimit) + " ";
+
+	return params;
+}
+
 bool Channel::mode(char mode) const {
 	switch (tolower(mode)) {
 		case 'i':
@@ -82,6 +108,23 @@ bool Channel::mode(char mode) const {
 			logger.error("Not a valid channel mode.");
 			return false;
 	}
+}
+
+void Channel::setInviteOnly(bool value) {
+	_inviteOnly = value;
+}
+
+void Channel::setTopicRestricted(bool value) {
+	_topicRestricted = value;
+}
+
+void Channel::setKey(const std::string& key) {
+	_key = key;
+	_hasKey = !key.empty();
+}
+
+void Channel::setUserLimit(size_t limit) {
+	_userLimit = limit;
 }
 
 bool Channel::isMember(Client* client) const {

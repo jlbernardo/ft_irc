@@ -57,6 +57,8 @@ class Server {
 		void error(int fd, const std::string& msg);
 		void addChannel(Channel* new_channel);
 		bool channelExists(const std::string& channel_name);
+		bool clientExists(std::string client_name);
+		Client &getClient(std::string client_name);
 
 		// Manager classes:
 		friend class SocketsManager;

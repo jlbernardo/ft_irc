@@ -18,10 +18,10 @@ CommandsManager &CommandsManager::operator=(const CommandsManager &copy) {
 }
 
 void CommandsManager::execute(Commands &commands) {
-    const std::list<Command>& cmd_list = commands.get_list();
+    std::list<Command>& cmd_list = commands.get_list();
 
-    for (std::list<Command>::const_iterator it = cmd_list.begin(); it != cmd_list.end(); ++it) {
-        const Command &cmd = *it;
+    for (std::list<Command>::iterator it = cmd_list.begin(); it != cmd_list.end(); ++it) {
+        Command &cmd = *it;
         switch (cmd.type) {
             case PRIVMSG:
                 privmsg(commands, cmd);

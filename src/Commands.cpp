@@ -30,7 +30,7 @@ Client &Commands::get_sender() const {
 	return _sender;
 }
 
-const std::list<Command> &Commands::get_list() const {
+std::list<Command> &Commands::get_list() {
 	return _list;
 }
 

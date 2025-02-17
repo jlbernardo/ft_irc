@@ -35,7 +35,7 @@ class Commands {
 		Commands(Client &sender, const std::string &raw_input);
 
 		Client &get_sender() const;
-		const std::list<Command> &get_list() const;
+		std::list<Command> &get_list();
 		void set_fatal_error(bool fatal_error) { _fatal_error = fatal_error; }
 		bool get_fatal_error() const { return _fatal_error; }
 		void clear() { _list.clear(); }

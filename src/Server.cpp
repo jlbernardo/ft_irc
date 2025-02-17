@@ -195,6 +195,22 @@ bool Server::channelExists(const std::string& channel_name) {
     return true;
 }
 
+bool Server::clientExists(std::string client_name) {
+    for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); ++it) {
+        if (it->second->get_nickname() == client_name)
+            return true;
+    }
+    return false;
+}
+
+Client &Server::getClient(std::string client_name) {
+    for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); ++it) {
+        if (it->second->get_nickname() == client_name)
+            return *it->second;
+    }
+    throw std::runtime_error("Client not found");
+}
+
 // void Server::stop() {}
 
 // void Server::handlePrivmsg(Client* client, const std::string& command) {} //need implement

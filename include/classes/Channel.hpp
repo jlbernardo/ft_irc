@@ -34,12 +34,14 @@ class Channel {
 		bool isOperator(Client* client) const;
 		int getCurrentMembersCount();
 		int getUserLimit();
+		std::string getModes() const;
+		std::string getModeParams() const;
 		
-		// Mode operations
-		// if only operators are able to set modes, a setter function to do it
-		// is not necessary, checkMode though, is necessary, because other entities
-		// outside the Channel class may neeed to access this information   
-		// void setMode(char mode, bool status);
+		void setInviteOnly(bool value);
+		void setTopicRestricted(bool value);
+		void setKey(const std::string& key);
+		void setUserLimit(size_t limit);
+		
 		bool mode(char mode) const;
 		bool checkUserModes(char mode, Client* client);
 		bool isMember(Client* client) const;

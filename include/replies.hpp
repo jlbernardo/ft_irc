@@ -128,6 +128,10 @@ inline std::string ERR_CHANNELISFULL(const std::string& channel) {
   return SERVER + " 471 * " + channel + " :Channel is full!" + CRLF;
 }
 
+inline std::string ERR_UNKNOWNMODE(char mode) {
+  return SERVER + " 472 * " + mode + " :is unknown mode char to me" + CRLF;
+}
+
 inline std::string ERR_INVITEONLYCHAN(const std::string& channel) {
   return SERVER + " 473 * " + channel + " :Channel is invite-only!" + CRLF;
 }

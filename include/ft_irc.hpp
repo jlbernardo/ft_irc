@@ -68,7 +68,7 @@ void nick(Commands &commands, const Command &cmd);
 void user(Commands &commands, const Command &cmd);
 // void quit(Commands &commands, const Command &cmd);
 void pass(Commands &commands, const Command &cmd);
-void mode(Commands &commands, const Command &cmd);
+void mode(Commands &commands, Command &cmd);
 void who(Commands &commands, const Command &cmd);
 // void kick(Commands &commands, const Command &cmd);
 
