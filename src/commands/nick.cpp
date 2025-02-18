@@ -9,10 +9,10 @@ bool is_nickname_in_use(Server &server, const std::string &new_nick) {
     return false;
 }
 
-void nick(Commands &commands, const Command &cmd) {
+void nick(Commands &commands, Command &cmd) {
     Client &sender = commands.get_sender();
     Server &server = sender.getServer();
-    const std::string &new_nick = cmd.parameters.empty() ? "" : cmd.parameters[0];
+    std::string new_nick = cmd.parameters.empty() ? "" : cmd.parameters.front();
     
     if (new_nick.empty()) {
         server.send_message(sender.get_fd(), ERR_NONICKNAMEGIVEN());

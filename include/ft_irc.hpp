@@ -62,14 +62,14 @@ static Validator validator = Validator();
 std::string trim(const std::string &str);
 std::string timestamp(const char *format);
 
-void privmsg(Commands &commands, const Command &cmd);
-void join(Commands &commands, const Command &cmd);
-void nick(Commands &commands, const Command &cmd);
-void user(Commands &commands, const Command &cmd);
-// void quit(Commands &commands, const Command &cmd);
-void pass(Commands &commands, const Command &cmd);
+void privmsg(Commands &commands, Command &cmd);
+void join(Commands &commands, Command &cmd);
+void nick(Commands &commands, Command &cmd);
+void user(Commands &commands, Command &cmd);
+// void quit(Commands &commands, Command &cmd);
+void pass(Commands &commands, Command &cmd);
 void mode(Commands &commands, Command &cmd);
-void who(Commands &commands, const Command &cmd);
-// void kick(Commands &commands, const Command &cmd);
+void who(Commands &commands, Command &cmd);
+// void kick(Commands &commands, Command &cmd);
 
 #endif

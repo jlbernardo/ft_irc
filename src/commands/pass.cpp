@@ -1,10 +1,10 @@
 #include "ft_irc.hpp"
 
 
-void pass(Commands &commands, const Command &cmd) {
+void pass(Commands &commands, Command &cmd) {
     Client &sender = commands.get_sender();
     Server &server = sender.getServer();
-    const std::string &pass = cmd.parameters.empty() ? "" : cmd.parameters[0];
+    std::string pass = cmd.parameters.empty() ? "" : cmd.parameters.front();
 
     if (pass.empty()) {
         server.send_message(sender.get_fd(), ERR_NEEDMOREPARAMS(cmd.command));

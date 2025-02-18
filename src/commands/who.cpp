@@ -1,9 +1,9 @@
 #include "ft_irc.hpp"
 
-void who(Commands &commands, const Command &cmd) {
+void who(Commands &commands, Command &cmd) {
     Client &client = commands.get_sender();
     Server &server = client.getServer();
-    std::string mask = cmd.parameters[0];
+    std::string mask = cmd.parameters.front();
 
     if (mask.empty()) {
         server.send_message(client.get_fd(), ERR_NEEDMOREPARAMS("WHO"));

@@ -1,11 +1,11 @@
 #include "ft_irc.hpp"
 
 
-void join(Commands &commands, const Command &cmd) {
+void join(Commands &commands, Command &cmd) {
     Channel* channel;
     Client &sender = commands.get_sender();
     Server &server = sender.getServer();
-    std::string channel_name = cmd.parameters[0];
+    std::string channel_name = cmd.parameters.front();
 
     if (server.channelExists(channel_name)) {
         channel = server.get_channels()[channel_name];

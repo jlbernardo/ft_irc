@@ -1,23 +1,22 @@
 #include "ft_irc.hpp"
 
 
-void user(Commands &commands, const Command &cmd) {
-    const std::vector<std::string>& params = cmd.parameters;
+void user(Commands &commands, Command &cmd) {
     Client &sender = commands.get_sender();
     Server &server = sender.getServer();
 
     // Debug print to verify parameters
-    logger.info("Parameters size: " + to_string(params.size()));
+    logger.info("Parameters size: " + to_string(cmd.parameters.size()));
 
-    if (params.size() < 4) {
+    if (cmd.parameters.size() < 4) {
         server.send_message(sender.get_fd(), ERR_NEEDMOREPARAMS(cmd.command));
     }
     else if (sender.is_authenticated()) {
         server.send_message(sender.get_fd(), ERR_ALREADYREGISTERED(sender.get_username()));
     }
     else {
-        std::string username = params[0];
-        std::string realname = params[3];
+        std::string username = cmd.parameters[0];
+        std::string realname = cmd.parameters[3];
 
         sender.set_username(username);
         sender.set_hostname(sender.get_fd());

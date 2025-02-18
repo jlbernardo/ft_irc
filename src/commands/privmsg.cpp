@@ -1,7 +1,7 @@
 #include "ft_irc.hpp"
 
 
-void privmsg(Commands &commands, const Command &cmd) {
+void privmsg(Commands &commands, Command &cmd) {
     Client &sender = commands.get_sender();
     Server &server = sender.getServer();
     
@@ -19,8 +19,8 @@ void privmsg(Commands &commands, const Command &cmd) {
         return;
     }
 
-    const std::string &recipient = cmd.parameters[0];
-    const std::string &message = cmd.parameters[1];
+    std::string &recipient = cmd.parameters[0];
+    std::string &message = cmd.parameters[1];
 
     logger.info("Recipient: " + std::string(1, recipient[0]));
     if (recipient[0] == '#') {        
