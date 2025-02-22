@@ -44,6 +44,9 @@ void join(Commands &commands, Command &cmd) {
 
 	sender.add_channel(channel);
 
+	if (channel->mode('i'))
+		channel->consumeInvite(&sender);
+
 	for (std::map<int, Client *>::const_iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it) {
 		Client* member = it->second;
 		server.send_message(member->get_fd(), RPL_JOIN(sender.get_identifier(), channel_name));

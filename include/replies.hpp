@@ -188,9 +188,8 @@ inline std::string RPL_MODEBASE(const std::string& nick, const std::string& user
   return SERVER + nick + "!" + user + "@ft.irc MODE " + channel + " ";
 }
 
-inline std::string RPL_INVITEMSG(const std::string& nick, const std::string& user, const std::string& recipient,
-                                 const std::string& channel) {
-  return SERVER + nick + "!~" + user + "@ft.irc INVITE " + recipient + " :" + channel + CRLF;
+inline std::string RPL_INVITE(const std::string& nick, const std::string& recipient, const std::string& channel) {
+  return ":" + nick + " INVITE " + recipient + " :" + channel + CRLF;
 }
 
 #endif

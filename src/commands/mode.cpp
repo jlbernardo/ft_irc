@@ -33,16 +33,20 @@ void mode(Commands &commands, Command &cmd) {
             switch (mode[i]) {
                 case 'i':
                     channel->setInviteOnly(mode[0] == '+' ? true : false);
+                    
                     break;
                 case 't':
+                    logger.info("Chaning channel " + target + " mode t to " + (mode[0] == '+' ? "true" : "false"));
                     channel->setTopicRestricted(mode[0] == '+' ? true : false);
                     break;
                 case 'k':
+                    logger.info("Chaning channel " + target + " mode k to " + (mode[0] == '+' ? "true" : "false"));
                     channel->setKey(cmd.parameters.empty() ? "" : cmd.parameters.front());
                     if (!cmd.parameters.empty())
                         cmd.parameters.erase(cmd.parameters.begin());
                     break;
                 case 'l':
+                    logger.info("Chaning channel " + target + " mode l to " + (mode[0] == '+' ? "true" : "false"));
                     channel->setUserLimit(cmd.parameters.empty() ? 0 : std::atoi(cmd.parameters.front().c_str()));
                     if (!cmd.parameters.empty())
                         cmd.parameters.erase(cmd.parameters.begin());

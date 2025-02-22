@@ -66,10 +66,12 @@ void privmsg(Commands &commands, Command &cmd);
 void join(Commands &commands, Command &cmd);
 void nick(Commands &commands, Command &cmd);
 void user(Commands &commands, Command &cmd);
-// void quit(Commands &commands, Command &cmd);
+void quit(Commands &commands, Command &cmd);
 void pass(Commands &commands, Command &cmd);
 void mode(Commands &commands, Command &cmd);
 void who(Commands &commands, Command &cmd);
-// void kick(Commands &commands, Command &cmd);
+void kick(Commands &commands, Command &cmd);
+void invite(Commands &commands, Command &cmd);
+void topic(Commands &commands, Command &cmd);
 
 #endif

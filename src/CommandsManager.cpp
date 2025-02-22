@@ -36,19 +36,19 @@ void CommandsManager::execute(Commands &commands) {
                 user(commands, cmd);
                 break;
             case QUIT:
-                // quit(commands, cmd);
+                quit(commands, cmd);
                 break;
             case KICK:
-                // kick(commands, cmd);
+                kick(commands, cmd);
                 break ;
             case PASS:
                 pass(commands, cmd);
                 break;
             case INVITE:
-                // invite();
+                invite(commands, cmd);
                 break;
             case TOPIC:
-                // topic();
+                topic(commands, cmd);
                 break;
             case MODE:
                 mode(commands, cmd);

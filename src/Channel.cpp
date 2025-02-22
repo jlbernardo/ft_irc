@@ -186,32 +186,12 @@ bool Channel::kickMember(Client* oper, Client* target, const std::string& reason
 	return false;
 }
 
-bool Channel::inviteMember(Client* oper, Client* target) {
-	if (!oper) {
-		logger.error("Invalid operator.");
-	}
-	else if (!target) {
-		oper->getServer().send_message(oper->get_fd(),
-		ERR_NEEDMOREPARAMS("TARGET"));
-	}
-	else if (!isOperator(oper)) {
-		oper->getServer().send_message(oper->get_fd(),
-		ERR_CHANOPRIVSNEEDED(oper->get_username(), _name));
-	}
-	else if (_members.find(target->get_fd()) != _members.end()) {
-		oper->getServer().send_message(oper->get_fd(),
-		ERR_USERONCHANNEL(target->get_nickname(), _name));
-	}
-	else {
-		oper->getServer().send_message(oper->get_fd(),
-			RPL_INVITING(oper->get_nickname(), target->get_nickname(), _name));
-		target->getServer().send_message(target->get_fd(),
-			RPL_INVITEMSG(oper->get_nickname(), oper->get_username(), target->get_username(), _name));
-		
-		return true;
-	}
+void Channel::inviteMember(Client* target) {
+	_invited.insert(std::pair<int, Client*>(target->get_fd(), target));
+}
 
-	return false;
+void Channel::consumeInvite(Client* target) {
+	_invited.erase(target->get_fd());
 }
 
 bool Channel::setTopic(Client* oper, const std::string& new_topic) {

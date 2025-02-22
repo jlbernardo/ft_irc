@@ -56,7 +56,8 @@ class Channel {
 			
 		// Required by subject
 		bool kickMember(Client* operator_client, Client* target, const std::string& reason);
-		bool inviteMember(Client* operator_client, Client* target);
+		void inviteMember(Client* target);
+		void consumeInvite(Client* target);
 		bool setTopic(Client* client, const std::string& new_topic);
 
 		//validation
