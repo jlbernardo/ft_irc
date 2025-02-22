@@ -36,5 +36,10 @@ void part(Commands &commands, Command &cmd) {
         std::string message = RPL_PARTMSG(sender.get_identifier(), sender.get_username(), channel_name, reason);
         channel->broadcast(&sender, message);
         server.send_message(sender.get_fd(), message);
+
+        if (channel->getMembers().empty()) {
+            server.get_channels().erase(channel_name);
+            delete channel;
+        }
     }
 }
