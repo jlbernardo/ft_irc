@@ -175,9 +175,8 @@ inline std::string RPL_PARTNOMSG(const std::string& nick, const std::string& use
   return SERVER + nick + "!" + user + "@* PART " + dest + CRLF;
 }
 
-inline std::string RPL_KICKREASON(const std::string& op_nick, const std::string& op_user, const std::string& channel,
-                                  const std::string& client, const std::string& reason) {
-  return SERVER + op_nick + "!" + op_user + "@ft.irc KICK " + channel + " " + client + " :" + reason + CRLF;
+inline std::string RPL_KICKREASON(const std::string& identifier, const std::string& channel, const std::string& target, const std::string& reason) {
+  return ":" + identifier + " KICK " + channel + " " + target + " :" + reason + CRLF;
 }
 
 inline std::string RPL_KICKNOREASON(const std::string& op_nick, const std::string& op_user, const std::string& channel,

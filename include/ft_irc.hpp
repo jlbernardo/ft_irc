@@ -61,6 +61,7 @@ static Validator validator = Validator();
 
 std::string trim(const std::string &str);
 std::string timestamp(const char *format);
+std::vector<std::string> split(const std::string &str, char delim);
 
 void privmsg(Commands &commands, Command &cmd);
 void join(Commands &commands, Command &cmd);

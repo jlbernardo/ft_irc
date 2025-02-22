@@ -1,12 +1,5 @@
 #include "ft_irc.hpp"
 
-std::string timestamp(const char *format) {
-	std::time_t now = std::time(NULL);
-	char buf[100];
-	std::strftime(buf, sizeof(buf), format, std::localtime(&now));
-	return std::string(buf);
-}
-
 
 Logger::Logger() {
 }

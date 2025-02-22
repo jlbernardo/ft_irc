@@ -122,20 +122,6 @@ CommandType Commands::find_command_type(const std::string &cmd) {
 	return UNKNOWN;
 }
 
-std::string trim(const std::string &str) {
-	if (str.empty())
-		return str;
-
-	// Find first non-whitespace
-	std::string::size_type first = str.find_first_not_of(" \t\n\r\f\v");
-	if (first == std::string::npos)
-		return "";  // String is all whitespace
-
-	// Find last non-whitespace
-	std::string::size_type last = str.find_last_not_of(" \t\n\r\f\v");
-	return str.substr(first, (last - first + 1));
-}
-
 void Commands::to_uppercase(std::string &str) {
 	for (unsigned int i = 0; i < str.length(); i++) {
 		str[i] = std::toupper(str[i]);

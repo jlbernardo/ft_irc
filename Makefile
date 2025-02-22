@@ -14,7 +14,7 @@ PASS = 2508
 
 # SOURCE FILES
 MAIN = main
-UTILS = Validator Logger
+UTILS = Validator Logger utils
 CLASSES = Client Commands CommandsManager Server SocketsManager Channel
 COMMANDS = invite join kick mode nick pass privmsg quit topic user who part
 

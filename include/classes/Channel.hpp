@@ -55,7 +55,6 @@ class Channel {
 		const std::map<int, Client*>& getMembers() const;
 			
 		// Required by subject
-		bool kickMember(Client* operator_client, Client* target, const std::string& reason);
 		void inviteMember(Client* target);
 		void consumeInvite(Client* target);
 		bool setTopic(Client* client, const std::string& new_topic);

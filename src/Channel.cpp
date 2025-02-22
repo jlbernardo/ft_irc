@@ -155,37 +155,6 @@ const std::string& Channel::getKey() const {
 	return _key;
 }
 
-bool Channel::kickMember(Client* oper, Client* target, const std::string& reason) {
-	if (!oper) {
-		logger.error("Invalid operator.");
-	}
-	else if (!target) {
-		oper->getServer().send_message(oper->get_fd(),
-		ERR_NEEDMOREPARAMS("TARGET"));
-	}
-	else if (!isOperator(oper)) {
-		oper->getServer().send_message(oper->get_fd(),
-		ERR_CHANOPRIVSNEEDED(oper->get_username(), _name));
-	}
-	else if (_members.find(target->get_fd()) == _members.end()) {
-		oper->getServer().send_message(oper->get_fd(),
-		ERR_USERNOTINCHANNEL(oper->get_username(), target->get_username(), _name));
-	}
-	else {
-		_members.erase(target->get_fd());
-		if (reason.empty()) {
-			broadcast(NULL, RPL_KICKNOREASON(oper->get_nickname(), oper->get_username(),
-					  _name, target->get_username()));
-		}
-		else {
-			broadcast(NULL, RPL_KICKREASON(oper->get_nickname(), oper->get_username(),
-					  _name, target->get_username(), reason));
-		}
-		return true;
-	}
-	return false;
-}
-
 void Channel::inviteMember(Client* target) {
 	_invited.insert(std::pair<int, Client*>(target->get_fd(), target));
 }

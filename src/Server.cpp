@@ -178,16 +178,6 @@ void Server::set_pass(const std::string& pass) {
 
 void Server::addChannel(Channel* new_channel) {
     _channels[new_channel->getName()] = new_channel;
-
-
-
-
-    // O QUE FAZER NO PART PARA DELETAR
-    // delete _channels[new_channel->getName()];
-    // _channels.erase(new_channel->getName());
-    // _channels.insert(
-    //   std::pair<std::string, Channel*>(new_channel->getName(), new_channel)
-    // );
 }
 
 bool Server::channelExists(const std::string& channel_name) {
