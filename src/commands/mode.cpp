@@ -22,7 +22,7 @@ void mode(Commands &commands, Command &cmd) {
         }
 
         if (!channel->isOperator(&client)) {
-            server.send_message(client.get_fd(), ERR_CHANOPRIVSNEEDED(client.get_username(), target));
+            server.send_message(client.get_fd(), ERR_CHANOPRIVSNEEDED(client.get_nickname(), target));
             return ;
         }
 

@@ -66,6 +66,12 @@ bool Channel::isOperator(Client* client) const {
 	return false;
 }
 
+bool Channel::isInvited(Client* client) const {
+	if (client && _invited.find(client->get_fd()) != _invited.end())
+		return true;
+	return false;
+}
+
 std::string Channel::getModes() const {
 	std::string modes = "+";
 
@@ -143,6 +149,10 @@ const std::string& Channel::getTopic() const {
 
 const std::map<int, Client*>& Channel::getMembers() const {
 	return _members;
+}
+
+const std::string& Channel::getKey() const {
+	return _key;
 }
 
 bool Channel::kickMember(Client* oper, Client* target, const std::string& reason) {

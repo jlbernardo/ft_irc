@@ -10,6 +10,7 @@ class Channel {
 		std::string         	_topic;      // Channel topic
 		std::string         	_key;        // Channel pass (if mode +k is set)
 		std::map<int, Client*>	_members;    // Channel members (fd -> Client*)
+		std::map<int, Client*>	_invited;    // Channel invited members
 		
 		// Channel modes
 		bool _inviteOnly;      // mode +i
@@ -32,6 +33,7 @@ class Channel {
 		// Channel operator operations
 		void setOperator(Client* client);
 		bool isOperator(Client* client) const;
+		bool isInvited(Client* client) const;
 		int getCurrentMembersCount();
 		int getUserLimit();
 		std::string getModes() const;
@@ -49,6 +51,7 @@ class Channel {
 		// Getters
 		const std::string& getName() const;
 		const std::string& getTopic() const;
+		const std::string& getKey() const;
 		const std::map<int, Client*>& getMembers() const;
 			
 		// Required by subject

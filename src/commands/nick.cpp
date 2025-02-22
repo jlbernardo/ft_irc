@@ -40,7 +40,7 @@ void nick(Commands &commands, Command &cmd) {
 
             sender.set_identifier(new_nick + "!" + sender.get_username() + "@" + sender.get_hostname());
 
-            server.send_message(sender.get_fd(), RPL_WELCOME(sender.get_username(), sender.get_identifier()));
+            server.send_message(sender.get_fd(), RPL_WELCOME(sender.get_nickname(), sender.get_identifier()));
             server.send_message(sender.get_fd(), RPL_YOURHOST(new_nick));
             server.send_message(sender.get_fd(), RPL_CREATED(new_nick, server.get_startup_date()));
             server.send_message(sender.get_fd(), RPL_MYINFO(new_nick, "", ""));

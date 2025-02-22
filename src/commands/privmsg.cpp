@@ -22,8 +22,8 @@ void privmsg(Commands &commands, Command &cmd) {
     std::string &recipient = cmd.parameters[0];
     std::string &message = cmd.parameters[1];
 
-    logger.info("Recipient: " + std::string(1, recipient[0]));
-    if (recipient[0] == '#') {        
+    logger.info("Recipient: " + recipient);
+    if (recipient[0] == '#') {
         if (server.channelExists(recipient)) {
             Channel* channel = server.get_channels()[recipient];
             logger.info("Channel found: " + channel->getName());
@@ -34,9 +34,9 @@ void privmsg(Commands &commands, Command &cmd) {
 
             for (std::map<int, Client *>::const_iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it) {
                 Client* member = it->second;
-                if (member != &sender) {
-                    server.send_message(member->get_fd(), RPL_PRIVMSG(sender.get_identifier(), recipient, message));
-                }
+
+                if (member->get_fd() != sender.get_fd())
+                    server.send_message(member->get_fd(), RPL_PRIVMSG(sender.get_nickname(), recipient, message));
             }
         } else {
             server.send_message(sender.get_fd(), ERR_NOSUCHCHANNEL(recipient));
@@ -47,7 +47,7 @@ void privmsg(Commands &commands, Command &cmd) {
         for (std::map<int, Client *>::iterator it = server.get_clients().begin(); it != server.get_clients().end(); ++it) {
             Client* client = it->second;
             if (client->get_nickname() == recipient) {
-                server.send_message(client->get_fd(), RPL_PRIVMSG(sender.get_identifier(), recipient, message));
+                server.send_message(client->get_fd(), RPL_PRIVMSG(sender.get_nickname(), recipient, message));
                 userFound = true;
                 break;
             }

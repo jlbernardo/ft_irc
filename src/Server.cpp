@@ -93,6 +93,7 @@ void Server::setup_server() {
 
 void Server::start() {
   _startup_date = timestamp("%b %d, %Y at %H:%M:%S");
+  logger.info("Server started on port " + to_string(_port) + " at " + _startup_date);
 
   SocketsManager manager(*this);
   while (true) {
