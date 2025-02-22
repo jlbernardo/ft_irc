@@ -223,7 +223,7 @@ bool Channel::parseChannelName(const std::string &name) const
 	return true;
 };
 
-bool Channel::addMember(Client* client) {
+void Channel::addMember(Client* client) {
 	if (!client) {
 		logger.error("Invalid client.");
 	}
@@ -232,10 +232,19 @@ bool Channel::addMember(Client* client) {
 	}
 	else {
 		_members.insert(std::pair<int, Client*>(client->get_fd(), client));
-		return true;
 	}
+}
 
-	return false;
+void Channel::removeMember(Client* client) {
+	if (!client) {
+		logger.error("Invalid client.");
+	}
+	else if (_members.find(client->get_fd()) == _members.end()) {
+		logger.error(client->get_username() + " is not a member of this channel.");
+	}
+	else {
+		_members.erase(client->get_fd());
+	}
 }
 
 void Channel::broadcast(Client* sender, const std::string& message) {

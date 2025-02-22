@@ -13,26 +13,10 @@ PORT ?= 4242
 PASS = 2508
 
 # SOURCE FILES
-MAIN =		main
-UTILS =		Validator \
-			Logger
-CLASSES =	Client \
-			Commands \
-			CommandsManager \
-			Server \
-			SocketsManager \
-			Channel
-COMMANDS =	invite \
-			join \
-			kick \
-			mode \
-			nick \
-			pass \
-			privmsg \
-			quit \
-			topic \
-			user \
-			who
+MAIN = main
+UTILS = Validator Logger
+CLASSES = Client Commands CommandsManager Server SocketsManager Channel
+COMMANDS = invite join kick mode nick pass privmsg quit topic user who part
 
 # PATHS
 SRC_PATH = src/

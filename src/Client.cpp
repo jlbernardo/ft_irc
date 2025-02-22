@@ -133,6 +133,15 @@ void Client::add_channel(Channel* channel) {
 	_joinedChannels.push_back(channel);
 }
 
+void Client::remove_channel(Channel* channel) {
+	for (std::vector<Channel*>::iterator it = _joinedChannels.begin(); it != _joinedChannels.end(); it++) {
+		if (*it == channel) {
+			_joinedChannels.erase(it);
+			return ;
+		}
+	}
+}
+
 void Client::clean_buffer() {
 	_buffer.clear();
 }

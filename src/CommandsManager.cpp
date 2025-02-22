@@ -56,6 +56,9 @@ void CommandsManager::execute(Commands &commands) {
             case WHO:
                 who(commands, cmd);
                 break;
+            case PART:
+                part(commands, cmd);
+                break;
             default:
                 break;
         }

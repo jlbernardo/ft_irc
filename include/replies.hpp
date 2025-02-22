@@ -165,9 +165,10 @@ inline std::string RPL_PRIVMSG(const std::string& client_id, const std::string& 
   return ":" + client_id + " PRIVMSG " + dest + " :" + message + CRLF;
 }
 
-inline std::string RPL_PARTMSG(const std::string& nick, const std::string& user, const std::string& dest,
+inline std::string RPL_PARTMSG(const std::string& identifier, const std::string& user, const std::string& dest,
                                const std::string& message) {
-  return SERVER + nick + "!~" + user + "@* PART " + dest + " :" + message + CRLF;
+  (void)user;
+  return ":" + identifier + " PART " + dest + " :" + message + CRLF;
 }
 
 inline std::string RPL_PARTNOMSG(const std::string& nick, const std::string& user, const std::string& dest) {

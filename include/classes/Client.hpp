@@ -44,6 +44,7 @@ class Client {
 
 		// setters:
 		void add_channel(Channel* channel);
+		void remove_channel(Channel* channel);
 		void set_hostname(int client_socket);
 		void set_authentication(bool status);
 		void set_password(const std::string &password);

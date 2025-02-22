@@ -26,8 +26,8 @@ class Channel {
 		Channel(const std::string& name, Client* creator);
 
 		// Basic operations
-		bool addMember(Client* client);
-		bool removeMember(Client* client);
+		void addMember(Client* client);
+		void removeMember(Client* client);
 		void broadcast(Client* sender = NULL, const std::string& message = "");
 		
 		// Channel operator operations
