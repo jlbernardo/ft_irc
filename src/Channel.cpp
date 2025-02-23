@@ -18,6 +18,7 @@ Channel::Channel(const std::string& name, Client* creator) : _name(name),
 
 	_members.insert(std::pair<int, Client*>(creator->get_fd(), creator));
 	_operators.insert(std::pair<int, Client*>(creator->get_fd(), creator));
+	_join_order.push_back(creator->get_fd());
 }
 
 Channel::~Channel() {
@@ -191,7 +192,7 @@ void Channel::addMember(Client* client) {
 	}
 	else {
 		_members.insert(std::pair<int, Client*>(client->get_fd(), client));
-		_join_order.insert(_join_order.begin(), client->get_fd());
+		_join_order.push_back(client->get_fd());
 	}
 }
 
@@ -204,7 +205,7 @@ void Channel::removeMember(Client* client) {
 	}
 	else {
 		_members.erase(client->get_fd());
-		std::remove(_join_order.begin(), _join_order.end(), client->get_fd());
+		_join_order.erase(std::find(_join_order.begin(), _join_order.end(), client->get_fd()));
 	}
 }
 
@@ -231,11 +232,11 @@ int Channel::getCurrentOperatorsCount() {
 
 void Channel::promoteFirstMember() {
 	if (!_members.empty()) {
-		Client *oldest = _members.find(_join_order.back())->second;
+		Client *oldest = _members.find(_join_order.front())->second;
 		_operators.insert(std::pair<int, Client*>(oldest->get_fd(), oldest));
 
-		_join_order.erase(_join_order.end() - 1);
-		_join_order.insert(_join_order.begin(), oldest->get_fd());
+		_join_order.pop_front();
+		_join_order.push_back(oldest->get_fd());
 		
 		broadcast(NULL, RPL_MODE("big.little.talk.irc", _name, "+o", oldest->get_nickname()));
 	}

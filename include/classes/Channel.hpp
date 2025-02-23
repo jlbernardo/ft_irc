@@ -9,7 +9,7 @@ class Channel {
 		std::string         	_name;       // Channel name (starts with # or &)
 		std::string         	_topic;      // Channel topic
 		std::string         	_key;        // Channel pass (if mode +k is set)
-		std::vector<int> 		_join_order; // Members join order
+		std::deque<int> 		_join_order; // Members join order
 		std::map<int, Client*>	_members;    // Channel members (fd -> Client*)
 		std::map<int, Client*>	_invited;    // Channel invited members
 		std::map<int, Client*>	_operators;  // Channel operators (fd -> Client*)
