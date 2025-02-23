@@ -183,7 +183,7 @@ bool Channel::setTopic(Client* oper, const std::string& new_topic) {
 
 bool Channel::parseChannelName(const std::string &name) const
 {
-	std::string invalidChars = " ^G,";
+	std::string invalidChars = " \x07,";
 
 	size_t pos = name.find_first_of(invalidChars);
 
