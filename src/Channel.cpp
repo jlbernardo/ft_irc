@@ -154,22 +154,8 @@ void Channel::consumeInvite(Client* target) {
 	_invited.erase(target->get_fd());
 }
 
-bool Channel::setTopic(Client* oper, const std::string& new_topic) {
-	if (!oper) {
-		logger.error("Invalid operator.");
-	}
-	else if (!isOperator(oper)) {
-		oper->getServer().send_message(oper->get_fd(),
-		ERR_CHANOPRIVSNEEDED(oper->get_username(), _name));
-	}
-	else {
-		_topic = new_topic;
-		broadcast(NULL, RPL_TOPIC(oper->get_nickname() + "has changed the topic for",
-				  _name, new_topic));
-		return true;
-	}
-
-	return false;
+void Channel::setTopic(const std::string& new_topic) {
+	_topic = new_topic;
 }
 
 bool Channel::parseChannelName(const std::string &name) const

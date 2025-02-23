@@ -37,7 +37,7 @@ inline std::string RPL_NOTOPIC(const std::string& nick, const std::string& chann
 }
 
 inline std::string RPL_TOPIC(const std::string& nick, const std::string& channel, const std::string& topic) {
-  return SERVER + " 332 " + nick + " " + channel + " :" + topic + CRLF;
+  return SERVER + " 332 " + nick + " " + channel + " " + topic + CRLF;
 }
 
 inline std::string RPL_INVITING(const std::string& nick, const std::string& recipient, const std::string& channel) {
@@ -175,13 +175,12 @@ inline std::string RPL_PARTNOMSG(const std::string& nick, const std::string& use
   return SERVER + nick + "!" + user + "@* PART " + dest + CRLF;
 }
 
-inline std::string RPL_KICKREASON(const std::string& identifier, const std::string& channel, const std::string& target, const std::string& reason) {
+inline std::string RPL_KICK(const std::string& identifier, const std::string& channel, const std::string& target, const std::string& reason) {
   return ":" + identifier + " KICK " + channel + " " + target + " :" + reason + CRLF;
 }
 
-inline std::string RPL_KICKNOREASON(const std::string& op_nick, const std::string& op_user, const std::string& channel,
-                                    const std::string& client) {
-  return SERVER + op_nick + "!" + op_user + "@ft.irc KICK " + channel + " " + client + CRLF;
+inline std::string RPL_TOPICCHANGE(const std::string sender, const std::string& channel, const std::string& topic) {
+  return ":" + sender + " TOPIC " + channel + " :" + topic + CRLF;
 }
 
 inline std::string RPL_MODE(const std::string sender, const std::string& channel, const std::string& mode, const std::string& target) {

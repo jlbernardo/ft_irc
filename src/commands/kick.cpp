@@ -43,7 +43,7 @@ void kick(Commands &commands, Command &cmd) {
             continue ;
         }
 
-        std::string message = RPL_KICKREASON(sender.get_identifier(), channel_name, target.get_nickname(), reason);
+        std::string message = RPL_KICK(sender.get_identifier(), channel_name, target.get_nickname(), reason);
         channel->broadcast(&sender, message);
 
         channel->removeMember(&target);

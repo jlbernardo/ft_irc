@@ -61,7 +61,7 @@ class Channel {
 		// Required by subject
 		void inviteMember(Client* target);
 		void consumeInvite(Client* target);
-		bool setTopic(Client* client, const std::string& new_topic);
+		void setTopic(const std::string& new_topic);
 
 		//validation
 		bool parseChannelName(const std::string& name) const;
