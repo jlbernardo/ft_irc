@@ -42,22 +42,12 @@ Channel::Channel(const Channel &copy) {
 	*this = copy;
 }
 
-void Channel::setOperator(Client* client) {
-	if (!client) {
-		client->getServer().send_message(client->get_fd(),
-		ERR_NEEDMOREPARAMS("CLIENT"));
-	}
-	else if (_members.find(client->get_fd()) == _members.end()) {
-		client->getServer().send_message(client->get_fd(),
-		ERR_USERNOTINCHANNEL(client->get_username(), client->get_nickname(), _name));
-	}
-	else if (isOperator(client)) {
-		client->getServer().send_message(client->get_fd(),
-		ERROR("Already an operator of this channel."));
-	}
-	else {
-		_operators.insert(std::pair<int, Client*>(client->get_fd(), client));
-	}
+void Channel::addOperator(Client* client) {
+	_operators.insert(std::pair<int, Client*>(client->get_fd(), client));
+}
+
+void Channel::removeOperator(Client* client) {
+	_operators.erase(client->get_fd());
 }
 
 bool Channel::isOperator(Client* client) const {
@@ -201,6 +191,7 @@ void Channel::addMember(Client* client) {
 	}
 	else {
 		_members.insert(std::pair<int, Client*>(client->get_fd(), client));
+		_join_order.insert(_join_order.begin(), client->get_fd());
 	}
 }
 
@@ -213,20 +204,17 @@ void Channel::removeMember(Client* client) {
 	}
 	else {
 		_members.erase(client->get_fd());
+		std::remove(_join_order.begin(), _join_order.end(), client->get_fd());
 	}
 }
 
 void Channel::broadcast(Client* sender, const std::string& message) {
 	if (message.empty()) {
-		sender->getServer().send_message(sender->get_fd(),
-		ERR_NOTEXTTOSEND(sender->get_username()));
+		sender->getServer().send_message(sender->get_fd(), ERR_NOTEXTTOSEND(sender->get_username()));
 	}
 	else {
 		for (std::map<int, Client*>::iterator it = _members.begin(); it != _members.end(); ++it) {
 			Client *member = it->second;
-
-			if (member->get_fd() == sender->get_fd())
-				continue ;
 
 			member->getServer().send_message(member->get_fd(), message);
 		}
@@ -235,6 +223,22 @@ void Channel::broadcast(Client* sender, const std::string& message) {
 
 int Channel::getCurrentMembersCount() {
 	return _members.size();
+};
+
+int Channel::getCurrentOperatorsCount() {
+	return _operators.size();
+};
+
+void Channel::promoteFirstMember() {
+	if (!_members.empty()) {
+		Client *oldest = _members.find(_join_order.back())->second;
+		_operators.insert(std::pair<int, Client*>(oldest->get_fd(), oldest));
+
+		_join_order.erase(_join_order.end() - 1);
+		_join_order.insert(_join_order.begin(), oldest->get_fd());
+		
+		broadcast(NULL, RPL_MODE("big.little.talk.irc", _name, "+o", oldest->get_nickname()));
+	}
 };
 
 int Channel::getUserLimit() {

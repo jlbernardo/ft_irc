@@ -9,8 +9,10 @@ class Channel {
 		std::string         	_name;       // Channel name (starts with # or &)
 		std::string         	_topic;      // Channel topic
 		std::string         	_key;        // Channel pass (if mode +k is set)
+		std::vector<int> 		_join_order; // Members join order
 		std::map<int, Client*>	_members;    // Channel members (fd -> Client*)
 		std::map<int, Client*>	_invited;    // Channel invited members
+		std::map<int, Client*>	_operators;  // Channel operators (fd -> Client*)
 		
 		// Channel modes
 		bool _inviteOnly;      // mode +i
@@ -19,7 +21,6 @@ class Channel {
 		size_t _userLimit;     // mode +l
 
 	public:
-		std::map<int, Client*>	_operators;  // Channel operators (fd -> Client*)
 		~Channel();
 		Channel(const Channel &copy);
 		Channel& operator=(const Channel &copy);
@@ -31,10 +32,13 @@ class Channel {
 		void broadcast(Client* sender = NULL, const std::string& message = "");
 		
 		// Channel operator operations
-		void setOperator(Client* client);
+		void addOperator(Client* client);
+		void removeOperator(Client* client);
+		void promoteFirstMember();
 		bool isOperator(Client* client) const;
 		bool isInvited(Client* client) const;
 		int getCurrentMembersCount();
+		int getCurrentOperatorsCount();
 		int getUserLimit();
 		std::string getModes() const;
 		std::string getModeParams() const;

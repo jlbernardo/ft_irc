@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <iostream>
 # include <stdexcept>
+# include <algorithm>
 # include <arpa/inet.h>
 # include <sys/select.h>
 # include <sys/socket.h>

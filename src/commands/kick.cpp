@@ -45,7 +45,6 @@ void kick(Commands &commands, Command &cmd) {
 
         std::string message = RPL_KICKREASON(sender.get_identifier(), channel_name, target.get_nickname(), reason);
         channel->broadcast(&sender, message);
-        server.send_message(sender.get_fd(), message);
 
         channel->removeMember(&target);
         target.remove_channel(channel);

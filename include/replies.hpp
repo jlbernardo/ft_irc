@@ -60,7 +60,7 @@ inline std::string RPL_ENDOFNAMES(const std::string& nick, const std::string& ch
 
 // 400s
 inline std::string ERR_NOSUCHCHANNEL(const std::string& channel) {
-  return SERVER + " 403 * " + channel + " :Invalid channel name!" + CRLF;
+  return SERVER + " 403 " + channel + " :Invalid channel name!" + CRLF;
 }
 
 inline std::string ERR_CANNOTSENDTOCHAN(const std::string& channel) {
@@ -184,8 +184,8 @@ inline std::string RPL_KICKNOREASON(const std::string& op_nick, const std::strin
   return SERVER + op_nick + "!" + op_user + "@ft.irc KICK " + channel + " " + client + CRLF;
 }
 
-inline std::string RPL_MODEBASE(const std::string& nick, const std::string& user, const std::string& channel) {
-  return SERVER + nick + "!" + user + "@ft.irc MODE " + channel + " ";
+inline std::string RPL_MODE(const std::string sender, const std::string& channel, const std::string& mode, const std::string& target) {
+  return ":" + sender + " MODE " + channel + " " + mode + " " + target + CRLF;
 }
 
 inline std::string RPL_INVITE(const std::string& nick, const std::string& recipient, const std::string& channel) {

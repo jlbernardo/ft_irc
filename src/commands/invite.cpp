@@ -11,12 +11,14 @@ void invite(Commands &commands, Command &cmd) {
 
     std::string target_nickname = cmd.parameters[0];
     std::string channel_name = cmd.parameters[1];
-    Channel *channel = server.get_channels()[channel_name];
 
     if (!server.channelExists(channel_name)) {
         server.send_message(sender.get_fd(), ERR_NOSUCHCHANNEL(channel_name));
         return ;
     }
+
+    Channel *channel = server.get_channels()[channel_name];
+    
     if (!server.clientExists(target_nickname)) {
         server.send_message(sender.get_fd(), ERR_NOSUCHNICK(target_nickname));
         return ;
@@ -36,7 +38,6 @@ void invite(Commands &commands, Command &cmd) {
 
     Client &target = server.getClient(target_nickname);
 
-    logger.debug("Inviting " + target.get_nickname() + " to " + channel_name);
     server.send_message(sender.get_fd(), RPL_INVITING(sender.get_nickname(), target.get_nickname(), channel_name));
     server.send_message(target.get_fd(), RPL_INVITE(sender.get_nickname(), target.get_nickname(), channel_name));
 
