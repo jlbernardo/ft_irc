@@ -1,8 +1,6 @@
 #include "ft_irc.hpp"
 
 
-std::vector<std::string> split(const std::string &str, char delim);
-
 void part(Commands &commands, Command &cmd) {
     Client &sender = commands.get_sender();
     Server &server = sender.getServer();
@@ -13,7 +11,7 @@ void part(Commands &commands, Command &cmd) {
     }
 
     std::vector<std::string> channels = split(cmd.parameters[0], ',');
-    std::string reason = cmd.parameters.size() > 1 ? cmd.parameters[1] : "just cause";
+    std::string reason = cmd.parameters.size() > 1 ? cmd.parameters[1] : "";
 
     for (std::vector<std::string>::iterator it = channels.begin(); it != channels.end(); it++) {
         std::string channel_name = *it;
@@ -30,11 +28,11 @@ void part(Commands &commands, Command &cmd) {
             continue ;
         }
 
-        channel->removeMember(&sender);
-        sender.remove_channel(channel);
-
         std::string message = RPL_PARTMSG(sender.get_identifier(), sender.get_username(), channel_name, reason);
         channel->broadcast(&sender, message);
+
+        channel->removeMember(&sender);
+        sender.remove_channel(channel);
 
         if (channel->isOperator(&sender))
             channel->removeOperator(&sender);

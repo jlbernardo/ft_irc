@@ -1,5 +1,6 @@
 #include "ft_irc.hpp"
 
+
 void who(Commands &commands, Command &cmd) {
     Client &client = commands.get_sender();
     Server &server = client.getServer();

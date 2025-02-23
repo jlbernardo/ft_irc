@@ -198,13 +198,12 @@ void Channel::removeMember(Client* client) {
 void Channel::broadcast(Client* sender, const std::string& message) {
 	if (message.empty()) {
 		sender->getServer().send_message(sender->get_fd(), ERR_NOTEXTTOSEND(sender->get_username()));
+		return ;
 	}
-	else {
-		for (std::map<int, Client*>::iterator it = _members.begin(); it != _members.end(); ++it) {
-			Client *member = it->second;
 
-			member->getServer().send_message(member->get_fd(), message);
-		}
+	for (std::map<int, Client*>::iterator it = _members.begin(); it != _members.end(); ++it) {
+		Client *member = it->second;
+		member->getServer().send_message(member->get_fd(), message);
 	}
 }
 
