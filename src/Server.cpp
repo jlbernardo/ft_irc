@@ -121,12 +121,6 @@ void Server::add_new_client_to_master_set() {
     _max_fd = client_fd;
 
   _clients[client_fd] = new Client(client_fd, *this);
-
-#ifdef TEST
-  std::stringstream str;
-  str << "Connected to server on socket " << client_fd << ": ";
-  send(client_fd, str.str().c_str(), str.str().length(), 0);
-#endif
 }
 
 void Server::remove_client(int client_fd) {
@@ -134,11 +128,6 @@ void Server::remove_client(int client_fd) {
   close(client_fd);
   delete _clients[client_fd];
   _clients.erase(client_fd);
-}
-
-void Server::send_error(int client_fd, const std::string &error_code, const std::string &error_message) {
-  std::string message = ":" + to_string(client_fd) + " " + error_code + " " + error_message + "\r\n";
-  send_message(client_fd, message);
 }
 
 void Server::send_message(int client_fd, const std::string &message) {
@@ -201,13 +190,3 @@ Client &Server::getClient(std::string client_name) {
     }
     throw std::runtime_error("Client not found");
 }
-
-// void Server::stop() {}
-
-// void Server::handlePrivmsg(Client* client, const std::string& command) {} //need implement
-// void Server::handlePart(Client* client, const std::string& command){} //need implement
-// Channel* Server::createChannel(const std::string& name, Client* creator){} //need implement
-// void Server::removeChannel(const std::string& name) {} //need implement
-// Channel* Server::findChannel(const std::string& name) {} //need implement
-// void Server::handleJoin(Client* client, const std::string& command) {} //need implement
-// void Server::handle_client_message(int client_fd) {}

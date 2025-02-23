@@ -28,7 +28,7 @@ void part(Commands &commands, Command &cmd) {
             continue ;
         }
 
-        std::string message = RPL_PARTMSG(sender.get_identifier(), sender.get_username(), channel_name, reason);
+        std::string message = RPL_PARTMSG(sender.get_identifier(), channel_name, reason);
         channel->broadcast(&sender, message);
 
         channel->removeMember(&sender);
@@ -37,12 +37,12 @@ void part(Commands &commands, Command &cmd) {
         if (channel->isOperator(&sender))
             channel->removeOperator(&sender);
 
+        if (channel->getCurrentOperatorsCount() == 0)
+            channel->promoteFirstMember();
+
         if (channel->getCurrentMembersCount() == 0) {
             server.get_channels().erase(channel_name);
             delete channel;
         }
-
-        if (channel->getCurrentOperatorsCount() == 0)
-            channel->promoteFirstMember();
     }
 }

@@ -156,23 +156,12 @@ inline std::string RPL_JOIN(const std::string& user, const std::string& channel)
   return ":" + user + " JOIN " + channel + CRLF;
 }
 
-inline std::string PRIVMSG_BROADCAST(const std::string& nick, const std::string& user, const std::string& channel,
-                                     const std::string& topic) {
-  return SERVER + nick + "!~" + user + "@ft.irc TOPIC " + channel + " " + topic + CRLF;
-}
-
 inline std::string RPL_PRIVMSG(const std::string& client_id, const std::string& dest, const std::string& message) {
   return ":" + client_id + " PRIVMSG " + dest + " :" + message + CRLF;
 }
 
-inline std::string RPL_PARTMSG(const std::string& identifier, const std::string& user, const std::string& dest,
-                               const std::string& message) {
-  (void)user;
+inline std::string RPL_PARTMSG(const std::string& identifier, const std::string& dest, const std::string& message) {
   return ":" + identifier + " PART " + dest + " :" + message + CRLF;
-}
-
-inline std::string RPL_PARTNOMSG(const std::string& nick, const std::string& user, const std::string& dest) {
-  return SERVER + nick + "!" + user + "@* PART " + dest + CRLF;
 }
 
 inline std::string RPL_KICK(const std::string& identifier, const std::string& channel, const std::string& target, const std::string& reason) {

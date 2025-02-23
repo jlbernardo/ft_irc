@@ -73,7 +73,7 @@ void SocketsManager::load_client_queue(int client_fd) {
 
     if (cmds.get_fatal_error())
       _server.remove_client(client_fd);
-    else
+    else if (_server._clients.find(client_fd) != _server._clients.end())
       client.clean_buffer();
   }
 }
