@@ -37,30 +37,30 @@ inline std::string RPL_NOTOPIC(const std::string& nick, const std::string& chann
 }
 
 inline std::string RPL_TOPIC(const std::string& nick, const std::string& channel, const std::string& topic) {
-  return SERVER + " 332 " + nick + " " + channel + " :" + topic + CRLF;
+  return SERVER + " 332 " + nick + " " + channel + " " + topic + CRLF;
 }
 
 inline std::string RPL_INVITING(const std::string& nick, const std::string& recipient, const std::string& channel) {
   return SERVER + " 341 " + nick + " " + recipient + " :" + channel + CRLF;
 }
 
-inline std::string RPL_WHOREPLY(const std::string& channel, const std::string& user, const std::string& nick,
-                                const std::string& flags, const std::string& realname) {
-  return SERVER + " 352 " + channel + " " + user + " 42sp.org.br ft.irc " + nick + " " + flags + ":0 " + realname +
-         CRLF;
+inline std::string RPL_WHOREPLY(const std::string& channel, const std::string& user, const std::string &host,
+                                const std::string& nick, const std::string& flags, const std::string& realname) {
+  return SERVER + " 352 " + channel + " " + user + " " + host + " big.little.talk.irc " + nick + " " + flags +
+         " :0 " + realname + CRLF;
 }
 
 inline std::string RPL_NAMREPLY(const std::string& nick, const std::string& channel, const std::string& names) {
-  return SERVER + " 353 " + nick + " = " + channel + " : " + names + CRLF;
+  return SERVER + " 353 " + nick + " = " + channel + " :" + names + CRLF;
 }
 
 inline std::string RPL_ENDOFNAMES(const std::string& nick, const std::string& channel) {
-  return SERVER + " 366 " + nick + " " + channel + " : End of names list" + CRLF;
+  return SERVER + " 366 " + nick + " " + channel + " :End of names list" + CRLF;
 }
 
 // 400s
 inline std::string ERR_NOSUCHCHANNEL(const std::string& channel) {
-  return SERVER + " 403 * " + channel + " :Invalid channel name!" + CRLF;
+  return SERVER + " 403 " + channel + " :Invalid channel name!" + CRLF;
 }
 
 inline std::string ERR_CANNOTSENDTOCHAN(const std::string& channel) {
@@ -128,6 +128,10 @@ inline std::string ERR_CHANNELISFULL(const std::string& channel) {
   return SERVER + " 471 * " + channel + " :Channel is full!" + CRLF;
 }
 
+inline std::string ERR_UNKNOWNMODE(char mode) {
+  return SERVER + " 472 * " + mode + " :is unknown mode char to me" + CRLF;
+}
+
 inline std::string ERR_INVITEONLYCHAN(const std::string& channel) {
   return SERVER + " 473 * " + channel + " :Channel is invite-only!" + CRLF;
 }
@@ -152,41 +156,28 @@ inline std::string RPL_JOIN(const std::string& user, const std::string& channel)
   return ":" + user + " JOIN " + channel + CRLF;
 }
 
-inline std::string PRIVMSG_BROADCAST(const std::string& nick, const std::string& user, const std::string& channel,
-                                     const std::string& topic) {
-  return SERVER + nick + "!~" + user + "@ft.irc TOPIC " + channel + " " + topic + CRLF;
-}
-
 inline std::string RPL_PRIVMSG(const std::string& client_id, const std::string& dest, const std::string& message) {
   return ":" + client_id + " PRIVMSG " + dest + " :" + message + CRLF;
 }
 
-inline std::string RPL_PARTMSG(const std::string& nick, const std::string& user, const std::string& dest,
-                               const std::string& message) {
-  return SERVER + nick + "!~" + user + "@* PART " + dest + " :" + message + CRLF;
+inline std::string RPL_PARTMSG(const std::string& identifier, const std::string& dest, const std::string& message) {
+  return ":" + identifier + " PART " + dest + " :" + message + CRLF;
 }
 
-inline std::string RPL_PARTNOMSG(const std::string& nick, const std::string& user, const std::string& dest) {
-  return SERVER + nick + "!" + user + "@* PART " + dest + CRLF;
+inline std::string RPL_KICK(const std::string& identifier, const std::string& channel, const std::string& target, const std::string& reason) {
+  return ":" + identifier + " KICK " + channel + " " + target + " :" + reason + CRLF;
 }
 
-inline std::string RPL_KICKREASON(const std::string& op_nick, const std::string& op_user, const std::string& channel,
-                                  const std::string& client, const std::string& reason) {
-  return SERVER + op_nick + "!" + op_user + "@ft.irc KICK " + channel + " " + client + " :" + reason + CRLF;
+inline std::string RPL_TOPICCHANGE(const std::string sender, const std::string& channel, const std::string& topic) {
+  return ":" + sender + " TOPIC " + channel + " :" + topic + CRLF;
 }
 
-inline std::string RPL_KICKNOREASON(const std::string& op_nick, const std::string& op_user, const std::string& channel,
-                                    const std::string& client) {
-  return SERVER + op_nick + "!" + op_user + "@ft.irc KICK " + channel + " " + client + CRLF;
+inline std::string RPL_MODE(const std::string sender, const std::string& channel, const std::string& mode, const std::string& target) {
+  return ":" + sender + " MODE " + channel + " " + mode + " " + target + CRLF;
 }
 
-inline std::string RPL_MODEBASE(const std::string& nick, const std::string& user, const std::string& channel) {
-  return SERVER + nick + "!" + user + "@ft.irc MODE " + channel + " ";
-}
-
-inline std::string RPL_INVITEMSG(const std::string& nick, const std::string& user, const std::string& recipient,
-                                 const std::string& channel) {
-  return SERVER + nick + "!~" + user + "@ft.irc INVITE " + recipient + " :" + channel + CRLF;
+inline std::string RPL_INVITE(const std::string& nick, const std::string& recipient, const std::string& channel) {
+  return ":" + nick + " INVITE " + recipient + " :" + channel + CRLF;
 }
 
 #endif

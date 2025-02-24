@@ -1,54 +1,102 @@
-#include "ft_irc.h"
+#include "ft_irc.hpp"
 
 
 Channel::Channel(const std::string& name, Client* creator) : _name(name),
-				_topic(""), _inviteOnly(false), _topicRestricted(false),
-				_hasKey(false), _userLimit(1024) {
+				_topic(""), _key(""), _inviteOnly(false), _topicRestricted(false),
+				_hasKey(false), _userLimit(0) {
 	std::string	input;
 
 	if (!creator) {
 		creator->getServer().send_message(creator->get_fd(), ERR_NONICKNAMEGIVEN());
-		this->~Channel();
 		return ;
 	}
 
 	if (!parseChannelName(name)) {
 		creator->getServer().send_message(creator->get_fd(), ERR_BADCHANMASK(name));
-		this->~Channel();
 		return ;
 	}
 
 	_members.insert(std::pair<int, Client*>(creator->get_fd(), creator));
 	_operators.insert(std::pair<int, Client*>(creator->get_fd(), creator));
-	creator->getServer().addNewChannel(this);
-	creator->add_channel(this);
+	_join_order.push_back(creator->get_fd());
 }
 
 Channel::~Channel() {
 }
 
-void Channel::setOperator(Client* client) {
-	if (!client) {
-		client->getServer().send_message(client->get_fd(),
-		ERR_NEEDMOREPARAMS("CLIENT"));
+Channel& Channel::operator=(const Channel &copy) {
+	if (this != &copy) {
+		_name = copy._name;
+		_topic = copy._topic;
+		_key = copy._key;
+		_members = copy._members;
+		_operators = copy._operators;
+		_inviteOnly = copy._inviteOnly;
+		_topicRestricted = copy._topicRestricted;
+		_hasKey = copy._hasKey;
+		_userLimit = copy._userLimit;
 	}
-	else if (_members.find(client->get_fd()) == _members.end()) {
-		client->getServer().send_message(client->get_fd(),
-		ERR_USERNOTINCHANNEL(client->get_username(), client->get_nickname(), _name));
-	}
-	else if (isOperator(client)) {
-		client->getServer().send_message(client->get_fd(),
-		ERROR("Already an operator of this channel."));
-	}
-	else {
-		_operators.insert(std::pair<int, Client*>(client->get_fd(), client));
-	}
+	return *this;
+}
+
+Channel::Channel(const Channel &copy) {
+	*this = copy;
+}
+
+void Channel::addOperator(Client* client) {
+	_operators.insert(std::pair<int, Client*>(client->get_fd(), client));
+}
+
+void Channel::removeOperator(Client* client) {
+	int client_fd = client->get_fd();
+
+	_operators.erase(client_fd);
+	
+	if (_join_order.front() != client_fd)
+		return ;
+
+	_join_order.pop_front();
+	_join_order.push_back(client_fd);
 }
 
 bool Channel::isOperator(Client* client) const {
 	if (client && _operators.find(client->get_fd()) != _operators.end())
 		return true;
 	return false;
+}
+
+bool Channel::isInvited(Client* client) const {
+	if (client && _invited.find(client->get_fd()) != _invited.end())
+		return true;
+	return false;
+}
+
+std::string Channel::getModes() const {
+	std::string modes = "+";
+
+	if (_inviteOnly)
+		modes += "i";
+	if (_topicRestricted)
+		modes += "t";
+	if (_hasKey)
+		modes += "k";
+	if (_userLimit)
+		modes += "l";
+	if (modes.length() == 1)
+		modes = "";
+
+	return modes;
+}
+
+std::string Channel::getModeParams() const {
+	std::string params = "";
+
+	if (_hasKey)
+		params += _key + " ";
+	if (_userLimit)
+		params += to_string(_userLimit) + " ";
+
+	return params;
 }
 
 bool Channel::mode(char mode) const {
@@ -65,6 +113,23 @@ bool Channel::mode(char mode) const {
 			logger.error("Not a valid channel mode.");
 			return false;
 	}
+}
+
+void Channel::setInviteOnly(bool value) {
+	_inviteOnly = value;
+}
+
+void Channel::setTopicRestricted(bool value) {
+	_topicRestricted = value;
+}
+
+void Channel::setKey(const std::string& key) {
+	_key = key;
+	_hasKey = !key.empty();
+}
+
+void Channel::setUserLimit(size_t limit) {
+	_userLimit = limit;
 }
 
 bool Channel::isMember(Client* client) const {
@@ -85,95 +150,33 @@ const std::map<int, Client*>& Channel::getMembers() const {
 	return _members;
 }
 
-bool Channel::kickMember(Client* oper, Client* target, const std::string& reason) {
-	if (!oper) {
-		logger.error("Invalid operator.");
-	}
-	else if (!target) {
-		oper->getServer().send_message(oper->get_fd(),
-		ERR_NEEDMOREPARAMS("TARGET"));
-	}
-	else if (!isOperator(oper)) {
-		oper->getServer().send_message(oper->get_fd(),
-		ERR_CHANOPRIVSNEEDED(oper->get_username(), _name));
-	}
-	else if (_members.find(target->get_fd()) == _members.end()) {
-		oper->getServer().send_message(oper->get_fd(),
-		ERR_USERNOTINCHANNEL(oper->get_username(), target->get_username(), _name));
-	}
-	else {
-		_members.erase(target->get_fd());
-		if (reason.empty()) {
-			broadcast(NULL, RPL_KICKNOREASON(oper->get_nickname(), oper->get_username(),
-					  _name, target->get_username()));
-		}
-		else {
-			broadcast(NULL, RPL_KICKREASON(oper->get_nickname(), oper->get_username(),
-					  _name, target->get_username(), reason));
-		}
-		return true;
-	}
-	return false;
+const std::string& Channel::getKey() const {
+	return _key;
 }
 
-bool Channel::inviteMember(Client* oper, Client* target) {
-	if (!oper) {
-		logger.error("Invalid operator.");
-	}
-	else if (!target) {
-		oper->getServer().send_message(oper->get_fd(),
-		ERR_NEEDMOREPARAMS("TARGET"));
-	}
-	else if (!isOperator(oper)) {
-		oper->getServer().send_message(oper->get_fd(),
-		ERR_CHANOPRIVSNEEDED(oper->get_username(), _name));
-	}
-	else if (_members.find(target->get_fd()) != _members.end()) {
-		oper->getServer().send_message(oper->get_fd(),
-		ERR_USERONCHANNEL(target->get_nickname(), _name));
-	}
-	else {
-		oper->getServer().send_message(oper->get_fd(),
-			RPL_INVITING(oper->get_nickname(), target->get_nickname(), _name));
-		target->getServer().send_message(target->get_fd(),
-			RPL_INVITEMSG(oper->get_nickname(), oper->get_username(), target->get_username(), _name));
-		
-		return true;
-	}
-
-	return false;
+void Channel::inviteMember(Client* target) {
+	_invited.insert(std::pair<int, Client*>(target->get_fd(), target));
 }
 
-bool Channel::setTopic(Client* oper, const std::string& new_topic) {
-	if (!oper) {
-		logger.error("Invalid operator.");
-	}
-	else if (!isOperator(oper)) {
-		oper->getServer().send_message(oper->get_fd(),
-		ERR_CHANOPRIVSNEEDED(oper->get_username(), _name));
-	}
-	else {
-		_topic = new_topic;
-		broadcast(NULL, RPL_TOPIC(oper->get_nickname() + "has changed the topic for",
-				  _name, new_topic));
-		return true;
-	}
-
-	return false;
+void Channel::consumeInvite(Client* target) {
+	_invited.erase(target->get_fd());
 }
 
-bool Channel::parseChannelName(const std::string &name) const
-{
-	std::string invalidChars = " ^G,";
+void Channel::setTopic(const std::string& new_topic) {
+	_topic = new_topic;
+}
+
+bool Channel::parseChannelName(const std::string &name) const {
+	std::string invalidChars = " \x07,";
 
 	size_t pos = name.find_first_of(invalidChars);
 
 	if (name.empty() || (name[0] != '#' && name[0] != '&') || pos != std::string::npos)
 		return false;
 	return true;
-};
+}
 
-bool Channel::addMember(Client* client) {
+void Channel::addMember(Client* client) {
 	if (!client) {
 		logger.error("Invalid client.");
 	}
@@ -182,33 +185,55 @@ bool Channel::addMember(Client* client) {
 	}
 	else {
 		_members.insert(std::pair<int, Client*>(client->get_fd(), client));
-		return true;
+		_join_order.push_back(client->get_fd());
 	}
+}
 
-	return false;
+void Channel::removeMember(Client* client) {
+	if (!client) {
+		logger.error("Invalid client.");
+	}
+	else if (_members.find(client->get_fd()) == _members.end()) {
+		logger.error(client->get_username() + " is not a member of this channel.");
+	}
+	else {
+		_members.erase(client->get_fd());
+		_join_order.erase(std::find(_join_order.begin(), _join_order.end(), client->get_fd()));
+	}
 }
 
 void Channel::broadcast(Client* sender, const std::string& message) {
 	if (message.empty()) {
-		sender->getServer().send_message(sender->get_fd(),
-		ERR_NOTEXTTOSEND(sender->get_username()));
+		sender->getServer().send_message(sender->get_fd(), ERR_NOTEXTTOSEND(sender->get_username()));
+		return ;
 	}
-	else {
-		for (std::map<int, Client*>::iterator it = _members.begin(); it != _members.end(); ++it) {
-			Client *member = it->second;
 
-			if (member->get_fd() == sender->get_fd())
-				continue ;
-
-			member->getServer().send_message(member->get_fd(), message);
-		}
+	for (std::map<int, Client*>::iterator it = _members.begin(); it != _members.end(); ++it) {
+		Client *member = it->second;
+		member->getServer().send_message(member->get_fd(), message);
 	}
 }
 
 int Channel::getCurrentMembersCount() {
 	return _members.size();
-};
+}
+
+int Channel::getCurrentOperatorsCount() {
+	return _operators.size();
+}
+
+void Channel::promoteFirstMember() {
+	if (!_members.empty()) {
+		Client *oldest = _members.find(_join_order.front())->second;
+		_operators.insert(std::pair<int, Client*>(oldest->get_fd(), oldest));
+
+		_join_order.pop_front();
+		_join_order.push_back(oldest->get_fd());
+		
+		broadcast(NULL, RPL_MODE("big.little.talk.irc", _name, "+o", oldest->get_nickname()));
+	}
+}
 
 int Channel::getUserLimit() {
 	return _userLimit;
-};
+}

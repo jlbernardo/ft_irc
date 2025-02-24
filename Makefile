@@ -1,86 +1,136 @@
-PORT ?= 6667
+# _*_ Makefile _*_
+
+# BASIC VARIABLES
 NAME = ircserv
-NAME_TEST = ircserv_test
 FLAGS = -Wall -Wextra -Werror -I./include -std=c++98 -g3 -MMD -MP
-TEST_FLAGS = $(FLAGS) -DTEST -fsanitize=address
 CXX = clang++
-PATH_OBJS = ./objects/
-PATH_TEST_OBJS = ./test_objects/
-SRC_DIR = src/
-UTILS_DIR = src/utils/
-CMD_DIR = src/commands/
-PASS = 89aX
 
-SRC = Client Commands CommandsManager Server SocketsManager Channel
-UTILS_SRC = Validator Logger
-CMD_SRC = invite join kick mode nick pass privmsg quit topic user
+# TEST VARIABLES
+TEST_NAME = $(NAME)_test
+TEST_OBJ_PATH = test_objects/
+TEST_FLAGS = $(FLAGS) -DTEST -fsanitize=address
+PORT ?= 4242
+PASS = 2508
+
+# SOURCE FILES
 MAIN = main
+UTILS = Validator Logger utils
+CLASSES = Client Commands CommandsManager Server SocketsManager Channel
+COMMANDS = invite join kick mode nick pass privmsg quit topic user who part
 
-OBJS = $(SRC:%=$(PATH_OBJS)%.o)
-MAIN_OBJ = $(MAIN:%=$(PATH_OBJS)%.o)
-UTILS_OBJS = $(UTILS_SRC:%=$(PATH_OBJS)%.o)
-CMD_OBJS = $(CMD_SRC:%=$(PATH_OBJS)%.o)
-TEST_OBJS = $(SRC:%=$(PATH_TEST_OBJS)%.o)
-TEST_MAIN_OBJ = $(MAIN:%=$(PATH_TEST_OBJS)%.o)
+# PATHS
+SRC_PATH = src/
+OBJ_PATH = objects/
+UTL_PATH = src/utils/
+CMD_PATH = src/commands/
 
-DEPS = $(OBJS:.o=.d) $(MAIN_OBJ:.o=.d) $(TEST_OBJS:.o=.d) $(TEST_MAIN_OBJ:.o=.d) $(UTILS_OBJS:.o=.d) $(CMD_OBJS:.o=.d)
+# BASIC OBJECTS
+MAIN_O = $(MAIN:%=$(OBJ_PATH)%.o)
+UTILS_O = $(UTILS:%=$(OBJ_PATH)%.o)
+CLASSES_O = $(CLASSES:%=$(OBJ_PATH)%.o)
+COMMANDS_O = $(COMMANDS:%=$(OBJ_PATH)%.o)
+
+# TEST OBJECTS
+TEST_MAIN_O = $(MAIN:%=$(TEST_OBJ_PATH)%.o)
+TEST_CLASSES_O = $(CLASSES:%=$(TEST_OBJ_PATH)%.o)
+
+# DEPENDENCIES
+DEPS = $(CLASSES_O:.o=.d) $(MAIN_O:.o=.d) $(CLASSES_O:.o=.d) $(TEST_MAIN_O:.o=.d) $(UTILS_O:.o=.d) $(COMMANDS_O:.o=.d)
+
+# COLOR CODES
+DFL = \033[0m
+GRN = \033[32;1m
+BLU = \033[34;1m
+RED = \033[31;1m
+
+
+# BASIC RULES
 
 all: $(NAME)
 
 run: all
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME) $(PORT) $(PASS)
-
-test_connections: $(NAME_TEST)
-	@make test1 PORT=$(PORT) -C integration_tests/
-
-quickmemtest: $(NAME_TEST)
-	@./$(NAME_TEST) $(PORT) $(PASS)
-
-$(NAME): $(OBJS) $(MAIN_OBJ) $(UTILS_OBJS) $(CMD_OBJS)
-	@mkdir -p $(dir $@)
-	$(CXX) $(FLAGS) $^ -o $@
-	@touch $@
-
-$(NAME_TEST): $(TEST_OBJS) $(TEST_MAIN_OBJ)
-	@mkdir -p $(dir $@)
-	$(CXX) $(TEST_FLAGS) $^ -o $@
-	@touch $@
-
-$(PATH_OBJS)%.o: $(SRC_DIR)%.cpp
-	@mkdir -p $(PATH_OBJS)
-	$(CXX) $(FLAGS) -c $< -o $@
-
-$(PATH_TEST_OBJS)%.o: $(SRC_DIR)%.cpp
-	@mkdir -p $(PATH_TEST_OBJS)
-	$(CXX) $(TEST_FLAGS) -c $< -o $@
-
-$(PATH_OBJS)%.o: $(UTILS_DIR)%.cpp
-	@mkdir -p $(PATH_OBJS)
-	$(CXX) $(FLAGS) -c $< -o $@
-
-$(PATH_OBJS)%.o: $(CMD_DIR)%.cpp
-	@mkdir -p $(PATH_OBJS)
-	$(CXX) $(FLAGS) -c $< -o $@
-
-$(MAIN_OBJ): $(SRC_DIR)$(MAIN).cpp
-	@mkdir -p $(PATH_OBJS)
-	$(CXX) $(FLAGS) -c $< -o $@
-
-$(TEST_MAIN_OBJ): $(SRC_DIR)$(MAIN).cpp
-	@mkdir -p $(PATH_TEST_OBJS)
-	$(CXX) $(TEST_FLAGS) -c $< -o $@
+	@echo "$(BLU) Starting IRC Server... \n$(DFL)"
+	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME) $(PORT) $(PASS)
 
 clean:
-	rm -rf $(PATH_OBJS)
-	rm -rf $(PATH_TEST_OBJS)
+	@rm -rf $(OBJ_PATH)
+	@echo "$(RED) [EXCLUDED] $(OBJ_PATH)$(DFL)"
+	@rm -rf $(TEST_OBJ_PATH)
+	@echo "$(RED) [EXCLUDED] $(TEST_OBJ_PATH)$(DFL)"
 
 fclean: clean
-	rm -f $(NAME)
-	rm -f $(NAME_TEST)
-	rm -f compile_commands.json
+	@rm -f $(NAME)
+	@echo "$(RED) [EXCLUDED] $(NAME)$(DFL)"
+	@rm -f $(TEST_NAME)
+	@echo "$(RED) [EXCLUDED] $(TEST_NAME)$(DFL)"
+	@rm -f compile_commands.json
 
 re: fclean all
 
+
+
+# TEST RULES
+
+test_connections: $(TEST_NAME)
+	@echo "$(BLU)\n Testing connections... $(DFL)"
+	@make test1 PORT=$(PORT) -C integration_tests/
+
+quickmemtest: $(TEST_NAME)
+	@echo "$(BLU)\n Testing memory... $(DFL)"
+	@./$(TEST_NAME) $(PORT) $(PASS)
+
+
+
+# BASIC COMPILATION RULES
+
+$(NAME): $(MAIN_O) $(CLASSES_O) $(COMMANDS_O) $(UTILS_O)
+	@mkdir -p $(dir $@)
+	@$(CXX) $(FLAGS) $^ -o $@
+	@touch $@
+	@echo "$(BLU)\n All done!  ദ്ദി(• ˕ •マ.ᐟ$(DFL)"
+
+$(MAIN_O): $(SRC_PATH)$(MAIN).cpp
+	@mkdir -p $(OBJ_PATH)
+	@$(CXX) $(FLAGS) -c $< -o $@
+	@echo "$(GRN) [COMPILED]" $@ "$(DFL)"
+
+$(OBJ_PATH)%.o: $(SRC_PATH)%.cpp
+	@mkdir -p $(OBJ_PATH)
+	@$(CXX) $(FLAGS) -c $< -o $@
+	@echo "$(GRN) [COMPILED]" $@ "$(DFL)"
+
+$(OBJ_PATH)%.o: $(UTL_PATH)%.cpp
+	@mkdir -p $(OBJ_PATH)
+	@$(CXX) $(FLAGS) -c $< -o $@
+	@echo "$(GRN) [COMPILED]" $@ "$(DFL)"
+
+$(OBJ_PATH)%.o: $(CMD_PATH)%.cpp
+	@mkdir -p $(OBJ_PATH)
+	@$(CXX) $(FLAGS) -c $< -o $@
+	@echo "$(GRN) [COMPILED]" $@ "$(DFL)"
+
+
+# TEST COMPILATION RULES
+
+$(TEST_NAME): $(CLASSES_O) $(TEST_MAIN_O)
+	@mkdir -p $(dir $@)
+	@$(CXX) $(TEST_FLAGS) $^ -o $@
+	@touch $@
+	@echo "$(GRN) [COMPILED]" $@ "$(DFL)"
+
+$(TEST_MAIN_O): $(SRC_PATH)$(MAIN).cpp
+	@mkdir -p $(TEST_OBJ_PATH)
+	@$(CXX) $(TEST_FLAGS) -c $< -o $@
+	@echo "$(GRN) [COMPILED]" $@ "$(DFL)"
+
+$(TEST_OBJ_PATH)%.o: $(SRC_PATH)%.cpp
+	@mkdir -p $(TEST_OBJ_PATH)
+	@$(CXX) $(TEST_FLAGS) -c $< -o $@
+	@echo "$(GRN) [COMPILED]" $@ "$(DFL)"
+
+
+# INCLUDE FLAG
 -include $(DEPS)
 
+# PHONY RULE
 .PHONY: all clean fclean re run test_connections

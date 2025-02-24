@@ -1,10 +1,10 @@
-#include "ft_irc.h"
+#include "ft_irc.hpp"
 
 
-void pass(Commands &commands, const Command &cmd) {
+void pass(Commands &commands, Command &cmd) {
     Client &sender = commands.get_sender();
     Server &server = sender.getServer();
-    const std::string &pass = cmd.parameters.empty() ? "" : cmd.parameters[0];
+    std::string pass = cmd.parameters.empty() ? "" : cmd.parameters.front();
 
     if (pass.empty()) {
         server.send_message(sender.get_fd(), ERR_NEEDMOREPARAMS(cmd.command));
@@ -21,7 +21,7 @@ void pass(Commands &commands, const Command &cmd) {
 
             sender.set_identifier(nick + "!" + sender.get_username() + "@" + sender.get_hostname());
 
-            server.send_message(sender.get_fd(), RPL_WELCOME(sender.get_username(), sender.get_identifier()));
+            server.send_message(sender.get_fd(), RPL_WELCOME(sender.get_nickname(), sender.get_identifier()));
             server.send_message(sender.get_fd(), RPL_YOURHOST(nick));
             server.send_message(sender.get_fd(), RPL_CREATED(nick, server.get_startup_date()));
             server.send_message(sender.get_fd(), RPL_MYINFO(nick, "", ""));

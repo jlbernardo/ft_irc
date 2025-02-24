@@ -1,4 +1,4 @@
-#include "ft_irc.h"
+#include "ft_irc.hpp"
 
 
 bool is_nickname_in_use(Server &server, const std::string &new_nick) {
@@ -9,10 +9,10 @@ bool is_nickname_in_use(Server &server, const std::string &new_nick) {
     return false;
 }
 
-void nick(Commands &commands, const Command &cmd) {
+void nick(Commands &commands, Command &cmd) {
     Client &sender = commands.get_sender();
     Server &server = sender.getServer();
-    const std::string &new_nick = cmd.parameters.empty() ? "" : cmd.parameters[0];
+    std::string new_nick = cmd.parameters.empty() ? "" : cmd.parameters.front();
     
     if (new_nick.empty()) {
         server.send_message(sender.get_fd(), ERR_NONICKNAMEGIVEN());
@@ -40,7 +40,7 @@ void nick(Commands &commands, const Command &cmd) {
 
             sender.set_identifier(new_nick + "!" + sender.get_username() + "@" + sender.get_hostname());
 
-            server.send_message(sender.get_fd(), RPL_WELCOME(sender.get_username(), sender.get_identifier()));
+            server.send_message(sender.get_fd(), RPL_WELCOME(sender.get_nickname(), sender.get_identifier()));
             server.send_message(sender.get_fd(), RPL_YOURHOST(new_nick));
             server.send_message(sender.get_fd(), RPL_CREATED(new_nick, server.get_startup_date()));
             server.send_message(sender.get_fd(), RPL_MYINFO(new_nick, "", ""));

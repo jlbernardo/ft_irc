@@ -1,6 +1,6 @@
 #pragma once
-#ifndef FT_IRC_H
-# define FT_IRC_H
+#ifndef FT_IRC_HPP
+# define FT_IRC_HPP
 
 # include <map>
 # include <list>
@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <iostream>
 # include <stdexcept>
+# include <algorithm>
 # include <arpa/inet.h>
 # include <sys/select.h>
 # include <sys/socket.h>
@@ -52,22 +53,28 @@ class CommandsManager;
 # define MAGENTA    "\033[1;35m"
 # define CYAN       "\033[1;36m"
 # define WHITE      "\033[1;37m"
-# define ORANGE     "\033[0;38;5;166m"
+# define ORANGE     "\033[1;38;5;166m"
 # define GREY       "\033[38;5;244m"
 # define DFT        "\033[0m"
 
 static Logger logger = Logger::getInstance();
 static Validator validator = Validator();
 
+std::string trim(const std::string &str);
 std::string timestamp(const char *format);
+std::vector<std::string> split(const std::string &str, char delim);
 
-void privmsg(Commands &commands, const Command &cmd);
-void join(Commands &commands, const Command &cmd);
-void nick(Commands &commands, const Command &cmd);
-void user(Commands &commands, const Command &cmd);
-// void quit(Commands &commands, const Command &cmd);
-void pass(Commands &commands, const Command &cmd);
-void mode(Commands &commands, const Command &cmd);
-// void kick(Commands &commands, const Command &cmd);
+void privmsg(Commands &commands, Command &cmd);
+void join(Commands &commands, Command &cmd);
+void nick(Commands &commands, Command &cmd);
+void user(Commands &commands, Command &cmd);
+void quit(Commands &commands, Command &cmd);
+void pass(Commands &commands, Command &cmd);
+void mode(Commands &commands, Command &cmd);
+void who(Commands &commands, Command &cmd);
+void kick(Commands &commands, Command &cmd);
+void invite(Commands &commands, Command &cmd);
+void topic(Commands &commands, Command &cmd);
+void part(Commands &commands, Command &cmd);
 
 #endif

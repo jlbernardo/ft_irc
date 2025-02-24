@@ -1,4 +1,4 @@
-#include "ft_irc.h"
+#include "ft_irc.hpp"
 
 
 int main(int argc, char** argv) {
