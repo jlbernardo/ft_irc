@@ -48,7 +48,15 @@ void Channel::addOperator(Client* client) {
 }
 
 void Channel::removeOperator(Client* client) {
-	_operators.erase(client->get_fd());
+	int client_fd = client->get_fd();
+
+	_operators.erase(client_fd);
+	
+	if (_join_order.front() != client_fd)
+		return ;
+
+	_join_order.pop_front();
+	_join_order.push_back(client_fd);
 }
 
 bool Channel::isOperator(Client* client) const {
@@ -158,8 +166,7 @@ void Channel::setTopic(const std::string& new_topic) {
 	_topic = new_topic;
 }
 
-bool Channel::parseChannelName(const std::string &name) const
-{
+bool Channel::parseChannelName(const std::string &name) const {
 	std::string invalidChars = " \x07,";
 
 	size_t pos = name.find_first_of(invalidChars);
@@ -167,7 +174,7 @@ bool Channel::parseChannelName(const std::string &name) const
 	if (name.empty() || (name[0] != '#' && name[0] != '&') || pos != std::string::npos)
 		return false;
 	return true;
-};
+}
 
 void Channel::addMember(Client* client) {
 	if (!client) {
@@ -209,11 +216,11 @@ void Channel::broadcast(Client* sender, const std::string& message) {
 
 int Channel::getCurrentMembersCount() {
 	return _members.size();
-};
+}
 
 int Channel::getCurrentOperatorsCount() {
 	return _operators.size();
-};
+}
 
 void Channel::promoteFirstMember() {
 	if (!_members.empty()) {
@@ -225,8 +232,8 @@ void Channel::promoteFirstMember() {
 		
 		broadcast(NULL, RPL_MODE("big.little.talk.irc", _name, "+o", oldest->get_nickname()));
 	}
-};
+}
 
 int Channel::getUserLimit() {
 	return _userLimit;
-};
+}
