@@ -37,11 +37,11 @@ inline std::string RPL_NOTOPIC(const std::string& nick, const std::string& chann
 }
 
 inline std::string RPL_TOPIC(const std::string& nick, const std::string& channel, const std::string& topic) {
-  return SERVER + " 332 " + nick + " " + channel + " " + topic + CRLF;
+  return SERVER + " 332 " + nick + " " + channel + " :" + topic + CRLF;
 }
 
 inline std::string RPL_INVITING(const std::string& nick, const std::string& recipient, const std::string& channel) {
-  return SERVER + " 341 " + nick + " " + recipient + " :" + channel + CRLF;
+  return SERVER + " 341 " + nick + " " + recipient + " " + channel + CRLF;
 }
 
 inline std::string RPL_WHOREPLY(const std::string& channel, const std::string& user, const std::string &host,
@@ -177,7 +177,7 @@ inline std::string RPL_MODE(const std::string sender, const std::string& channel
 }
 
 inline std::string RPL_INVITE(const std::string& nick, const std::string& recipient, const std::string& channel) {
-  return ":" + nick + " INVITE " + recipient + " :" + channel + CRLF;
+  return ":" + nick + " INVITE " + recipient + " " + channel + CRLF;
 }
 
 inline std::string ERR_UNKNOWNCMD(const std::string& command) {
