@@ -3,7 +3,7 @@
 # BASIC VARIABLES
 NAME = ircserv
 FLAGS = -Wall -Wextra -Werror -I./include -std=c++98 -g3 -MMD -MP
-CXX = clang++
+CXX = c++
 
 # TEST VARIABLES
 TEST_NAME = $(NAME)_test
