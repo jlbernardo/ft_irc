@@ -180,4 +180,8 @@ inline std::string RPL_INVITE(const std::string& nick, const std::string& recipi
   return ":" + nick + " INVITE " + recipient + " :" + channel + CRLF;
 }
 
+inline std::string ERR_UNKNOWNCMD(const std::string& command) {
+  return SERVER + " 421 * " + command + " :Unknown command" + CRLF;
+}
+
 #endif
