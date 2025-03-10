@@ -48,6 +48,9 @@ void Commands::init_command_map() {
 	_command_map["WHO"] = WHO;
 	_command_map["CAP"] = CAP;
 	_command_map["PART"] = PART;
+	_command_map["NOTICE"] = NOTICE;
+	_command_map["AWAY"] = AWAY;
+
 }
 
 void Commands::init_list_of_commands(const std::string &raw_input) {

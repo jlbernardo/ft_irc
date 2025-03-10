@@ -5,7 +5,9 @@ Client::Client(int fd, Server &server)
 	: _fd(fd), _nick(""), _user(""), _name(""), _pass(""),
 	_buffer(""), _hostname(""), _identifier(""), _server(server),
 	_authenticated(false), _joinedChannels() {
-}
+		_away_state.away_status = false;
+		_away_state.away_message = "";
+	}
 
 Client::~Client() {
 }
@@ -89,6 +91,10 @@ bool Client::is_authenticated() const {
 	return _authenticated;
 }
 
+bool Client::is_away() const {
+	return _away_state.away_status;
+}
+
 bool Client::password_matched(Server &server) const {
 	return _pass == server.get_pass();
 }
@@ -125,8 +131,20 @@ void Client::set_identifier(const std::string &identifier) {
 	_identifier = identifier;
 }
 
+void Client::set_away_status(bool status) {
+	_away_state.away_status = status;
+}
+
+void Client::set_away_message(const std::string &away_message) {
+	_away_state.away_message = away_message;
+}
+
 const std::vector<Channel*> &Client::get_joined_channels() const {
 	return _joinedChannels;
+}
+
+const std::string &Client::get_away_message() const {
+	return _away_state.away_message;
 }
 
 void Client::add_channel(Channel* channel) {

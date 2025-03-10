@@ -4,6 +4,10 @@
 
 # include "ft_irc.hpp"
 
+struct Away {
+	bool away_status;
+	std::string away_message;
+};
 
 class Client {
 	private:
@@ -19,6 +23,7 @@ class Client {
 		Server &_server;
 		bool _authenticated;
 		std::vector<Channel*> _joinedChannels;
+		Away _away_state;
 
 	public:
 		~Client();
@@ -41,6 +46,7 @@ class Client {
 		const std::string &get_hostname() const;
 		const std::string &get_identifier() const;
 		const std::vector<Channel*> &get_joined_channels() const;
+		const std::string &get_away_message() const;
 
 		// setters:
 		void add_channel(Channel* channel);
@@ -52,10 +58,13 @@ class Client {
 		void set_username(const std::string &username);
 		void set_realname(const std::string &realname);
 		void set_identifier(const std::string &identifier);
+		void set_away_status(bool status);
+		void set_away_message(const std::string &away_message);
 
 		// checkers:
 		bool is_authenticated() const;
 		bool password_matched(Server &server) const;
+		bool is_away() const;
 };
 
 #endif
