@@ -77,5 +77,7 @@ void kick(Commands &commands, Command &cmd);
 void invite(Commands &commands, Command &cmd);
 void topic(Commands &commands, Command &cmd);
 void part(Commands &commands, Command &cmd);
+void notice(Commands &commands, Command &cmd);
+void away(Commands &commands, Command &cmd);
 
 #endif

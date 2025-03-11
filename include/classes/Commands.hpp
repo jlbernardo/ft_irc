@@ -4,7 +4,7 @@
 
 # include "ft_irc.hpp"
 
-enum CommandType { PRIVMSG, JOIN, NICK, USER, QUIT, KICK,  PASS, INVITE, TOPIC, MODE, WHO, PART, CAP, UNKNOWN };
+enum CommandType { PRIVMSG, JOIN, NICK, USER, QUIT, KICK,  PASS, INVITE, TOPIC, MODE, WHO, PART, CAP, NOTICE, AWAY, UNKNOWN };
 
 struct Command {
 	std::string command;

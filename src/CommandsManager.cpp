@@ -70,6 +70,12 @@ void CommandsManager::execute(Commands &commands) {
             case PART:
                 part(commands, cmd);
                 break;
+            case NOTICE:
+                notice(commands, cmd);
+                break;
+            case AWAY:
+                away(commands, cmd);
+                break;
             case UNKNOWN:
                 server.send_message(commands.get_sender().get_fd(), ERR_UNKNOWNCMD(cmd.command));
                 break;

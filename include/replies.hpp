@@ -23,6 +23,18 @@ inline std::string RPL_MYINFO(const std::string& nick, const std::string& userMo
   return SERVER + " 004 " + nick + " " + SERVER + " " + "1.0 " + userModes + " " + channelModes + CRLF;
 }
 
+inline std::string RPL_AWAY(const std::string& nick, const std::string& away_message) {
+  return SERVER + " 301 " + nick + " :" + away_message + CRLF;
+}
+
+inline std::string RPL_UNAWAY(const std::string& nick) {
+  return SERVER + " 305 " + nick + " :You are no longer marked as being away." + CRLF;
+}
+
+inline std::string RPL_NOWAWAY(const std::string& nick) {
+  return SERVER + " 306 " + nick + " :You have been marked as being away." + CRLF;
+}
+
 inline std::string RPL_ENDOFWHO(const std::string& channel) {
   return SERVER + " 315 " + channel + " :End of /WHO list." + CRLF;
 }
@@ -158,6 +170,10 @@ inline std::string RPL_JOIN(const std::string& user, const std::string& channel)
 
 inline std::string RPL_PRIVMSG(const std::string& client_id, const std::string& dest, const std::string& message) {
   return ":" + client_id + " PRIVMSG " + dest + " :" + message + CRLF;
+}
+
+inline std::string RPL_NOTICE(const std::string& client_id, const std::string& dest, const std::string& message) {
+  return ":" + client_id + " NOTICE " + dest + " :" + message + CRLF;
 }
 
 inline std::string RPL_PARTMSG(const std::string& identifier, const std::string& dest, const std::string& message) {
