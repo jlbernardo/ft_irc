@@ -22,6 +22,17 @@ void CommandsManager::execute(Commands &commands) {
 
     for (std::list<Command>::iterator it = cmd_list.begin(); it != cmd_list.end(); ++it) {
         Command &cmd = *it;
+        if (commands.get_sender().is_authenticated() == false) {
+            if (cmd.type != PASS && cmd.type != NICK && cmd.type != USER && cmd.type != UNKNOWN && cmd.type != CAP) {
+                server.send_message(commands.get_sender().get_fd(), ERR_NOTREGISTERED());
+                // print entire commands list (the actual strings)
+                for (std::list<Command>::iterator it = cmd_list.begin(); it != cmd_list.end(); ++it) {
+                    std::cout << "cmd type: " << it->type << std::endl;
+                    std::cout << "cmd: " << it->command << std::endl;
+                }
+                continue;
+            }
+        }
         switch (cmd.type) {
             case PRIVMSG:
                 privmsg(commands, cmd);
@@ -58,6 +69,9 @@ void CommandsManager::execute(Commands &commands) {
                 break;
             case PART:
                 part(commands, cmd);
+                break;
+            case UNKNOWN:
+                server.send_message(commands.get_sender().get_fd(), ERR_UNKNOWNCMD(cmd.command));
                 break;
             default:
                 break;
