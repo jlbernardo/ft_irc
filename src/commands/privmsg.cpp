@@ -45,7 +45,7 @@ void privmsg(Commands &commands, Command &cmd)
                 if (member->get_fd() != sender.get_fd() && !member->is_away())
                     server.send_message(member->get_fd(), RPL_PRIVMSG(sender.get_nickname(), recipient, message));
                 else if (member->get_fd() != sender.get_fd() && member->is_away())
-                    server.send_message(sender.get_fd(), RPL_AWAY(member->get_nickname(), member->get_away_message()));
+                    server.send_message(sender.get_fd(), RPL_AWAY(sender.get_nickname(), member->get_nickname(), member->get_away_message()));
             }
         }
         else
@@ -63,7 +63,7 @@ void privmsg(Commands &commands, Command &cmd)
             {
                 if (client->is_away())
                 {
-                    server.send_message(sender.get_fd(), RPL_AWAY(client->get_nickname(), client->get_away_message()));
+                    server.send_message(sender.get_fd(), RPL_AWAY(sender.get_nickname(), client->get_nickname(), client->get_away_message()));
                 }
                 server.send_message(client->get_fd(), RPL_PRIVMSG(sender.get_nickname(), recipient, message));
                 userFound = true;

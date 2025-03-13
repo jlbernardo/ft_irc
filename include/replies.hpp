@@ -23,8 +23,8 @@ inline std::string RPL_MYINFO(const std::string& nick, const std::string& userMo
   return SERVER + " 004 " + nick + " " + SERVER + " " + "1.0 " + userModes + " " + channelModes + CRLF;
 }
 
-inline std::string RPL_AWAY(const std::string& nick, const std::string& away_message) {
-  return SERVER + " 301 " + nick + " :" + away_message + CRLF;
+inline std::string RPL_AWAY(const std::string& nick, const std::string& recipient, const std::string& away_message) {
+  return SERVER + " 301 " + nick + " " + recipient + " :" + away_message + CRLF;
 }
 
 inline std::string RPL_UNAWAY(const std::string& nick) {
