@@ -4,11 +4,13 @@
 void who(Commands &commands, Command &cmd) {
     Client &client = commands.get_sender();
     Server &server = client.getServer();
-    std::string mask = cmd.parameters.front();
+    std::string mask;
 
-    if (mask.empty()) {
+    if (cmd.parameters.size() == 0) {
         server.send_message(client.get_fd(), ERR_NEEDMOREPARAMS("WHO"));
         return ;
+    } else {
+        mask = cmd.parameters.front();
     }
 
     if (mask[0] == '#' || mask[0] == '&') {
