@@ -3,20 +3,20 @@
 # BASIC VARIABLES
 NAME = ircserv
 FLAGS = -Wall -Wextra -Werror -I./include -std=c++98 -g3 -MMD -MP
-CXX = clang++
+CXX = c++
 
 # TEST VARIABLES
 TEST_NAME = $(NAME)_test
 TEST_OBJ_PATH = test_objects/
 TEST_FLAGS = $(FLAGS) -DTEST -fsanitize=address
-PORT ?= 4242
+PORT ?= 6667
 PASS = 2508
 
 # SOURCE FILES
 MAIN = main
 UTILS = Validator Logger utils
 CLASSES = Client Commands CommandsManager Server SocketsManager Channel
-COMMANDS = invite join kick mode nick pass privmsg quit topic user who part
+COMMANDS = invite join kick mode nick pass privmsg quit topic user who part notice away
 
 # PATHS
 SRC_PATH = src/

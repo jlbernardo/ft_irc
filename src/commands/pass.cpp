@@ -29,6 +29,5 @@ void pass(Commands &commands, Command &cmd) {
     }
     else {
         server.send_message(sender.get_fd(), ERR_PASSWDMISMATCH());
-        commands.set_fatal_error(true);
     }
 }

@@ -23,6 +23,18 @@ inline std::string RPL_MYINFO(const std::string& nick, const std::string& userMo
   return SERVER + " 004 " + nick + " " + SERVER + " " + "1.0 " + userModes + " " + channelModes + CRLF;
 }
 
+inline std::string RPL_AWAY(const std::string& nick, const std::string& recipient, const std::string& away_message) {
+  return SERVER + " 301 " + nick + " " + recipient + " :" + away_message + CRLF;
+}
+
+inline std::string RPL_UNAWAY(const std::string& nick) {
+  return SERVER + " 305 " + nick + " :You are no longer marked as being away." + CRLF;
+}
+
+inline std::string RPL_NOWAWAY(const std::string& nick) {
+  return SERVER + " 306 " + nick + " :You have been marked as being away." + CRLF;
+}
+
 inline std::string RPL_ENDOFWHO(const std::string& channel) {
   return SERVER + " 315 " + channel + " :End of /WHO list." + CRLF;
 }
@@ -37,11 +49,11 @@ inline std::string RPL_NOTOPIC(const std::string& nick, const std::string& chann
 }
 
 inline std::string RPL_TOPIC(const std::string& nick, const std::string& channel, const std::string& topic) {
-  return SERVER + " 332 " + nick + " " + channel + " " + topic + CRLF;
+  return SERVER + " 332 " + nick + " " + channel + " :" + topic + CRLF;
 }
 
 inline std::string RPL_INVITING(const std::string& nick, const std::string& recipient, const std::string& channel) {
-  return SERVER + " 341 " + nick + " " + recipient + " :" + channel + CRLF;
+  return SERVER + " 341 " + nick + " " + recipient + " " + channel + CRLF;
 }
 
 inline std::string RPL_WHOREPLY(const std::string& channel, const std::string& user, const std::string &host,
@@ -160,6 +172,10 @@ inline std::string RPL_PRIVMSG(const std::string& client_id, const std::string& 
   return ":" + client_id + " PRIVMSG " + dest + " :" + message + CRLF;
 }
 
+inline std::string RPL_NOTICE(const std::string& client_id, const std::string& dest, const std::string& message) {
+  return ":" + client_id + " NOTICE " + dest + " :" + message + CRLF;
+}
+
 inline std::string RPL_PARTMSG(const std::string& identifier, const std::string& dest, const std::string& message) {
   return ":" + identifier + " PART " + dest + " :" + message + CRLF;
 }
@@ -177,7 +193,11 @@ inline std::string RPL_MODE(const std::string sender, const std::string& channel
 }
 
 inline std::string RPL_INVITE(const std::string& nick, const std::string& recipient, const std::string& channel) {
-  return ":" + nick + " INVITE " + recipient + " :" + channel + CRLF;
+  return ":" + nick + " INVITE " + recipient + " " + channel + CRLF;
+}
+
+inline std::string ERR_UNKNOWNCMD(const std::string& command) {
+  return SERVER + " 421 * " + command + " :Unknown command" + CRLF;
 }
 
 #endif
